@@ -36,4 +36,4 @@
 /frontend/cypress/videos
 
 .idea/*
-diaries/
+/diaries
