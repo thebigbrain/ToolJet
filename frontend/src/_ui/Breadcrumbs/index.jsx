@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import SolidIcon from '../Icon/SolidIcons';
-import { BreadCrumbContext } from '../../App/App';
+import { BreadCrumbContext } from '../../modules/App/App';
 import useBreadcrumbs from 'use-react-router-breadcrumbs';
 
 export const Breadcrumbs = ({ darkMode, dataCy }) => {
@@ -33,8 +33,16 @@ export const Breadcrumbs = ({ darkMode, dataCy }) => {
 // define some custom breadcrumbs for certain routes (optional)
 const routes = [
   { path: '/:worspace_id', breadcrumb: 'Applications' },
-  { path: '/:worspace_id/database', breadcrumb: 'Tables', props: { dataCy: 'tables-page-header' } },
+  {
+    path: '/:worspace_id/database',
+    breadcrumb: 'Tables',
+    props: { dataCy: 'tables-page-header' },
+  },
   { path: '/workspace-settings', breadcrumb: 'Workspace settings' },
   { path: '/data-sources', breadcrumb: 'Data Sources' },
-  { path: '/integrations', breadcrumb: 'Integrations / plugins', props: { beta: true } },
+  {
+    path: '/integrations',
+    breadcrumb: 'Integrations / plugins',
+    props: { beta: true },
+  },
 ];

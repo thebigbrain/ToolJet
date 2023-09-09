@@ -22,7 +22,7 @@ import { Authorize } from '@/Oauth2';
 import { Authorize as Oauth } from '@/Oauth';
 import { Viewer } from '@/Editor';
 import { OrganizationSettings } from '@/OrganizationSettingsPage';
-import { SettingsPage } from '../SettingsPage/SettingsPage';
+import { SettingsPage } from '../../SettingsPage/SettingsPage';
 import { ForgotPassword } from '@/ForgotPassword';
 import { ResetPassword } from '@/ResetPassword';
 import { MarketplacePage } from '@/MarketplacePage';
@@ -33,7 +33,7 @@ import Toast from '@/_ui/Toast';
 import { VerificationSuccessInfoScreen } from '@/SuccessInfoScreen';
 import '@/_styles/theme.scss';
 import { AppLoader } from '@/AppLoader';
-import SetupScreenSelfHost from '../SuccessInfoScreen/SetupScreenSelfHost';
+import SetupScreenSelfHost from '../../SuccessInfoScreen/SetupScreenSelfHost';
 export const BreadCrumbContext = React.createContext({});
 import 'react-tooltip/dist/react-tooltip.css';
 
@@ -206,7 +206,10 @@ class AppComponent extends React.Component {
 
   updateCurrentSession = (newSession) => {
     const currentSession = authenticationService.currentSessionValue;
-    authenticationService.updateCurrentSession({ ...currentSession, ...newSession });
+    authenticationService.updateCurrentSession({
+      ...currentSession,
+      ...newSession,
+    });
   };
 
   logout = () => {

@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash';
 import { TooljetDatabaseContext } from '../index';
 import { tooljetDatabaseService } from '@/_services';
 import { ListItem } from '../TableListItem';
-import { BreadCrumbContext } from '../../App/App';
+import { BreadCrumbContext } from '../../modules/App/App';
 import Search from '../Search';
 import SolidIcon from '@/_ui/Icon/SolidIcons';
 

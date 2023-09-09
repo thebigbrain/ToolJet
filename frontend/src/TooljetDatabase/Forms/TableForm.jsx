@@ -5,11 +5,13 @@ import CreateColumnsForm from './ColumnsForm';
 import { tooljetDatabaseService } from '@/_services';
 import { TooljetDatabaseContext } from '../index';
 import { isEmpty } from 'lodash';
-import { BreadCrumbContext } from '@/App/App';
+import { BreadCrumbContext } from '@/modules/App/App';
 
 const TableForm = ({
   selectedTable = '',
-  selectedColumns = { 0: { column_name: 'id', data_type: 'serial', constraint: 'PRIMARY KEY' } },
+  selectedColumns = {
+    0: { column_name: 'id', data_type: 'serial', constraint: 'PRIMARY KEY' },
+  },
   onCreate,
   onEdit,
   onClose,

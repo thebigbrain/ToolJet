@@ -6,7 +6,7 @@ import { marketplaceService, pluginsService, authenticationService } from '@/_se
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import config from 'config';
-import { BreadCrumbContext } from '@/App/App';
+import { BreadCrumbContext } from '@/modules/App/App';
 import FolderList from '@/_ui/FolderList/FolderList';
 
 const MarketplacePage = ({ darkMode, switchDarkMode }) => {

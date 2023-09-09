@@ -5,7 +5,7 @@ import CreateTableForm from '../../Forms/TableForm';
 import { TooljetDatabaseContext } from '../../index';
 import { tooljetDatabaseService } from '@/_services';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
-import { BreadCrumbContext } from '@/App/App';
+import { BreadCrumbContext } from '@/modules/App/App';
 
 export default function CreateTableDrawer() {
   const { organizationId, setSelectedTable, setTables } = useContext(TooljetDatabaseContext);

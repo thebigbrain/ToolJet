@@ -24,7 +24,8 @@ function stripTrailingSlash(str) {
 
 module.exports = {
   mode: environment,
-  entry: "./src/index.jsx",
+  entry: "./src/index.tsx",
+  devtool: "inline-source-map",
   optimization: {
     minimize: environment === "production",
     usedExports: true,
@@ -51,6 +52,8 @@ module.exports = {
   target: "web",
   resolve: {
     extensions: [
+      ".tsx",
+      ".ts",
       ".js",
       ".jsx",
       ".png",
@@ -73,6 +76,11 @@ module.exports = {
   devtool: environment === "development" ? "eval-cheap-source-map" : false,
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
+      },
       {
         test: /\.ttf$/,
         use: ["file-loader"],

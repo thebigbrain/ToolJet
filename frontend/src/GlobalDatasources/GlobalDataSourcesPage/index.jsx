@@ -13,7 +13,7 @@ import { SegregatedList } from '../SegregatedList';
 import { SearchBox } from '@/_components';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
 import SolidIcon from '@/_ui/Icon/SolidIcons';
-import { BreadCrumbContext } from '@/App';
+import { BreadCrumbContext } from '@/modules/App';
 
 export const GlobalDataSourcesPage = ({ darkMode = false, updateSelectedDatasource }) => {
   const containerRef = useRef(null);
@@ -126,7 +126,9 @@ export const GlobalDataSourcesPage = ({ darkMode = false, updateSelectedDatasour
         key: key,
         value: options[key].value,
         encrypted: keyMeta ? keyMeta.encrypted : false,
-        ...(!options[key]?.value && { credential_id: options[key]?.credential_id }),
+        ...(!options[key]?.value && {
+          credential_id: options[key]?.credential_id,
+        }),
       };
     });
     if (name.trim() !== '') {

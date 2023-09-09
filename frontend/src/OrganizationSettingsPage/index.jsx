@@ -7,7 +7,7 @@ import { ManageSSO } from '@/ManageSSO';
 import { ManageOrgVars } from '@/ManageOrgVars';
 import { authenticationService } from '@/_services';
 import { CopilotSetting } from '@/CopilotSettings';
-import { BreadCrumbContext } from '../App/App';
+import { BreadCrumbContext } from '../modules/App/App';
 import FolderList from '@/_ui/FolderList/FolderList';
 import { OrganizationList } from '../_components/OrganizationManager/List';
 import { ManageOrgConstants } from '@/ManageOrgConstants';
@@ -71,7 +71,10 @@ export function OrganizationSettings(props) {
                         renderBadgeForItems={['Workspace constants']}
                         renderBadge={() => (
                           <span
-                            style={{ width: '40px', textTransform: 'lowercase' }}
+                            style={{
+                              width: '40px',
+                              textTransform: 'lowercase',
+                            }}
                             className="badge bg-color-primary badge-pill"
                           >
                             new

@@ -1,16 +1,21 @@
-import React from 'react';
-import { render } from 'react-dom';
+import * as React from "react";
+import { render } from "react-dom";
 // import { createRoot } from 'react-dom/client';
-import * as Sentry from '@sentry/react';
-import { useLocation, useNavigationType, createRoutesFromChildren, matchRoutes } from 'react-router-dom';
-import { BrowserTracing } from '@sentry/tracing';
-import { appService } from '@/_services';
-import { App } from './App';
+import * as Sentry from "@sentry/react";
+import {
+  useLocation,
+  useNavigationType,
+  createRoutesFromChildren,
+  matchRoutes,
+} from "react-router-dom";
+import { BrowserTracing } from "@sentry/tracing";
+import { appService } from "@/_services";
+import { App } from "./modules/App";
 // eslint-disable-next-line import/no-unresolved
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
 // import LanguageDetector from 'i18next-browser-languagedetector';
-import Backend from 'i18next-http-backend';
+import HttpBackend, { HttpBackendOptions } from "i18next-http-backend";
 
 const AppWithProfiler = Sentry.withProfiler(App);
 
@@ -18,27 +23,27 @@ appService
   .getConfig()
   .then((config) => {
     window.public_config = config;
-    const language = config.LANGUAGE || 'en';
-    const path = config?.SUB_PATH || '/';
+    const language = config.LANGUAGE || "en";
+    const path = config?.SUB_PATH || "/";
     i18n
-      .use(Backend)
+      .use(HttpBackend)
       // .use(LanguageDetector)
       .use(initReactI18next)
-      .init({
-        load: 'languageOnly',
-        fallbackLng: 'en',
+      .init<HttpBackendOptions>({
+        load: "languageOnly",
+        fallbackLng: "en",
         lng: language,
         backend: {
           loadPath: `${path}assets/translations/{{lng}}.json`,
         },
       });
 
-    if (window.public_config.APM_VENDOR === 'sentry') {
+    if (window.public_config.APM_VENDOR === "sentry") {
       const tooljetServerUrl = window.public_config.TOOLJET_SERVER_URL;
-      const tracingOrigins = ['localhost', /^\//];
+      const tracingOrigins = ["localhost", /^\//];
       const releaseVersion = window.public_config.RELEASE_VERSION
         ? `tooljet-${window.public_config.RELEASE_VERSION}`
-        : 'tooljet';
+        : "tooljet";
 
       if (tooljetServerUrl) tracingOrigins.push(tooljetServerUrl);
 
@@ -62,5 +67,5 @@ appService
       });
     }
   })
-  .then(() => render(<AppWithProfiler />, document.getElementById('app')));
+  .then(() => render(<AppWithProfiler />, document.getElementById("app")));
 // .then(() => createRoot(document.getElementById('app')).render(<AppWithProfiler />));

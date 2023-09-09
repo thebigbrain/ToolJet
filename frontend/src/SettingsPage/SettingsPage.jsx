@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import Layout from '@/_ui/Layout';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
-import { BreadCrumbContext } from '@/App/App';
+import { BreadCrumbContext } from '@/modules/App/App';
 
 function SettingsPage(props) {
   const currentSession = authenticationService.currentSessionValue;

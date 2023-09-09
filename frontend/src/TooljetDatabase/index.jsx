@@ -3,7 +3,7 @@ import Layout from '@/_ui/Layout';
 import TooljetDatabasePage from './TooljetDatabasePage';
 import { usePostgrestQueryBuilder } from './usePostgrestQueryBuilder';
 import { authenticationService } from '../_services/authentication.service';
-import { BreadCrumbContext } from '@/App/App';
+import { BreadCrumbContext } from '@/modules/App/App';
 
 export const TooljetDatabaseContext = createContext({
   organizationId: null,
