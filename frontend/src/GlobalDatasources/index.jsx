@@ -4,7 +4,7 @@ import Layout from '@/_ui/Layout';
 import { globalDatasourceService, appEnvironmentService, authenticationService } from '@/_services';
 import { GlobalDataSourcesPage } from './GlobalDataSourcesPage';
 import { toast } from 'react-hot-toast';
-import { BreadCrumbContext } from '@/modules/App/App';
+import { useBreadCrumbContext } from '@/core/context';
 
 export const GlobalDataSourcesContext = createContext({
   showDataSourceManagerModal: false,
@@ -24,7 +24,7 @@ export const GlobalDatasources = (props) => {
   const [currentEnvironment, setCurrentEnvironment] = useState(null);
   const [activeDatasourceList, setActiveDatasourceList] = useState('#databases');
   const navigate = useNavigate();
-  const { updateSidebarNAV } = useContext(BreadCrumbContext);
+  const { updateSidebarNAV } = useBreadCrumbContext();
 
   useEffect(() => {
     if (dataSources?.length == 0) updateSidebarNAV('Databases');

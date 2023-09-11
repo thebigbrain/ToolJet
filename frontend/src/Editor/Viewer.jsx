@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  appService,
   authenticationService,
   orgEnvironmentVariableService,
   orgEnvironmentConstantService,
@@ -44,6 +43,7 @@ import { setCookie } from '@/_helpers/cookie';
 import { useDataQueriesStore } from '@/_stores/dataQueriesStore';
 import { useCurrentStateStore } from '@/_stores/currentStateStore';
 import { shallow } from 'zustand/shallow';
+import { getService, ServiceType } from '@/core/service';
 
 class ViewerComponent extends React.Component {
   constructor(props) {
@@ -253,8 +253,12 @@ class ViewerComponent extends React.Component {
     return variables;
   };
 
+  get appService() {
+    return getService(ServiceType.Application);
+  }
+
   loadApplicationBySlug = (slug) => {
-    appService
+    this.appService
       .getAppBySlug(slug)
       .then((data) => {
         this.setStateForApp(data);
@@ -272,7 +276,7 @@ class ViewerComponent extends React.Component {
   };
 
   loadApplicationByVersion = (appId, versionId) => {
-    appService
+    this.appService
       .getAppByVersion(appId, versionId)
       .then((data) => {
         this.setStateForApp(data);
@@ -578,7 +582,14 @@ class ViewerComponent extends React.Component {
         return (
           <div className="maintenance_container">
             <div className="card">
-              <div className="card-body" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div
+                className="card-body"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
                 <h3>{this.props.t('viewer', 'Sorry!. This app is under maintenance')}</h3>
               </div>
             </div>

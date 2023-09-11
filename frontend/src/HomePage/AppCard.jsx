@@ -76,23 +76,25 @@ export default function AppCard({
                 </div>
               </div>
             </div>
-            <div visible={focused}>
-              {(canCreateApp(app) || canDeleteApp(app)) && (
-                <AppMenu
-                  onMenuOpen={onMenuToggle}
-                  openAppActionModal={appActionModalCallBack}
-                  canCreateApp={canCreateApp()}
-                  canDeleteApp={canDeleteApp(app)}
-                  canUpdateApp={canUpdateApp(app)}
-                  deleteApp={() => deleteApp(app)}
-                  cloneApp={() => cloneApp(app)}
-                  exportApp={() => exportApp(app)}
-                  isMenuOpen={isMenuOpen}
-                  darkMode={darkMode}
-                  currentFolder={currentFolder}
-                />
-              )}
-            </div>
+            {focused && (
+              <div>
+                {(canCreateApp(app) || canDeleteApp(app)) && (
+                  <AppMenu
+                    onMenuOpen={onMenuToggle}
+                    openAppActionModal={appActionModalCallBack}
+                    canCreateApp={canCreateApp()}
+                    canDeleteApp={canDeleteApp(app)}
+                    canUpdateApp={canUpdateApp(app)}
+                    deleteApp={() => deleteApp(app)}
+                    cloneApp={() => cloneApp(app)}
+                    exportApp={() => exportApp(app)}
+                    isMenuOpen={isMenuOpen}
+                    darkMode={darkMode}
+                    currentFolder={currentFolder}
+                  />
+                )}
+              </div>
+            )}
           </div>
         </div>
         <div>

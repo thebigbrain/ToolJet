@@ -5,7 +5,7 @@ import CreateColumnsForm from './ColumnsForm';
 import { tooljetDatabaseService } from '@/_services';
 import { TooljetDatabaseContext } from '../index';
 import { isEmpty } from 'lodash';
-import { BreadCrumbContext } from '@/modules/App/App';
+import { useBreadCrumbContext } from '@/core/context';
 
 const TableForm = ({
   selectedTable = '',
@@ -22,7 +22,7 @@ const TableForm = ({
   const [columns, setColumns] = useState(selectedColumns);
   const { organizationId } = useContext(TooljetDatabaseContext);
   const isEditMode = !isEmpty(selectedTable);
-  const { updateSidebarNAV } = useContext(BreadCrumbContext);
+  const { updateSidebarNAV } = useBreadCrumbContext();
 
   useEffect(() => {
     toast.dismiss();

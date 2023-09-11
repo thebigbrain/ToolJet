@@ -1,17 +1,50 @@
-import React from 'react';
-import { appService, authenticationService } from '@/_services';
-import { toast } from 'react-hot-toast';
-import { ShowLoading } from '@/_components';
-import { withTranslation } from 'react-i18next';
-import OnboardingNavbar from '@/_components/OnboardingNavbar';
-import { ButtonSolid } from '@/_components/AppButton';
-import EnterIcon from '../../assets/images/onboardingassets/Icons/Enter';
-import EyeHide from '../../assets/images/onboardingassets/Icons/EyeHide';
-import EyeShow from '../../assets/images/onboardingassets/Icons/EyeShow';
-import Spinner from '@/_ui/Spinner';
-import { LinkExpiredInfoScreen } from '../SuccessInfoScreen/LinkExpiredInfoScreen';
-import { withRouter } from '@/_hoc/withRouter';
-class OrganizationInvitationPageComponent extends React.Component {
+import React, { ChangeEvent, SyntheticEvent } from "react";
+import { authenticationService } from "@/_services";
+import { toast } from "react-hot-toast";
+import { ShowLoading } from "@/_components";
+import { WithTranslation, withTranslation } from "react-i18next";
+import OnboardingNavbar from "@/_components/OnboardingNavbar";
+import { ButtonSolid } from "@/_components/AppButton";
+import EnterIcon from "../../../assets/images/onboardingassets/Icons/Enter";
+import EyeHide from "../../../assets/images/onboardingassets/Icons/EyeHide";
+import EyeShow from "../../../assets/images/onboardingassets/Icons/EyeShow";
+import Spinner from "@/_ui/Spinner";
+import { LinkExpiredInfoScreen } from "../../SuccessInfoScreen/LinkExpiredInfoScreen";
+import { withRouter } from "@/_hoc/withRouter";
+
+import { appService } from "./app.service";
+import { WithRouterParams } from "@/interfaces/router";
+
+type OrganizationInvitationPageProps = {
+  params?: { token?: string };
+  darkMode: boolean;
+} & WithRouterParams &
+  WithTranslation;
+
+interface OrganizationInvitationPageState {
+  isLoading: boolean;
+  configs?: { name?: string };
+  isGettingConfigs: boolean;
+  userDetails?: {
+    name?: string;
+    email?: string;
+    onboarding_details?: { password?: string };
+  };
+  verifiedToken: boolean;
+  showPassword: boolean;
+  fallBack: boolean;
+  password?: string;
+}
+
+class OrganizationInvitationPageComponent extends React.Component<
+  OrganizationInvitationPageProps,
+  OrganizationInvitationPageState
+> {
+  formRef: React.Ref<HTMLDivElement>;
+  single_organization: boolean;
+  organizationId: string;
+  source: string;
+
   constructor(props) {
     super(props);
 
@@ -24,10 +57,13 @@ class OrganizationInvitationPageComponent extends React.Component {
       showPassword: false,
       fallBack: false,
     };
-    this.formRef = React.createRef(null);
-    this.single_organization = window.public_config?.DISABLE_MULTI_WORKSPACE === 'true';
-    this.organizationId = new URLSearchParams(props?.location?.search).get('oid');
-    this.source = new URLSearchParams(props?.location?.search).get('source');
+    this.formRef = React.createRef();
+    this.single_organization =
+      window.public_config?.DISABLE_MULTI_WORKSPACE === true;
+    this.organizationId = new URLSearchParams(props?.location?.search).get(
+      "oid"
+    );
+    this.source = new URLSearchParams(props?.location?.search).get("source");
   }
 
   componentDidMount() {
@@ -52,7 +88,7 @@ class OrganizationInvitationPageComponent extends React.Component {
       .verifyOrganizationToken(this.props?.params?.token)
       .then((data) => {
         this.setState({ userDetails: data });
-        if (data?.email !== '') {
+        if (data?.email !== "") {
           this.setState({ verifiedToken: true });
         }
       })
@@ -65,14 +101,16 @@ class OrganizationInvitationPageComponent extends React.Component {
   handleOnCheck = () => {
     this.setState((prev) => ({ showPassword: !prev.showPassword }));
   };
-  handleChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+
+  setPassword = (event: ChangeEvent<HTMLInputElement>) => {
+    this.setState({ password: event.target.value });
   };
 
   acceptInvite = (e) => {
     e.preventDefault();
 
-    const isSetPassword = !!this.state?.userDetails?.onboarding_details?.password;
+    const isSetPassword =
+      !!this.state?.userDetails?.onboarding_details?.password;
     const token = this.props?.params?.token;
     const { password } = this.state;
     this.setState({ isLoading: true });
@@ -81,7 +119,7 @@ class OrganizationInvitationPageComponent extends React.Component {
       if (!password || !password.trim()) {
         this.setState({ isLoading: false });
         toast.error("Password shouldn't be empty or contain white space(s)", {
-          position: 'top-center',
+          position: "top-center",
         });
         return;
       }
@@ -95,11 +133,17 @@ class OrganizationInvitationPageComponent extends React.Component {
       .then((response) => {
         this.setState({ isLoading: false });
         if (!response.ok) {
-          return toast.error('Error while setting up your account.', { position: 'top-center' });
+          return toast.error("Error while setting up your account.", {
+            position: "top-center",
+          });
         }
         if (response.status == 201) {
-          toast.success(`Added to the workspace${isSetPassword ? ' and password has been set ' : ' '}successfully.`);
-          this.props.navigate('/login');
+          toast.success(
+            `Added to the workspace${
+              isSetPassword ? " and password has been set " : " "
+            }successfully.`
+          );
+          this.props.navigate("/login");
         }
       })
       .catch(() => {
@@ -133,14 +177,20 @@ class OrganizationInvitationPageComponent extends React.Component {
                           className="common-auth-section-header org-invite-header"
                           data-cy="workspace-invite-page-header"
                         >
-                          Join {this.state?.configs?.name ? this.state?.configs?.name : 'ToolJet'}
+                          Join{" "}
+                          {this.state?.configs?.name
+                            ? this.state?.configs?.name
+                            : "ToolJet"}
                         </h2>
 
-                        <div className="invite-sub-header" data-cy="workspace-invite-page-sub-header">
+                        <div
+                          className="invite-sub-header"
+                          data-cy="workspace-invite-page-sub-header"
+                        >
                           {`You are invited to ${
                             this.state?.configs?.name
                               ? `a workspace ${this.state?.configs?.name}. Accept the invite to join the workspace.`
-                              : 'ToolJet.'
+                              : "ToolJet."
                           }`}
                         </div>
 
@@ -156,32 +206,55 @@ class OrganizationInvitationPageComponent extends React.Component {
 
                         {userDetails?.onboarding_details?.password && (
                           <div className="mb-3">
-                            <label className="form-label" data-cy="password-label">
-                              {this.props.t('confirmationPage.password', 'Password')}
+                            <label
+                              className="form-label"
+                              data-cy="password-label"
+                            >
+                              {this.props.t(
+                                "confirmationPage.password",
+                                "Password"
+                              )}
                             </label>
                             <div className="org-password">
                               <input
-                                onChange={this.handleChange}
+                                onChange={this.setPassword}
                                 name="password"
-                                type={this.state.showPassword ? 'text' : 'password'}
+                                type={
+                                  this.state.showPassword ? "text" : "password"
+                                }
                                 className="tj-text-input"
                                 placeholder="Enter password"
                                 data-cy="password-input"
                                 autoComplete="new-password"
                               />
 
-                              <div className="org-password-hide-img" onClick={this.handleOnCheck}>
+                              <div
+                                className="org-password-hide-img"
+                                onClick={this.handleOnCheck}
+                              >
                                 {this.state?.showPassword ? (
-                                  <EyeHide fill={this.state?.password?.length ? '#384151' : '#D1D5DB'} />
+                                  <EyeHide
+                                    fill={
+                                      this.state?.password?.length
+                                        ? "#384151"
+                                        : "#D1D5DB"
+                                    }
+                                  />
                                 ) : (
-                                  <EyeShow fill={this.state?.password?.length ? '#384151' : '#D1D5DB'} />
+                                  <EyeShow
+                                    fill={
+                                      this.state?.password?.length
+                                        ? "#384151"
+                                        : "#D1D5DB"
+                                    }
+                                  />
                                 )}
                               </div>
 
                               <span className="tj-input-helper-text">
                                 {this.props.t(
-                                  'loginSignupPage.passwordCharacter',
-                                  'Password must be at least 5 characters'
+                                  "loginSignupPage.passwordCharacter",
+                                  "Password must be at least 5 characters"
                                 )}
                               </span>
                             </div>
@@ -193,7 +266,9 @@ class OrganizationInvitationPageComponent extends React.Component {
                             onClick={(e) => this.acceptInvite(e)}
                             disabled={
                               userDetails?.onboarding_details?.password &&
-                              (isLoading || !this.state?.password || this.state?.password?.length < 5)
+                              (isLoading ||
+                                !this.state?.password ||
+                                this.state?.password?.length < 5)
                             }
                             data-cy="accept-invite-button"
                           >
@@ -203,8 +278,13 @@ class OrganizationInvitationPageComponent extends React.Component {
                               </div>
                             ) : (
                               <>
-                                <span>{this.props.t('confirmationPage.acceptInvite', 'Accept invite')}</span>
-                                <EnterIcon className="enter-icon-onboard" />
+                                <span>
+                                  {this.props.t(
+                                    "confirmationPage.acceptInvite",
+                                    "Accept invite"
+                                  )}
+                                </span>
+                                <EnterIcon fill={""} />
                               </>
                             )}
                           </ButtonSolid>
@@ -213,8 +293,14 @@ class OrganizationInvitationPageComponent extends React.Component {
                           By signing up you are agreeing to the
                           <br />
                           <span>
-                            <a href="https://www.tooljet.com/terms">Terms of Service </a>&
-                            <a href="https://www.tooljet.com/privacy"> Privacy Policy</a>
+                            <a href="https://www.tooljet.com/terms">
+                              Terms of Service{" "}
+                            </a>
+                            &
+                            <a href="https://www.tooljet.com/privacy">
+                              {" "}
+                              Privacy Policy
+                            </a>
                           </span>
                         </p>
                       </div>
@@ -230,4 +316,6 @@ class OrganizationInvitationPageComponent extends React.Component {
   }
 }
 
-export const OrganizationInvitationPage = withTranslation()(withRouter(OrganizationInvitationPageComponent));
+export const OrganizationInvitationPage = withTranslation()(
+  withRouter(OrganizationInvitationPageComponent)
+);

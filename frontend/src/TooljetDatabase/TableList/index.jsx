@@ -5,16 +5,16 @@ import { isEmpty } from 'lodash';
 import { TooljetDatabaseContext } from '../index';
 import { tooljetDatabaseService } from '@/_services';
 import { ListItem } from '../TableListItem';
-import { BreadCrumbContext } from '../../modules/App/App';
 import Search from '../Search';
 import SolidIcon from '@/_ui/Icon/SolidIcons';
+import { useBreadCrumbContext } from '@/core/context';
 
 const List = () => {
   const { organizationId, tables, searchParam, selectedTable, setTables, setSelectedTable } =
     useContext(TooljetDatabaseContext);
   const [loading, setLoading] = useState(false);
   const [showInput, setShowInput] = useState(false);
-  const { updateSidebarNAV } = useContext(BreadCrumbContext);
+  const { updateSidebarNAV } = useBreadCrumbContext();
   const darkMode = localStorage.getItem('darkMode') === 'true';
 
   async function fetchTables() {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { appService, authenticationService } from '@/_services';
+import { authenticationService } from '@/_services';
 import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-hot-toast';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -10,6 +10,7 @@ import { withTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { getPrivateRoute } from '@/_helpers/routes';
 import { getSubpath } from '@/_helpers/utils';
+import { getService, ServiceType } from '@/core/service';
 
 class ManageAppUsersComponent extends React.Component {
   constructor(props) {
@@ -33,8 +34,12 @@ class ManageAppUsersComponent extends React.Component {
     this.setState({ appId });
   }
 
+  get appService() {
+    return getService(ServiceType.Application);
+  }
+
   fetchAppUsers = () => {
-    appService
+    this.appService
       .getAppUsers(this.props.app.id)
       .then((data) =>
         this.setState({
@@ -61,7 +66,7 @@ class ManageAppUsersComponent extends React.Component {
 
     const { organizationUserId, role } = this.state.newUser;
 
-    appService
+    this.appService
       .createAppUser(this.state.app.id, organizationUserId, role)
       .then(() => {
         this.setState({ addingUser: false, newUser: {} });
@@ -81,7 +86,7 @@ class ManageAppUsersComponent extends React.Component {
     });
 
     // eslint-disable-next-line no-unused-vars
-    appService
+    this.appService
       .setVisibility(this.state.app.id, newState)
       .then(() => {
         this.setState({
@@ -110,7 +115,7 @@ class ManageAppUsersComponent extends React.Component {
     const newSlug = event.target.value || this.props.app.id;
     this.setState({ isSlugVerificationInProgress: true });
 
-    appService
+    this.appService
       .setSlug(this.state.app.id, newSlug)
       .then(() => {
         this.setState({

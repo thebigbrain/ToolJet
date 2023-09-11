@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import Layout from '@/_ui/Layout';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
-import { BreadCrumbContext } from '@/modules/App/App';
+import { useBreadCrumbContext } from '@/core/context';
 
 function SettingsPage(props) {
   const currentSession = authenticationService.currentSessionValue;
@@ -19,7 +19,7 @@ function SettingsPage(props) {
   const [selectedFile, setSelectedFile] = React.useState(null);
   const focusRef = React.useRef(null);
   const { t } = useTranslation();
-  const { updateSidebarNAV } = useContext(BreadCrumbContext);
+  const { updateSidebarNAV } = useBreadCrumbContext();
 
   useEffect(() => {
     updateSidebarNAV('');

@@ -7,8 +7,9 @@
       "@/*": ["./*"]
     },
     "sourceMap": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": false,
+    "allowSyntheticDefaultImports": true,
     "module": "ESNext",
     "target": "es5",
     "jsx": "react",

@@ -8,11 +8,11 @@ import { ConfirmDialog, ToolTip } from '@/_components';
 import { useTranslation } from 'react-i18next';
 import Skeleton from 'react-loading-skeleton';
 import SolidIcon from '@/_ui/Icon/SolidIcons';
-import { BreadCrumbContext } from '@/modules/App/App';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
 import { SearchBox } from '@/_components/SearchBox';
 import _ from 'lodash';
 import { validateName, handleHttpErrorMessages } from '@/_helpers/utils';
+import { useBreadCrumbContext } from '@/core/context';
 
 export const Folders = function Folders({
   folders,
@@ -42,7 +42,7 @@ export const Folders = function Folders({
   const [errorText, setErrorText] = useState('');
 
   const { t } = useTranslation();
-  const { updateSidebarNAV } = useContext(BreadCrumbContext);
+  const { updateSidebarNAV } = useBreadCrumbContext();
 
   useEffect(() => {
     setLoadingStatus(foldersLoading);

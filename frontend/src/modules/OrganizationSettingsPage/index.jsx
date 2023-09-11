@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import cx from 'classnames';
 import Layout from '@/_ui/Layout';
 import { ManageOrgUsers } from '@/ManageOrgUsers';
@@ -7,15 +7,15 @@ import { ManageSSO } from '@/ManageSSO';
 import { ManageOrgVars } from '@/ManageOrgVars';
 import { authenticationService } from '@/_services';
 import { CopilotSetting } from '@/CopilotSettings';
-import { BreadCrumbContext } from '../modules/App/App';
 import FolderList from '@/_ui/FolderList/FolderList';
-import { OrganizationList } from '../_components/OrganizationManager/List';
+import { OrganizationList } from '../../_components/OrganizationManager/List';
 import { ManageOrgConstants } from '@/ManageOrgConstants';
+import { useBreadCrumbContext } from '@/core/context';
 
 export function OrganizationSettings(props) {
   const [admin, setAdmin] = useState(authenticationService.currentSessionValue?.admin);
   const [selectedTab, setSelectedTab] = useState(admin ? 'Users & permissions' : 'manageEnvVars');
-  const { updateSidebarNAV } = useContext(BreadCrumbContext);
+  const { updateSidebarNAV } = useBreadCrumbContext();
 
   const sideBarNavs = ['Users', 'Groups', 'SSO', 'Workspace variables', 'Workspace constants'];
   const defaultOrgName = (groupName) => {

@@ -13,7 +13,7 @@ import { SegregatedList } from '../SegregatedList';
 import { SearchBox } from '@/_components';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
 import SolidIcon from '@/_ui/Icon/SolidIcons';
-import { BreadCrumbContext } from '@/modules/App';
+import { useBreadCrumbContext } from '@/core/context';
 
 export const GlobalDataSourcesPage = ({ darkMode = false, updateSelectedDatasource }) => {
   const containerRef = useRef(null);
@@ -46,7 +46,7 @@ export const GlobalDataSourcesPage = ({ darkMode = false, updateSelectedDatasour
     isLoading,
   } = useContext(GlobalDataSourcesContext);
 
-  const { updateSidebarNAV } = useContext(BreadCrumbContext);
+  const { updateSidebarNAV } = useBreadCrumbContext();
 
   useEffect(() => {
     pluginsService

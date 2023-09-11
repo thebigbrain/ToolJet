@@ -1,6 +1,6 @@
 export * from './authentication.service';
 export * from './user.service';
-export * from './app.service';
+// export * from "../modules/App/app.service";
 export * from './datasource.service';
 export * from './dataquery.service';
 export * from './organization.service';

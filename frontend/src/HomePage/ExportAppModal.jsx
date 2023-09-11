@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { default as BootstrapModal } from 'react-bootstrap/Modal';
 import moment from 'moment';
-import { appService } from '../_services/app.service';
 import { toast } from 'react-hot-toast';
+import { getService, ServiceType } from '@/core/service';
 
 export default function ExportAppModal({ title, show, closeModal, customClassName, app, darkMode }) {
   const currentVersion = app.editing_version;
   const [versions, getVersions] = useState(undefined);
   const [versionId, setVersionId] = useState(currentVersion.id);
+
+  const appService = () => getService(ServiceType.Application);
 
   useEffect(() => {
     async function fetchAppVersions() {

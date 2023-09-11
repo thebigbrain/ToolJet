@@ -12,7 +12,7 @@ export function ToolTip({
 }) {
   return (
     <OverlayTrigger trigger={trigger} placement={placement} delay={delay} overlay={<Tooltip>{message}</Tooltip>}>
-      {children}
+      <div>{children}</div>
     </OverlayTrigger>
   );
 }

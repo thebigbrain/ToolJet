@@ -5,12 +5,12 @@ import CreateTableForm from '../../Forms/TableForm';
 import { TooljetDatabaseContext } from '../../index';
 import { tooljetDatabaseService } from '@/_services';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
-import { BreadCrumbContext } from '@/modules/App/App';
+import { useBreadCrumbContext } from '@/core/context';
 
 export default function CreateTableDrawer() {
   const { organizationId, setSelectedTable, setTables } = useContext(TooljetDatabaseContext);
   const [isCreateTableDrawerOpen, setIsCreateTableDrawerOpen] = useState(false);
-  const { updateSidebarNAV } = useContext(BreadCrumbContext);
+  const { updateSidebarNAV } = useBreadCrumbContext();
 
   return (
     <>

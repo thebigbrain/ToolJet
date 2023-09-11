@@ -1,7 +1,7 @@
 import React from 'react';
 import { ToolTip } from '@/_components';
-import { appService } from '@/_services';
 import { handleHttpErrorMessages, validateName } from '../../_helpers/utils';
+import { getService, ServiceType } from '@/core/service';
 
 function EditAppName({ appId, appName = '', onNameChanged }) {
   const darkMode = localStorage.getItem('darkMode') === 'true';
@@ -10,6 +10,8 @@ function EditAppName({ appId, appName = '', onNameChanged }) {
   React.useEffect(() => {
     setName(appName);
   }, [appName]);
+
+  const appService = () => getService(ServiceType.Application);
 
   const saveAppName = async (name) => {
     const newName = name.trim();

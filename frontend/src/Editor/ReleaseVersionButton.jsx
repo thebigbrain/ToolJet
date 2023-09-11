@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import cx from 'classnames';
-import { appService } from '@/_services';
 import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { useAppVersionStore } from '@/_stores/appVersionStore';
 import { ConfirmDialog } from '@/_components/ConfirmDialog';
 import { shallow } from 'zustand/shallow';
+import { getService, ServiceType } from '@/core/service';
 
 export const ReleaseVersionButton = function DeployVersionButton({
   appId,
@@ -23,6 +23,8 @@ export const ReleaseVersionButton = function DeployVersionButton({
     shallow
   );
   const [showPageDeletionConfirmation, setShowPageDeletionConfirmation] = useState(false);
+
+  const appService = () => getService(ServiceType.Application);
 
   const { t } = useTranslation();
   const releaseVersion = (editingVersion) => {

@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  appService,
   authenticationService,
   appVersionService,
   orgEnvironmentVariableService,
@@ -60,6 +59,8 @@ import { useAppDataStore } from '@/_stores/appDataStore';
 import { useCurrentStateStore, useCurrentState } from '@/_stores/currentStateStore';
 import { resetAllStores } from '@/_stores/utils';
 import { setCookie } from '@/_helpers/cookie';
+
+import { getService, ServiceType } from '@/core/service';
 
 setAutoFreeze(false);
 enablePatches();
@@ -239,7 +240,10 @@ class EditorComponent extends React.Component {
       if (!isEqual(this.props.editingVersion?.id, this.props.ymap?.get('appDef').editingVersionId)) return;
       if (isEqual(this.state.appDefinition, this.props.ymap?.get('appDef').newDefinition)) return;
 
-      this.realtimeSave(this.props.ymap?.get('appDef').newDefinition, { skipAutoSave: true, skipYmapUpdate: true });
+      this.realtimeSave(this.props.ymap?.get('appDef').newDefinition, {
+        skipAutoSave: true,
+        skipYmapUpdate: true,
+      });
     });
   };
 
@@ -336,11 +340,15 @@ class EditorComponent extends React.Component {
     await useDataQueriesStore.getState().actions.fetchDataQueries(id, selectFirstQuery, runQueriesOnAppLoad, this);
   };
 
+  get appService() {
+    return getService(ServiceType.Application);
+  }
+
   toggleAppMaintenance = () => {
     const newState = !this.state.app.is_maintenance_on;
 
     // eslint-disable-next-line no-unused-vars
-    appService.setMaintenance(this.state.app.id, newState).then((data) => {
+    this.appService.setMaintenance(this.state.app.id, newState).then((data) => {
       this.setState({
         app: {
           ...this.state.app,
@@ -357,7 +365,7 @@ class EditorComponent extends React.Component {
   };
 
   fetchApps = (page) => {
-    appService.getAll(page).then((data) =>
+    this.appService.getAll(page).then((data) =>
       this.setState({
         apps: data.apps,
       })
@@ -423,7 +431,7 @@ class EditorComponent extends React.Component {
         isLoading: true,
       },
       () => {
-        appService.getApp(appId).then(callBack);
+        this.appService.getApp(appId).then(callBack);
       }
     );
   };
@@ -1455,7 +1463,10 @@ class EditorComponent extends React.Component {
   };
 
   getPagesWithIds = () => {
-    return Object.entries(this.state.appDefinition.pages).map(([id, page]) => ({ ...page, id }));
+    return Object.entries(this.state.appDefinition.pages).map(([id, page]) => ({
+      ...page,
+      id,
+    }));
   };
 
   getCanvasMinWidth = () => {
@@ -1626,7 +1637,11 @@ class EditorComponent extends React.Component {
                   }}
                   onMouseUp={(e) => {
                     if (['real-canvas', 'modal'].includes(e.target.className)) {
-                      this.setState({ selectedComponents: [], currentSidebarTab: 2, hoveredComponent: false });
+                      this.setState({
+                        selectedComponents: [],
+                        currentSidebarTab: 2,
+                        hoveredComponent: false,
+                      });
                     }
                   }}
                   ref={this.canvasContainerRef}
@@ -1795,7 +1810,10 @@ const withStore = (Component) => (props) => {
     shallow
   );
   const { isVersionReleased, editingVersion } = useAppVersionStore(
-    (state) => ({ isVersionReleased: state.isVersionReleased, editingVersion: state.editingVersion }),
+    (state) => ({
+      isVersionReleased: state.isVersionReleased,
+      editingVersion: state.editingVersion,
+    }),
     shallow
   );
 

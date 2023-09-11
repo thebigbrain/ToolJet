@@ -1,6 +1,6 @@
 import React from 'react';
 import cx from 'classnames';
-import { appService, folderService, authenticationService } from '@/_services';
+import { folderService, authenticationService } from '@/_services';
 import { ConfirmDialog } from '@/_components';
 import Select from '@/_ui/Select';
 import { Folders } from './Folders';
@@ -22,6 +22,7 @@ import { ButtonSolid } from '@/_ui/AppButton/AppButton';
 import BulkIcon from '@/_ui/Icon/bulkIcons/index';
 import { getWorkspaceId } from '@/_helpers/utils';
 import { withRouter } from '@/_hoc/withRouter';
+import { getService, ServiceType } from '@/core/service';
 
 const { iconList, defaultIcon } = configs;
 
@@ -69,6 +70,10 @@ class HomePageComponent extends React.Component {
     this.fetchFolders();
   }
 
+  get appService() {
+    return getService(ServiceType.Application);
+  }
+
   fetchApps = (page = 1, folder, searchKey) => {
     const appSearchKey = searchKey !== '' ? searchKey || this.state.appSearchKey : '';
     this.setState({
@@ -78,7 +83,7 @@ class HomePageComponent extends React.Component {
       appSearchKey,
     });
 
-    appService.getAll(page, folder, appSearchKey).then((data) =>
+    this.appService.getAll(page, folder, appSearchKey).then((data) =>
       this.setState({
         apps: data.apps,
         meta: { ...this.state.meta, ...data.meta },
@@ -122,7 +127,7 @@ class HomePageComponent extends React.Component {
   createApp = () => {
     let _self = this;
     _self.setState({ creatingApp: true });
-    appService
+    this.appService
       .createApp({ icon: sample(iconList) })
       .then((data) => {
         const workspaceId = getWorkspaceId();
@@ -140,7 +145,7 @@ class HomePageComponent extends React.Component {
 
   cloneApp = (app) => {
     this.setState({ isCloningApp: true });
-    appService
+    this.appService
       .cloneApp(app.id)
       .then((data) => {
         toast.success('App cloned successfully.');
@@ -166,7 +171,7 @@ class HomePageComponent extends React.Component {
       this.setState({ isImportingApp: true });
       try {
         const requestBody = JSON.parse(fileContent);
-        appService
+        this.appService
           .importApp(requestBody)
           .then((data) => {
             toast.success('App imported successfully.');
@@ -275,7 +280,7 @@ class HomePageComponent extends React.Component {
 
   executeAppDeletion = () => {
     this.setState({ isDeletingApp: true });
-    appService
+    this.appService
       .deleteApp(this.state.appToBeDeleted.id)
       // eslint-disable-next-line no-unused-vars
       .then((data) => {
@@ -362,17 +367,28 @@ class HomePageComponent extends React.Component {
 
     switch (action) {
       case 'add-to-folder':
-        this.setState({ appOperations: { ...appOperations, selectedApp: app }, showAddToFolderModal: true });
+        this.setState({
+          appOperations: { ...appOperations, selectedApp: app },
+          showAddToFolderModal: true,
+        });
         break;
       case 'change-icon':
         this.setState({
-          appOperations: { ...appOperations, selectedApp: app, selectedIcon: app?.icon },
+          appOperations: {
+            ...appOperations,
+            selectedApp: app,
+            selectedIcon: app?.icon,
+          },
           showChangeIconModal: true,
         });
         break;
       case 'remove-app-from-folder':
         this.setState({
-          appOperations: { ...appOperations, selectedApp: app, selectedFolder: folder },
+          appOperations: {
+            ...appOperations,
+            selectedApp: app,
+            selectedFolder: folder,
+          },
           showRemoveAppFromFolderConfirmation: true,
         });
         break;
@@ -385,7 +401,11 @@ class HomePageComponent extends React.Component {
     return iconList.map((icon, index) => (
       <li
         className={`p-3 ms-1 me-2 mt-1 mb-2${selectedIcon === icon ? ' selected' : ''}`}
-        onClick={() => this.setState({ appOperations: { ...appOperations, selectedIcon: icon } })}
+        onClick={() =>
+          this.setState({
+            appOperations: { ...appOperations, selectedIcon: icon },
+          })
+        }
         key={index}
       >
         <BulkIcon name={icon} data-cy={`${icon}-icon`} />
@@ -405,7 +425,7 @@ class HomePageComponent extends React.Component {
     }
     this.setState({ appOperations: { ...appOperations, isAdding: true } });
 
-    appService
+    this.appService
       .changeIcon(appOperations.selectedIcon, appOperations.selectedApp.id)
       .then(() => {
         toast.success('Icon updated.');
@@ -416,7 +436,11 @@ class HomePageComponent extends React.Component {
           }
           return app;
         });
-        this.setState({ appOperations: {}, showChangeIconModal: false, apps: updatedApps });
+        this.setState({
+          appOperations: {},
+          showChangeIconModal: false,
+          apps: updatedApps,
+        });
       })
       .catch(({ error }) => {
         this.setState({ appOperations: { ...appOperations, isAdding: false } });
@@ -509,7 +533,12 @@ class HomePageComponent extends React.Component {
                     })}
                     disabled={!!appOperations?.isAdding}
                     onChange={(newVal) => {
-                      this.setState({ appOperations: { ...appOperations, selectedFolder: newVal } });
+                      this.setState({
+                        appOperations: {
+                          ...appOperations,
+                          selectedFolder: newVal,
+                        },
+                      });
                     }}
                     width={'100%'}
                     value={appOperations?.selectedFolder}
@@ -524,7 +553,12 @@ class HomePageComponent extends React.Component {
               <div className="col d-flex modal-footer-btn">
                 <ButtonSolid
                   variant="tertiary"
-                  onClick={() => this.setState({ showAddToFolderModal: false, appOperations: {} })}
+                  onClick={() =>
+                    this.setState({
+                      showAddToFolderModal: false,
+                      appOperations: {},
+                    })
+                  }
                   data-cy="cancel-button"
                 >
                   {this.props.t('globals.cancel', 'Cancel')}
@@ -553,7 +587,12 @@ class HomePageComponent extends React.Component {
             <div className="row">
               <div className="col d-flex modal-footer-btn">
                 <ButtonSolid
-                  onClick={() => this.setState({ showChangeIconModal: false, appOperations: {} })}
+                  onClick={() =>
+                    this.setState({
+                      showChangeIconModal: false,
+                      appOperations: {},
+                    })
+                  }
                   data-cy="cancel-button"
                   variant="tertiary"
                 >

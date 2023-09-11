@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import SolidIcon from '../Icon/SolidIcons';
-import { BreadCrumbContext } from '../../modules/App/App';
 import useBreadcrumbs from 'use-react-router-breadcrumbs';
+import { useBreadCrumbContext } from '@/core/context';
 
 export const Breadcrumbs = ({ darkMode, dataCy }) => {
-  const { sidebarNav } = useContext(BreadCrumbContext);
+  const { sidebarNav } = useBreadCrumbContext();
   const breadcrumbs = useBreadcrumbs(routes, { excludePaths: ['/'] });
 
   return (

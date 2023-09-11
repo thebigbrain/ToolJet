@@ -3,7 +3,7 @@ import Layout from '@/_ui/Layout';
 import TooljetDatabasePage from './TooljetDatabasePage';
 import { usePostgrestQueryBuilder } from './usePostgrestQueryBuilder';
 import { authenticationService } from '../_services/authentication.service';
-import { BreadCrumbContext } from '@/modules/App/App';
+import { useBreadCrumbContext } from '@/core/context';
 
 export const TooljetDatabaseContext = createContext({
   organizationId: null,
@@ -101,7 +101,7 @@ export const TooljetDatabase = (props) => {
     ]
   );
 
-  const { updateSidebarNAV } = useContext(BreadCrumbContext);
+  const { updateSidebarNAV } = useBreadCrumbContext();
 
   useEffect(() => {
     updateSidebarNAV('');

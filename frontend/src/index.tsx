@@ -1,6 +1,5 @@
-import * as React from "react";
-import { render } from "react-dom";
-// import { createRoot } from 'react-dom/client';
+import React from "react";
+import { createRoot } from "react-dom/client";
 import * as Sentry from "@sentry/react";
 import {
   useLocation,
@@ -9,13 +8,12 @@ import {
   matchRoutes,
 } from "react-router-dom";
 import { BrowserTracing } from "@sentry/tracing";
-import { appService } from "@/_services";
-import { App } from "./modules/App";
-// eslint-disable-next-line import/no-unresolved
+import { App, appService } from "./modules/App";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-// import LanguageDetector from 'i18next-browser-languagedetector';
+import LanguageDetector from "i18next-browser-languagedetector";
 import HttpBackend, { HttpBackendOptions } from "i18next-http-backend";
+import { ServiceType, registerService } from "./core/service";
 
 const AppWithProfiler = Sentry.withProfiler(App);
 
@@ -27,7 +25,7 @@ appService
     const path = config?.SUB_PATH || "/";
     i18n
       .use(HttpBackend)
-      // .use(LanguageDetector)
+      .use(LanguageDetector)
       .use(initReactI18next)
       .init<HttpBackendOptions>({
         load: "languageOnly",
@@ -67,5 +65,9 @@ appService
       });
     }
   })
-  .then(() => render(<AppWithProfiler />, document.getElementById("app")));
-// .then(() => createRoot(document.getElementById('app')).render(<AppWithProfiler />));
+  .then(() => {
+    registerService(ServiceType.Application, appService);
+  })
+  .then(() =>
+    createRoot(document.getElementById("app")).render(<AppWithProfiler />)
+  );
