@@ -26,7 +26,10 @@ export function Google({ settings, updateData }) {
       (data) => {
         setSaving(false);
         data.id && setConfigId(data.id);
-        updateData('google', { id: data.id, configs: { client_id: clientId } });
+        updateData('google', {
+          id: data.id,
+          configs: { client_id: clientId },
+        });
         toast.success('updated SSO configurations', {
           position: 'top-center',
         });
@@ -113,8 +116,8 @@ export function Google({ settings, updateData }) {
                 {t('header.organization.menus.manageSSO.google.redirectUrl', 'Redirect URL')}
               </label>
               <div className="d-flex justify-content-between form-control align-items-center">
-                <p data-cy="redirect-url" id="redirect-url">{`${window.public_config?.TOOLJET_HOST}${
-                  window.public_config?.SUB_PATH ? window.public_config?.SUB_PATH : '/'
+                <p data-cy="redirect-url" id="redirect-url">{`${window.appConfig?.TOOLJET_HOST}${
+                  window.appConfig?.SUB_PATH ? window.appConfig?.SUB_PATH : '/'
                 }sso/google/${configId}`}</p>
                 <SolidIcon name="copy" width="16" onClick={() => copyFunction('redirect-url')} />
               </div>

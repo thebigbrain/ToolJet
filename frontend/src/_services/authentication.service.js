@@ -79,7 +79,11 @@ function validateSession(appId) {
 }
 
 function getUserDetails() {
-  const requestOptions = { method: 'GET', headers: authHeader(), credentials: 'include' };
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader(),
+    credentials: 'include',
+  };
   return fetch(`${config.apiUrl}/profile`, requestOptions).then(handleResponse);
 }
 
@@ -242,12 +246,12 @@ function logout(avoidRedirection = false) {
     .then(handleResponseWithoutValidation)
     .then(() => {
       const loginPath =
-        (window.public_config?.SUB_PATH || '/') + 'login' + `${getWorkspaceId() ? `/${getWorkspaceId()}` : ''}`;
+        (window.appConfig?.SUB_PATH || '/') + 'login' + `${getWorkspaceId() ? `/${getWorkspaceId()}` : ''}`;
       if (avoidRedirection) {
         window.location.href = loginPath;
       } else {
-        const pathname = window.public_config?.SUB_PATH
-          ? window.location.pathname.replace(window.public_config?.SUB_PATH, '')
+        const pathname = window.appConfig?.SUB_PATH
+          ? window.location.pathname.replace(window.appConfig?.SUB_PATH, '')
           : window.location.pathname;
         window.location.href =
           loginPath +

@@ -32,8 +32,8 @@ const AppLoaderComponent = (props) => {
 
   const switchOrganization = (orgId) => {
     const path = `/apps/${appId}`;
-    const sub_path = window?.public_config?.SUB_PATH
-      ? stripTrailingSlash(window?.public_config?.SUB_PATH)
+    const sub_path = window?.appConfig?.SUB_PATH
+      ? stripTrailingSlash(window?.appConfig?.SUB_PATH)
       : "";
     organizationService.switchOrganization(orgId).then(
       () => {

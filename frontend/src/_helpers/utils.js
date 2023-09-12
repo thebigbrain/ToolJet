@@ -781,7 +781,9 @@ export const generateAppActions = (_ref, queryId, mode, isPreview = false) => {
 
 export const loadPyodide = async () => {
   try {
-    const pyodide = await window.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.23.2/full/' });
+    const pyodide = await window.loadPyodide({
+      indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.23.2/full/',
+    });
     return pyodide;
   } catch (error) {
     console.log('loadPyodide error', error);
@@ -833,7 +835,7 @@ export const appendWorkspaceId = (workspaceId, path, replaceId = false) => {
 export const getWorkspaceIdFromURL = () => {
   const pathname = window.location.pathname;
   const pathnameArray = pathname.split('/').filter((path) => path !== '');
-  const subpath = window?.public_config?.SUB_PATH;
+  const subpath = window?.appConfig?.SUB_PATH;
   const subpathArray = subpath ? subpath.split('/').filter((path) => path != '') : [];
   const existedPaths = [
     'forgot-password',
@@ -891,8 +893,7 @@ export const getAvatar = (organization) => {
   }
 };
 
-export const getSubpath = () =>
-  window?.public_config?.SUB_PATH ? stripTrailingSlash(window?.public_config?.SUB_PATH) : null;
+export const getSubpath = () => (window?.appConfig?.SUB_PATH ? stripTrailingSlash(window?.appConfig?.SUB_PATH) : null);
 export function isExpectedDataType(data, expectedDataType) {
   function getCurrentDataType(node) {
     return Object.prototype.toString.call(node).slice(8, -1).toLowerCase();

@@ -35,7 +35,7 @@ const Content = ({ notifications, loading, darkMode }) => {
               onClick={() => {
                 router.push({
                   // react router updates the url with the set basename resulting invalid url unless replaced
-                  pathname: window.location.pathname.replace(window.public_config?.SUB_PATH, '/'),
+                  pathname: window.location.pathname.replace(window.appConfig?.SUB_PATH, '/'),
                   search: `?threadId=${comment.thread.id}&commentId=${comment.id}`,
                 });
               }}
@@ -51,7 +51,9 @@ const Content = ({ notifications, loading, darkMode }) => {
               </div>
               <div
                 className="comment-notification-message"
-                dangerouslySetInnerHTML={{ __html: hightlightMentionedUserInComment(comment.comment) }}
+                dangerouslySetInnerHTML={{
+                  __html: hightlightMentionedUserInComment(comment.comment),
+                }}
               />
               <div className="my-2 count">{`${count - 1} replies`}</div>
             </div>

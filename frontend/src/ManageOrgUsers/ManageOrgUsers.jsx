@@ -197,21 +197,25 @@ class ManageOrgUsersComponent extends React.Component {
           this.setState({ creatingUser: false });
         });
     } else {
-      this.setState({ creatingUser: false, file: null, isInviteUsersDrawerOpen: true });
+      this.setState({
+        creatingUser: false,
+        file: null,
+        isInviteUsersDrawerOpen: true,
+      });
     }
   };
 
   generateInvitationURL = (user) => {
     if (user.account_setup_token) {
       return urlJoin(
-        window.public_config?.TOOLJET_HOST,
-        window.public_config?.SUB_PATH ?? '',
+        window.appConfig?.TOOLJET_HOST,
+        window.appConfig?.SUB_PATH ?? '',
         `/invitations/${user.account_setup_token}/workspaces/${user.invitation_token}?oid=${authenticationService?.currentSessionValue.current_organization_id}`
       );
     }
     return urlJoin(
-      window.public_config?.TOOLJET_HOST,
-      window.public_config?.SUB_PATH ?? '',
+      window.appConfig?.TOOLJET_HOST,
+      window.appConfig?.SUB_PATH ?? '',
       `/organization-invitations/${user.invitation_token}?oid=${authenticationService?.currentSessionValue.current_organization_id}`
     );
   };

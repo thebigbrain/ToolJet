@@ -1,7 +1,7 @@
 export {};
 
 declare global {
-  interface PubConfig {
+  interface AppConfig {
     LANGUAGE: string;
     TOOLJET_SERVER_URL: string;
     RELEASE_VERSION: string;
@@ -21,6 +21,6 @@ declare global {
   }
 
   interface Window {
-    public_config: PubConfig;
+    appConfig: AppConfig;
   }
 }

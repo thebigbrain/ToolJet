@@ -28,25 +28,34 @@ export function Git({ settings, updateData }) {
   };
   const saveSettings = () => {
     setSaving(true);
-    organizationService.editOrganizationConfigs({ type: 'git', configs: { clientId, clientSecret, hostName } }).then(
-      (data) => {
-        setSaving(false);
-        data.id && setConfigId(data.id);
-        updateData('git', {
-          id: data.id,
-          configs: { client_id: clientId, client_secret: clientSecret, host_name: hostName },
-        });
-        toast.success('updated SSO configurations', {
-          position: 'top-center',
-        });
-      },
-      () => {
-        setSaving(false);
-        toast.error('Error while saving SSO configurations', {
-          position: 'top-center',
-        });
-      }
-    );
+    organizationService
+      .editOrganizationConfigs({
+        type: 'git',
+        configs: { clientId, clientSecret, hostName },
+      })
+      .then(
+        (data) => {
+          setSaving(false);
+          data.id && setConfigId(data.id);
+          updateData('git', {
+            id: data.id,
+            configs: {
+              client_id: clientId,
+              client_secret: clientSecret,
+              host_name: hostName,
+            },
+          });
+          toast.success('updated SSO configurations', {
+            position: 'top-center',
+          });
+        },
+        () => {
+          setSaving(false);
+          toast.error('Error while saving SSO configurations', {
+            position: 'top-center',
+          });
+        }
+      );
   };
 
   const changeStatus = () => {
@@ -152,8 +161,8 @@ export function Git({ settings, updateData }) {
                 {t('header.organization.menus.manageSSO.github.redirectUrl', 'Redirect URL')}
               </label>
               <div className="d-flex justify-content-between form-control align-items-center">
-                <p data-cy="redirect-url" id="redirect-url">{`${window.public_config?.TOOLJET_HOST}${
-                  window.public_config?.SUB_PATH ? window.public_config?.SUB_PATH : '/'
+                <p data-cy="redirect-url" id="redirect-url">{`${window.appConfig?.TOOLJET_HOST}${
+                  window.appConfig?.SUB_PATH ? window.appConfig?.SUB_PATH : '/'
                 }sso/git/${configId}`}</p>
                 <SolidIcon name="copy" width="16" onClick={() => copyFunction('redirect-url')} />
               </div>

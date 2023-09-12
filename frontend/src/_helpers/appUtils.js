@@ -472,7 +472,7 @@ function executeActionWithDebounce(_ref, event, mode, customVariables) {
           _ref.props.navigate(url);
         } else {
           if (confirm('The app will be opened in a new tab as the action is triggered from the editor.')) {
-            window.open(urlJoin(window.public_config?.TOOLJET_HOST, url));
+            window.open(urlJoin(window.appConfig?.TOOLJET_HOST, url));
           }
         }
         return Promise.resolve();

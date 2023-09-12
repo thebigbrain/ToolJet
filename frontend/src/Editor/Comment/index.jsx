@@ -60,7 +60,7 @@ const Comment = ({ socket, x, y, threadId, user = {}, isResolved, fetchThreads, 
     } else {
       // resetting the query param
       // react router updates the url with the set basename resulting invalid url unless replaced
-      router.history(window.location.pathname.replace(window.public_config?.SUB_PATH, '/'));
+      router.history(window.location.pathname.replace(window.appConfig?.SUB_PATH, '/'));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
@@ -95,7 +95,9 @@ const Comment = ({ socket, x, y, threadId, user = {}, isResolved, fetchThreads, 
   };
 
   const handleEdit = async (comment, cid) => {
-    await commentsService.updateComment(cid, { comment: DOMPurify.sanitize(comment) });
+    await commentsService.updateComment(cid, {
+      comment: DOMPurify.sanitize(comment),
+    });
     fetchData();
     socket.send(
       JSON.stringify({

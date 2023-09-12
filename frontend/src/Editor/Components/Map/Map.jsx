@@ -57,7 +57,7 @@ export const Map = function Map({
 
   useEffect(() => {
     setMarkers(defaultMarkers);
-  }, [JSON.stringify(defaultMarkers)]);
+  }, [JSON.stringify(defaultMarkers), defaultMarkers]);
 
   function handleMapClick(e) {
     if (!canAddNewMarkers) {
@@ -137,7 +137,11 @@ export const Map = function Map({
   return (
     <div
       data-disabled={parsedDisabledState}
-      style={{ height, display: parsedWidgetVisibility ? '' : 'none', boxShadow: styles.boxShadow }}
+      style={{
+        height,
+        display: parsedWidgetVisibility ? '' : 'none',
+        boxShadow: styles.boxShadow,
+      }}
       onClick={(event) => {
         event.stopPropagation();
         onComponentClick(id, component, event);
@@ -154,7 +158,7 @@ export const Map = function Map({
       >
         <img className="mx-2" src="assets/images/icons/marker.svg" width="24" height="64" />
       </div>
-      <LoadScript googleMapsApiKey={window.public_config.GOOGLE_MAPS_API_KEY} libraries={['places']}>
+      <LoadScript googleMapsApiKey={window.appConfig.GOOGLE_MAPS_API_KEY} libraries={['places']}>
         <GoogleMap
           center={mapCenter}
           mapContainerStyle={containerStyle}

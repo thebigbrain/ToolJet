@@ -153,7 +153,7 @@ export default function AppCard({
                 onClick={() => {
                   if (app?.current_version_id) {
                     window.open(
-                      urlJoin(window.public_config?.TOOLJET_HOST, getSubpath() ?? '', `/applications/${app.slug}`)
+                      urlJoin(window.appConfig?.TOOLJET_HOST, getSubpath() ?? '', `/applications/${app.slug}`)
                     );
                   } else {
                     navigate(app?.current_version_id ? `/applications/${app.slug}` : '');

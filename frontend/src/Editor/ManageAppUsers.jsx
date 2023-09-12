@@ -139,7 +139,7 @@ class ManageAppUsersComponent extends React.Component {
   render() {
     const { isLoading, app, slugError, isSlugVerificationInProgress } = this.state;
     const appId = app.id;
-    const appLink = `${window.public_config?.TOOLJET_HOST}${getSubpath() ? getSubpath() : ''}/applications/`;
+    const appLink = `${window.appConfig?.TOOLJET_HOST}${getSubpath() ? getSubpath() : ''}/applications/`;
     const shareableLink = appLink + (this.props.slug || appId);
     const slugButtonClass = isSlugVerificationInProgress ? '' : slugError !== null ? 'is-invalid' : 'is-valid';
     const embeddableLink = `<iframe width="560" height="315" src="${appLink}${this.props.slug}" title="Tooljet app - ${this.props.slug}" frameborder="0" allowfullscreen></iframe>`;
@@ -241,7 +241,7 @@ class ManageAppUsersComponent extends React.Component {
                   </div>
                 </div>
                 <hr />
-                {(this.state.app.is_public || window?.public_config?.ENABLE_PRIVATE_APP_EMBED === 'true') && (
+                {(this.state.app.is_public || window?.appConfig?.ENABLE_PRIVATE_APP_EMBED === 'true') && (
                   <div className="shareable-link mb-3">
                     <label className="form-label" data-cy="iframe-link-label">
                       <small>

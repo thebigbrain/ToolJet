@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import useRouter from '@/_hooks/use-router';
 import { ToolTip } from '@/_components/ToolTip';
@@ -16,7 +16,7 @@ function Layout({ children, switchDarkMode, darkMode }) {
   const router = useRouter();
   const currentUserValue = authenticationService.currentSessionValue;
   const admin = currentUserValue?.admin;
-  const marketplaceEnabled = admin && window.public_config?.ENABLE_MARKETPLACE_FEATURE == 'true';
+  const marketplaceEnabled = admin && window.appConfig?.ENABLE_MARKETPLACE_FEATURE == 'true';
 
   const {
     checkForUnsavedChanges,
@@ -66,7 +66,7 @@ function Layout({ children, switchDarkMode, darkMode }) {
                     </Link>
                   </ToolTip>
                 </li>
-                {window.public_config?.ENABLE_TOOLJET_DB == 'true' && admin && (
+                {window.appConfig?.ENABLE_TOOLJET_DB == 'true' && admin && (
                   <li className="text-center  cursor-pointer" data-cy={`database-icon`}>
                     <ToolTip message="Database" placement="right">
                       <Link

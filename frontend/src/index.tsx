@@ -7,7 +7,7 @@ import {
   createRoutesFromChildren,
   matchRoutes,
 } from "react-router-dom";
-import { BrowserTracing } from "@sentry/tracing";
+import { BrowserTracing } from "@sentry/browser";
 import { App, appService } from "./modules/App";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
@@ -15,59 +15,74 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import HttpBackend, { HttpBackendOptions } from "i18next-http-backend";
 import { ServiceType, registerService } from "./core/service";
 
-const AppWithProfiler = Sentry.withProfiler(App);
+bootstrap().then(loadPlugins).then(render);
 
-appService
-  .getConfig()
-  .then((config) => {
-    window.public_config = config;
-    const language = config.LANGUAGE || "en";
-    const path = config?.SUB_PATH || "/";
-    i18n
-      .use(HttpBackend)
-      .use(LanguageDetector)
-      .use(initReactI18next)
-      .init<HttpBackendOptions>({
-        load: "languageOnly",
-        fallbackLng: "en",
-        lng: language,
-        backend: {
-          loadPath: `${path}assets/translations/{{lng}}.json`,
-        },
-      });
+async function bootstrap() {
+  window.appConfig = await appService.getConfig();
+}
 
-    if (window.public_config.APM_VENDOR === "sentry") {
-      const tooljetServerUrl = window.public_config.TOOLJET_SERVER_URL;
-      const tracingOrigins = ["localhost", /^\//];
-      const releaseVersion = window.public_config.RELEASE_VERSION
-        ? `tooljet-${window.public_config.RELEASE_VERSION}`
-        : "tooljet";
+function loadPlugins() {
+  const config = window.appConfig;
 
-      if (tooljetServerUrl) tracingOrigins.push(tooljetServerUrl);
+  installI18n(config);
+  installTracing(config);
 
-      Sentry.init({
-        dsn: window.public_config.SENTRY_DNS,
-        debug: !!window.public_config.SENTRY_DEBUG,
-        release: releaseVersion,
-        integrations: [
-          new BrowserTracing({
-            routingInstrumentation: Sentry.reactRouterV6Instrumentation(
-              React.useEffect,
-              useLocation,
-              useNavigationType,
-              createRoutesFromChildren,
-              matchRoutes
-            ),
-            tracingOrigins: tracingOrigins,
-          }),
-        ],
-        tracesSampleRate: 0.5,
-      });
-    }
-  })
-  .then(() => {
-    registerService(ServiceType.Application, appService);
-  })
-  .then(() =>
-    createRoot(document.getElementById("app")).render(<AppWithProfiler />)
-  );
+  installApp(config);
+}
+
+function installI18n(config: AppConfig) {
+  const language = config.LANGUAGE || "en";
+  const path = config?.SUB_PATH || "/";
+  i18n
+    .use(HttpBackend)
+    .use(LanguageDetector)
+    .use(initReactI18next)
+    .init<HttpBackendOptions>({
+      load: "languageOnly",
+      fallbackLng: "en",
+      lng: language,
+      backend: {
+        loadPath: `${path}assets/translations/{{lng}}.json`,
+      },
+    });
+}
+
+function installTracing(config: AppConfig) {
+  if (config.APM_VENDOR === "sentry") {
+    const tooljetServerUrl = config.TOOLJET_SERVER_URL;
+    const tracingOrigins = ["localhost", /^\//];
+    const releaseVersion = config.RELEASE_VERSION
+      ? `tooljet-${config.RELEASE_VERSION}`
+      : "tooljet";
+
+    if (tooljetServerUrl) tracingOrigins.push(tooljetServerUrl);
+
+    Sentry.init({
+      dsn: config.SENTRY_DNS,
+      debug: !!config.SENTRY_DEBUG,
+      release: releaseVersion,
+      integrations: [
+        new BrowserTracing({
+          routingInstrumentation: Sentry.reactRouterV6Instrumentation(
+            React.useEffect,
+            useLocation,
+            useNavigationType,
+            createRoutesFromChildren,
+            matchRoutes
+          ),
+          tracingOrigins: tracingOrigins,
+        }),
+      ],
+      tracesSampleRate: 0.5,
+    });
+  }
+}
+
+function installApp(config: AppConfig) {
+  registerService(ServiceType.Application, appService);
+}
+
+function render() {
+  const AppWithProfiler = Sentry.withProfiler(App);
+  createRoot(document.getElementById("app")).render(<AppWithProfiler />);
+}

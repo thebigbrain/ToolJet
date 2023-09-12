@@ -147,8 +147,8 @@ class AppComponent extends React.Component<{}, AppState> {
   }
 
   isThisWorkspaceLoginPage = (justLoginPage = false) => {
-    const subpath = window?.public_config?.SUB_PATH
-      ? stripTrailingSlash(window?.public_config?.SUB_PATH)
+    const subpath = window?.appConfig?.SUB_PATH
+      ? stripTrailingSlash(window?.appConfig?.SUB_PATH)
       : null;
     const pathname = location.pathname.replace(subpath, "");
     const pathnames = pathname.split("/").filter((path) => path !== "");
@@ -442,7 +442,7 @@ class AppComponent extends React.Component<{}, AppState> {
                   </PrivateRoute>
                 }
               />
-              {window.public_config?.ENABLE_TOOLJET_DB == true && (
+              {window.appConfig?.ENABLE_TOOLJET_DB == true && (
                 <Route
                   path="/:workspaceId/database"
                   element={
@@ -456,7 +456,7 @@ class AppComponent extends React.Component<{}, AppState> {
                 />
               )}
 
-              {window.public_config?.ENABLE_MARKETPLACE_FEATURE === true && (
+              {window.appConfig?.ENABLE_MARKETPLACE_FEATURE === true && (
                 <Route
                   path="/integrations"
                   element={
@@ -516,7 +516,7 @@ const AppWithRouter = withRouter(AppComponent);
 export const App = (props) => {
   return (
     <Suspense fallback={null}>
-      <BrowserRouter basename={window.public_config?.SUB_PATH || "/"}>
+      <BrowserRouter basename={window.appConfig?.SUB_PATH || "/"}>
         <AppWithRouter props={props} />
       </BrowserRouter>
     </Suspense>

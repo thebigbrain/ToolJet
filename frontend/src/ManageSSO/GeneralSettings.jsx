@@ -48,7 +48,11 @@ export function GeneralSettings({ settings, updateData, instanceSettings, darkMo
     organizationService.editOrganization({ enableSignUp, domain, inheritSSO }).then(
       () => {
         setSaving(false);
-        updateData('general', { enable_sign_up: enableSignUp, domain, inherit_s_s_o: inheritSSO });
+        updateData('general', {
+          enable_sign_up: enableSignUp,
+          domain,
+          inherit_s_s_o: inheritSSO,
+        });
         toast.success('updated sso configurations', {
           position: 'top-center',
         });
@@ -166,8 +170,8 @@ export function GeneralSettings({ settings, updateData, instanceSettings, darkMo
 
             <div className="d-flex justify-content-between form-control align-items-center">
               <p id="login-url" data-cy="workspace-login-url">
-                {`${window.public_config?.TOOLJET_HOST}${
-                  window.public_config?.SUB_PATH ? window.public_config?.SUB_PATH : '/'
+                {`${window.appConfig?.TOOLJET_HOST}${
+                  window.appConfig?.SUB_PATH ? window.appConfig?.SUB_PATH : '/'
                 }login/${authenticationService?.currentSessionValue?.current_organization_id}`}
               </p>
               <SolidIcon name="copy" width="16" onClick={() => copyFunction('login-url')} />
