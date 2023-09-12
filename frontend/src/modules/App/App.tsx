@@ -489,8 +489,9 @@ class AppComponent extends React.Component<{}, AppState> {
                   </PrivateRoute>
                 }
               />
-              <Route path="*">
-                {() => {
+              <Route
+                path="*"
+                Component={() => {
                   if (
                     authenticationService?.currentSessionValue
                       ?.current_organization_id
@@ -499,7 +500,7 @@ class AppComponent extends React.Component<{}, AppState> {
                   }
                   return <Navigate to="/login" />;
                 }}
-              </Route>
+              ></Route>
             </Routes>
           </BreadCrumbContextProvider>
         </div>
