@@ -5,9 +5,9 @@ import {
   getWorkspaceIdFromURL,
   appendWorkspaceId,
   stripTrailingSlash,
-  getSubpath,
   pathnameWithoutSubpath,
 } from "@externals/helpers/utils";
+import { getSubpath } from "@/core/utils";
 import {
   authenticationService,
   tooljetService,
@@ -42,7 +42,7 @@ import { ToastOptions } from "react-hot-toast";
 import { navigateTo } from "@externals/helpers/routes";
 import { BreadCrumbContextProvider } from "@/core/context";
 
-interface AppState {
+interface BluejetMainState {
   currentUser?: any;
   fetchedMetadata?: boolean;
   darkMode?: boolean;
@@ -50,7 +50,7 @@ interface AppState {
   updateAvailable?: boolean;
 }
 
-class AppComponent extends React.Component<{}, AppState> {
+class BluejetMainComponent extends React.Component<{}, BluejetMainState> {
   constructor(props) {
     super(props);
 
@@ -511,9 +511,9 @@ class AppComponent extends React.Component<{}, AppState> {
   }
 }
 
-const AppWithRouter = withRouter(AppComponent);
+const AppWithRouter = withRouter(BluejetMainComponent);
 
-export const App = (props) => {
+export const BluejetMain = (props) => {
   return (
     <Suspense fallback={null}>
       <BrowserRouter basename={window.appConfig?.SUB_PATH || "/"}>

@@ -443,14 +443,6 @@ export const loadPyodide = async () => {
     throw 'Could not load Pyodide to execute Python';
   }
 };
-export function safelyParseJSON(json) {
-  try {
-    return JSON.parse(json);
-  } catch (e) {
-    console.log('JSON parse error');
-  }
-  return;
-}
 
 export const getuserName = (formData) => {
   let nameArray = formData?.name?.trim().split(' ');

@@ -4,13 +4,8 @@ import { organizationService, authenticationService } from "@/_services";
 import { Editor } from "../../Editor/Editor";
 import { RealtimeEditor } from "@/Editor/RealtimeEditor";
 import config from "config";
-import {
-  safelyParseJSON,
-  stripTrailingSlash,
-  redirectToDashboard,
-  getSubpath,
-  getWorkspaceId,
-} from "@externals/helpers/utils";
+import { safelyParseJSON, stripTrailingSlash } from "@externals/helpers/utils";
+import { redirectToDashboard, getSubpath, getWorkspaceId } from "@/core/utils";
 import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import _ from "lodash";

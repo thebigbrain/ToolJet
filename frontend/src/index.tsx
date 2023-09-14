@@ -8,7 +8,7 @@ import {
   matchRoutes,
 } from "react-router-dom";
 import { BrowserTracing } from "@sentry/browser";
-import { App, appService } from "./modules/Main";
+import { BluejetMain, appService } from "./modules/Main";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
@@ -87,6 +87,6 @@ function installApp(config: Config) {
 }
 
 function render() {
-  const AppWithProfiler = Sentry.withProfiler(App);
+  const AppWithProfiler = Sentry.withProfiler(BluejetMain);
   createRoot(document.getElementById("app")).render(<AppWithProfiler />);
 }

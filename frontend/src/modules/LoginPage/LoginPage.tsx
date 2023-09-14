@@ -6,12 +6,12 @@ import queryString from "query-string";
 import GoogleSSOLoginButton from "@/_components/LoginPage/GoogleSSOLoginButton";
 import GitSSOLoginButton from "@/_components/LoginPage/GitSSOLoginButton";
 import {
-  getSubpath,
   redirectToWorkspace,
   validateEmail,
   eraseRedirectUrl,
   returnWorkspaceIdIfNeed,
 } from "@externals/helpers/utils";
+import { getSubpath } from "@/core/utils";
 import { ShowLoading } from "@/_components";
 import { withTranslation } from "react-i18next";
 import OnboardingNavbar from "@/_components/OnboardingNavbar";
