@@ -3,7 +3,7 @@ import { organizationService } from '@/_services';
 import AlertDialog from '@/_ui/AlertDialog';
 import { useTranslation } from 'react-i18next';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
-import { appendWorkspaceId, validateName, handleHttpErrorMessages } from '@/_helpers/utils';
+import { appendWorkspaceId, validateName, handleHttpErrorMessages } from '@externals/helpers/utils';
 
 export const CreateOrganization = ({ showCreateOrg, setShowCreateOrg }) => {
   const [isCreating, setIsCreating] = useState(false);

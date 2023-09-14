@@ -4,7 +4,7 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import { FilterForm } from '../Forms/FilterForm';
 import { isEmpty } from 'lodash';
-import { pluralize } from '@/_helpers/utils';
+import { pluralize } from '@externals/helpers/utils';
 import { useMounted } from '@/_hooks/use-mount';
 import SolidIcon from '@/_ui/Icon/SolidIcons';
 
@@ -30,7 +30,10 @@ const Filter = ({ filters, setFilters, handleBuildFilterQuery, resetFilterQuery 
           className="card-footer cursor-pointer"
           data-cy="filter-card-footer"
           onClick={() =>
-            setFilters((prevFilters) => ({ ...prevFilters, [+Object.keys(prevFilters).pop() + 1 || 0]: {} }))
+            setFilters((prevFilters) => ({
+              ...prevFilters,
+              [+Object.keys(prevFilters).pop() + 1 || 0]: {},
+            }))
           }
         >
           <svg

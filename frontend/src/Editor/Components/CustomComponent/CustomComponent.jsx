@@ -3,7 +3,7 @@ import { isEqual } from 'lodash';
 import iframeContent from './iframe.html';
 
 import { useDataQueries } from '@/_stores/dataQueriesStore';
-import { isQueryRunnable } from '@/_helpers/utils';
+import { isQueryRunnable } from '@externals/helpers/utils';
 
 export const CustomComponent = (props) => {
   const dataQueries = useDataQueries();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import { folderService } from '@/_services';
 import { toast } from 'react-hot-toast';
@@ -11,7 +11,7 @@ import SolidIcon from '@/_ui/Icon/SolidIcons';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
 import { SearchBox } from '@/_components/SearchBox';
 import _ from 'lodash';
-import { validateName, handleHttpErrorMessages } from '@/_helpers/utils';
+import { validateName, handleHttpErrorMessages } from '@externals/helpers/utils';
 import { useBreadCrumbContext } from '@/core/context';
 
 export const Folders = function Folders({

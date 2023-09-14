@@ -8,7 +8,7 @@ import Logo from '@assets/images/rocket.svg';
 import Header from '../Header';
 import { authenticationService } from '@/_services';
 import SolidIcon from '../Icon/SolidIcons';
-import { getPrivateRoute } from '@/_helpers/routes';
+import { getPrivateRoute } from '@/core/routes';
 import { ConfirmDialog } from '@/_components';
 import useGlobalDatasourceUnsavedChanges from '@/_hooks/useGlobalDatasourceUnsavedChanges';
 

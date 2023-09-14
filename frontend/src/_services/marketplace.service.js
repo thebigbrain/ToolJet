@@ -1,4 +1,4 @@
-import HttpClient from '@/_helpers/http-client';
+import HttpClient from '@externals/helpers/http-client';
 import config from 'config';
 
 const adapter = new HttpClient({ host: config.apiUrl.replace('/api', '') });

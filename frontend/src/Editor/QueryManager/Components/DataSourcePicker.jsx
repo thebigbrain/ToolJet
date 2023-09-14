@@ -4,7 +4,7 @@ import Information from '@/_ui/Icon/solidIcons/Information';
 import Search from '@/_ui/Icon/solidIcons/Search';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { getWorkspaceId } from '@/_helpers/utils';
+import { getWorkspaceId } from '@externals/helpers/utils';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
 import { SearchBox as SearchBox2 } from '@/_components/SearchBox';
 import DataSourceIcon from './DataSourceIcon';

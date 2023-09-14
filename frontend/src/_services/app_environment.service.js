@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse } from '@/_helpers';
+import { authHeader, handleResponse } from '@externals/helpers';
 import queryString from 'query-string';
 
 export const appEnvironmentService = {
@@ -8,7 +8,11 @@ export const appEnvironmentService = {
 };
 
 function getAllEnvironments() {
-  const requestOptions = { method: 'GET', headers: authHeader(), credentials: 'include' };
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader(),
+    credentials: 'include',
+  };
   return fetch(`${config.apiUrl}/app-environments`, requestOptions).then(handleResponse);
 }
 
@@ -21,7 +25,11 @@ MERGE NOTES (EE/Cloud) !!!:
  for CE don't need to pass the environmentId
 */
 function getVersionsByEnvironment(appId, environmentId /* not needed for CE */) {
-  const requestOptions = { method: 'GET', headers: authHeader(), credentials: 'include' };
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader(),
+    credentials: 'include',
+  };
   const query = queryString.stringify({ app_id: appId });
 
   return fetch(

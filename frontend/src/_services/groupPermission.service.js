@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse } from '@/_helpers';
+import { authHeader, handleResponse } from '@externals/helpers';
 
 export const groupPermissionService = {
   create,

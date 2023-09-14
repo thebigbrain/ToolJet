@@ -1,7 +1,7 @@
 import { authenticationService, organizationService } from '@/_services';
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { copyToClipboard } from '@/_helpers/appUtils';
+import { copyToClipboard } from '@/core/appUtils';
 import { useTranslation } from 'react-i18next';
 import SolidIcon from '@/_ui/Icon/SolidIcons';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';

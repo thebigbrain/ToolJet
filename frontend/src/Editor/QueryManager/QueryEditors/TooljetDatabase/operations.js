@@ -1,7 +1,7 @@
 import { tooljetDatabaseService } from '@/_services';
 import { isEmpty } from 'lodash';
-import PostgrestQueryBuilder from '@/_helpers/postgrestQueryBuilder';
-import { resolveReferences } from '@/_helpers/utils';
+import PostgrestQueryBuilder from '@externals/helpers/postgrestQueryBuilder';
+import { resolveReferences } from '@externals/helpers/utils';
 import { hasEqualWithNull } from './util';
 
 export const tooljetDbOperations = {

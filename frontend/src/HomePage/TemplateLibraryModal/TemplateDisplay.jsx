@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Badge } from 'react-bootstrap';
 import { ImageWithSpinner } from '@/_components';
-import { getSvgIcon } from '@/_helpers/appUtils';
+import { getSvgIcon } from '@/core/appUtils';
 
 export default function TemplateDisplay(props) {
   const { id, name, description, sources } = props?.app ?? {};
@@ -30,7 +30,12 @@ export default function TemplateDisplay(props) {
                 <div className="d-flex py-2">
                   <div
                     className="d-flex flex-rows align-items-center justify-content-center"
-                    style={{ backgroundColor: 'white', borderRadius: 20, height: 20, width: 20 }}
+                    style={{
+                      backgroundColor: 'white',
+                      borderRadius: 20,
+                      height: 20,
+                      width: 20,
+                    }}
                   >
                     {getSvgIcon(source.id, 14, 14)}
                   </div>

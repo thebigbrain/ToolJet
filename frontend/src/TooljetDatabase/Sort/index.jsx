@@ -3,7 +3,7 @@ import cx from 'classnames';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import { SortForm } from '../Forms/SortForm';
-import { pluralize } from '@/_helpers/utils';
+import { pluralize } from '@externals/helpers/utils';
 import { isEmpty } from 'lodash';
 import { useMounted } from '@/_hooks/use-mount';
 import SolidIcon from '@/_ui/Icon/SolidIcons';
@@ -51,7 +51,10 @@ const Sort = ({ filters, setFilters, handleBuildSortQuery, resetSortQuery }) => 
           className="card-footer cursor-pointer"
           data-cy="sort-card-footer"
           onClick={() =>
-            setFilters((prevFilters) => ({ ...prevFilters, [+Object.keys(prevFilters).pop() + 1 || 0]: {} }))
+            setFilters((prevFilters) => ({
+              ...prevFilters,
+              [+Object.keys(prevFilters).pop() + 1 || 0]: {},
+            }))
           }
         >
           <svg

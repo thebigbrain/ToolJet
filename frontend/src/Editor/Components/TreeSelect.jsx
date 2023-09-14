@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import CheckboxTree from 'react-checkbox-tree';
 // eslint-disable-next-line import/no-unresolved
 import 'react-checkbox-tree/lib/react-checkbox-tree.css';
-import { isExpectedDataType } from '@/_helpers/utils.js';
+import { isExpectedDataType } from '@externals/helpers/utils.js';
 
 export const TreeSelect = ({ height, properties, styles, setExposedVariable, fireEvent, darkMode, dataCy }) => {
   const { label } = properties;

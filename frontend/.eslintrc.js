@@ -67,6 +67,7 @@ module.exports = {
               "react-hot-toast",
               "react-i18next",
               "react-loading-skeleton",
+              "react-spring",
             ],
           },
         ],

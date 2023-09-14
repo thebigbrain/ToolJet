@@ -26,11 +26,20 @@ const useGlobalDatasourceUnsavedChanges = () => {
   const handleActions = useCallback(
     (action) => {
       if (isEditing) {
-        setGlobalDataSourceStatus({ unSavedModalVisible: true, action: action });
+        setGlobalDataSourceStatus({
+          unSavedModalVisible: true,
+          action: action,
+        });
       } else if (isSaving) {
-        toast.error('Cannot perform operation until changes are saved', { style: { minWidth: '400px' } });
+        toast.error('Cannot perform operation until changes are saved', {
+          style: { minWidth: '400px' },
+        });
       } else {
-        setGlobalDataSourceStatus({ unSavedModalVisible: false, isEditing: false, action: null });
+        setGlobalDataSourceStatus({
+          unSavedModalVisible: false,
+          isEditing: false,
+          action: null,
+        });
         typeof action === 'function' && action();
       }
     },
@@ -38,7 +47,11 @@ const useGlobalDatasourceUnsavedChanges = () => {
   );
 
   const resetUnsavedChangesModal = () => {
-    setGlobalDataSourceStatus({ unSavedModalVisible: false, action: null, isEditing: false });
+    setGlobalDataSourceStatus({
+      unSavedModalVisible: false,
+      action: null,
+      isEditing: false,
+    });
   };
 
   const handleDiscardChanges = useCallback(
@@ -46,8 +59,12 @@ const useGlobalDatasourceUnsavedChanges = () => {
       if (!nextRoute) {
         action && action();
       }
-      router.history(nextRoute);
-      setGlobalDataSourceStatus({ unSavedModalVisible: false, isEditing: false, action: null });
+      router.navigate(nextRoute);
+      setGlobalDataSourceStatus({
+        unSavedModalVisible: false,
+        isEditing: false,
+        action: null,
+      });
     },
     [action]
   );

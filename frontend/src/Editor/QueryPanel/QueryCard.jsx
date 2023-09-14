@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { Tooltip } from 'react-tooltip';
-import { checkExistingQueryName } from '@/_helpers/appUtils';
+import { checkExistingQueryName } from '@/core/appUtils';
 import { Confirm } from '../Viewer/Confirm';
 import { toast } from 'react-hot-toast';
 import { useDataQueriesActions, useDataQueriesStore } from '@/_stores/dataQueriesStore';
@@ -10,7 +10,7 @@ import { useAppVersionStore } from '@/_stores/appVersionStore';
 import { shallow } from 'zustand/shallow';
 import Copy from '@/_ui/Icon/solidIcons/Copy';
 import DataSourceIcon from '../QueryManager/Components/DataSourceIcon';
-import { isQueryRunnable } from '@/_helpers/utils';
+import { isQueryRunnable } from '@externals/helpers/utils';
 
 export const QueryCard = ({ dataQuery, darkMode = false, editorRef, appId }) => {
   const selectedQuery = useSelectedQuery();

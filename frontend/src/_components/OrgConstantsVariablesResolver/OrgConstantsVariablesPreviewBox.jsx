@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSpring, config, animated } from 'react-spring';
-import { resolveReferences } from '../../_helpers/utils';
+import { resolveReferences } from '@externals/helpers/utils';
 import { Alert } from '../../_ui/Alert';
 import useHeight from '@/_hooks/use-height-transition';
 

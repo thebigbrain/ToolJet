@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse } from '@/_helpers';
+import { authHeader, handleResponse } from '@externals/helpers';
 
 export const appVersionService = {
   getAll,
@@ -10,12 +10,20 @@ export const appVersionService = {
 };
 
 function getAll(appId) {
-  const requestOptions = { method: 'GET', headers: authHeader(), credentials: 'include' };
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader(),
+    credentials: 'include',
+  };
   return fetch(`${config.apiUrl}/apps/${appId}/versions`, requestOptions).then(handleResponse);
 }
 
 function getOne(appId, versionId) {
-  const requestOptions = { method: 'GET', headers: authHeader(), credentials: 'include' };
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader(),
+    credentials: 'include',
+  };
   return fetch(`${config.apiUrl}/apps/${appId}/versions/${versionId}`, requestOptions).then(handleResponse);
 }
 

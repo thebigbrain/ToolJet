@@ -6,7 +6,7 @@ import { Chart } from './Components/Chart';
 import { Form } from './Components/Form';
 import { renderElement } from './Utils';
 import { toast } from 'react-hot-toast';
-import { validateQueryName, convertToKebabCase, resolveReferences } from '@/_helpers/utils';
+import { validateQueryName, convertToKebabCase, resolveReferences } from '@externals/helpers/utils';
 import { ConfirmDialog } from '@/_components';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { DefaultComponent } from './Components/DefaultComponent';
@@ -237,7 +237,10 @@ export const Inspector = ({
     let newDefinition = { ...component.component.definition };
     let eventDefinition = newDefinition.events[event.name] || { options: {} };
 
-    newDefinition.events[event.name] = { ...eventDefinition, options: { ...eventDefinition.options, [option]: value } };
+    newDefinition.events[event.name] = {
+      ...eventDefinition,
+      options: { ...eventDefinition.options, [option]: value },
+    };
 
     let newComponent = {
       ...component,

@@ -5,7 +5,7 @@ import { components } from 'react-select';
 import { EditVersion } from './EditVersionModal';
 import { CreateVersion } from './CreateVersionModal';
 import { ConfirmDialog } from '@/_components';
-import { defaultAppEnvironments } from '@/_helpers/utils';
+import { defaultAppEnvironments } from '@externals/helpers/utils';
 
 const Menu = (props) => {
   return (
@@ -86,7 +86,9 @@ const SingleValue = ({ selectProps }) => {
         />
       </svg>
       <div
-        className={cx('app-version-name text-truncate', { 'color-light-green': selectProps.value.isReleasedVersion })}
+        className={cx('app-version-name text-truncate', {
+          'color-light-green': selectProps.value.isReleasedVersion,
+        })}
         data-cy={`${selectProps.value?.appVersionName}-current-version-text`}
       >
         {selectProps.value?.appVersionName}

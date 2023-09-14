@@ -4,7 +4,7 @@ import { EventManager } from '../EventManager';
 import { renderElement } from '../Utils';
 // eslint-disable-next-line import/no-unresolved
 import i18next from 'i18next';
-import { resolveReferences } from '@/_helpers/utils';
+import { resolveReferences } from '@externals/helpers/utils';
 
 export const DefaultComponent = ({ componentMeta, darkMode, ...restProps }) => {
   const {

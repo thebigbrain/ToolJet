@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import EnterIcon from '../../assets/images/onboardingassets/Icons/Enter';
+import EnterIcon from '@assets/images/onboardingassets/Icons/Enter';
 import Spinner from '@/_ui/Spinner';
-import { validateEmail } from '@/_helpers/utils';
+import { validateEmail } from '@externals/helpers/utils';
 
 function ContinueButtonSelfHost({
   setPage,

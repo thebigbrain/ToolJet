@@ -1082,7 +1082,7 @@
 .onboarding-cta-image-wrapper {
     height: 100%;
     width: 100%;
-    background-image: url(../../assets/images/onboardingassets/Illustrations/cta_light.png);
+    background-image: url(/assets/images/onboardingassets/Illustrations/cta_light.png);
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -1287,7 +1287,7 @@
     }
 
     .onboarding-cta-image-wrapper {
-        background-image: url(../../assets/images/onboardingassets/Illustrations/cta_dark.png);
+        background-image: url(/assets/images/onboardingassets/Illustrations/cta_dark.png);
     }
 
     .onboarding-account-name {
@@ -1371,7 +1371,7 @@
     background-repeat: no-repeat;
     display: flex;
     justify-content: center;
-    background: url('../../assets/images/onboardingassets/Illustrations/background.jpg');
+    background: url('/assets/images/onboardingassets/Illustrations/background.jpg');
     position: absolute;
     left: 0;
     right: 0;
@@ -1389,7 +1389,7 @@
     height: 210px;
     bottom: 0;
     width: 803px;
-    background: url('../../assets/images/onboardingassets/Illustrations/app_image.png');
+    background: url('/assets/images/onboardingassets/Illustrations/app_image.png');
     border-radius: 16px;
     background-size: cover;
 }

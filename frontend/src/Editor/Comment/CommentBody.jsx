@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { isEmpty } from 'lodash';
 import moment from 'moment';
 import CommentActions from './CommentActions';
-import { hightlightMentionedUserInComment } from '@/_helpers/utils';
+import { hightlightMentionedUserInComment } from '@externals/helpers/utils';
 
 moment.updateLocale('en', {
   relativeTime: {
@@ -60,7 +60,9 @@ const CommentBody = ({ socket, thread, isLoading, setEditComment, setEditComment
               <div className="card-subtitle comment-time">{moment(createdAt).fromNow()}</div>
               <p
                 className="cursor-auto comment-body "
-                dangerouslySetInnerHTML={{ __html: hightlightMentionedUserInComment(comment) }}
+                dangerouslySetInnerHTML={{
+                  __html: hightlightMentionedUserInComment(comment),
+                }}
               />
             </div>
           );

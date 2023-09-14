@@ -1,5 +1,5 @@
 import YAML from 'yaml';
-import RefResolver from '@/_helpers/ref_resolver';
+import RefResolver from '@externals/helpers/ref_resolver';
 
 export const openapiService = {
   fetchSpecFromUrl,

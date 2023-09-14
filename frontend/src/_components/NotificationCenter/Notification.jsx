@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { toast } from 'react-hot-toast';
 import { commentNotificationsService } from '@/_services';
-import { hightlightMentionedUserInComment, appendWorkspaceId, getWorkspaceId } from '@/_helpers/utils';
+import { hightlightMentionedUserInComment, appendWorkspaceId, getWorkspaceId } from '@externals/helpers/utils';
 
 export const Notification = ({ id, creator, comment, updatedAt, commentLink, isRead, fetchData, darkMode }) => {
   const updateMentionedNotification = async () => {
@@ -29,7 +29,9 @@ export const Notification = ({ id, creator, comment, updatedAt, commentLink, isR
             {creator?.avatar ? (
               <span
                 className="avatar avatar-rounded bg-secondary-lt"
-                style={{ backgroundImage: `url('data:image/png;base64, ${creator.avatar}')` }}
+                style={{
+                  backgroundImage: `url('data:image/png;base64, ${creator.avatar}')`,
+                }}
               />
             ) : (
               <span className="avatar avatar-rounded bg-secondary-lt">
@@ -41,7 +43,9 @@ export const Notification = ({ id, creator, comment, updatedAt, commentLink, isR
             {creator.firstName} mentioned you
             <div
               className="d-block  text-truncate mt-n1"
-              dangerouslySetInnerHTML={{ __html: hightlightMentionedUserInComment(comment) }}
+              dangerouslySetInnerHTML={{
+                __html: hightlightMentionedUserInComment(comment),
+              }}
             />
             <div className="text-truncate mt-n1">
               <span>{updated === 'just now' ? updated : `${updated} ago`}</span>

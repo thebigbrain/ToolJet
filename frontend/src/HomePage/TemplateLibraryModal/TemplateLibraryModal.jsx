@@ -9,7 +9,7 @@ import TemplateDisplay from './TemplateDisplay';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
-import { getWorkspaceId } from '../../_helpers/utils';
+import { getWorkspaceId } from '@externals/helpers/utils';
 
 const identifyUniqueCategories = (templates) =>
   ['all', ...new Set(_.map(templates, 'category'))].map((categoryId) => ({

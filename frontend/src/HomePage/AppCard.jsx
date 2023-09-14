@@ -11,8 +11,8 @@ import { useTranslation } from 'react-i18next';
 import SolidIcon from '@/_ui/Icon/SolidIcons';
 import BulkIcon from '@/_ui/Icon/BulkIcons';
 
-import { getPrivateRoute } from '@/_helpers/routes';
-import { getSubpath } from '@/_helpers/utils';
+import { getPrivateRoute } from '@/core/routes';
+import { getSubpath } from '@externals/helpers/utils';
 const { defaultIcon } = configs;
 
 export default function AppCard({

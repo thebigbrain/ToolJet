@@ -1,14 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useCurrentStateStore } from '@/_stores/currentStateStore';
 import { shallow } from 'zustand/shallow';
-import { debuggerActions } from '@/_helpers/appUtils';
+import { debuggerActions } from '@/core/appUtils';
 import { flow } from 'lodash';
 import moment from 'moment';
 
 const useDebugger = ({ currentPageId, isDebuggerOpen }) => {
   const [errorLogs, setErrorLogs] = useState([]);
-  const [errorHistory, setErrorHistory] = useState({ appLevel: [], pageLevel: [] });
-  const [unReadErrorCount, setUnReadErrorCount] = useState({ read: 0, unread: 0 });
+  const [errorHistory, setErrorHistory] = useState({
+    appLevel: [],
+    pageLevel: [],
+  });
+  const [unReadErrorCount, setUnReadErrorCount] = useState({
+    read: 0,
+    unread: 0,
+  });
   const [allLog, setAllLog] = useState([]);
 
   const { errors, succededQuery } = useCurrentStateStore(

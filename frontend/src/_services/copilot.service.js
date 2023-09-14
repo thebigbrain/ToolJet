@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse } from '@/_helpers';
+import { authHeader, handleResponse } from '@externals/helpers';
 
 export const copilotService = {
   getCopilotRecommendations,
@@ -13,7 +13,12 @@ async function getCopilotRecommendations(options) {
     language: options.lang,
   };
 
-  const requestOptions = { method: 'POST', headers: authHeader(), credentials: 'include', body: JSON.stringify(body) };
+  const requestOptions = {
+    method: 'POST',
+    headers: authHeader(),
+    credentials: 'include',
+    body: JSON.stringify(body),
+  };
 
   const { data } = await fetch(`${config.apiUrl}/copilot`, requestOptions).then(handleResponse);
 
@@ -26,6 +31,11 @@ function validateCopilotAPIKey(key, organizationId) {
     organizationId,
   };
 
-  const requestOptions = { method: 'POST', headers: authHeader(), credentials: 'include', body: JSON.stringify(body) };
+  const requestOptions = {
+    method: 'POST',
+    headers: authHeader(),
+    credentials: 'include',
+    body: JSON.stringify(body),
+  };
   return fetch(`${config.apiUrl}/copilot/api-key`, requestOptions).then(handleResponse);
 }

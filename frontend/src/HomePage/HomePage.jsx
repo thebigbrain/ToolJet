@@ -20,7 +20,7 @@ import Footer from './Footer';
 import { OrganizationList } from '@/_components/OrganizationManager/List';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
 import BulkIcon from '@/_ui/Icon/bulkIcons/index';
-import { getWorkspaceId } from '@/_helpers/utils';
+import { getWorkspaceId } from '@externals/helpers/utils';
 import { withRouter } from '@/_hoc/withRouter';
 import { getService, ServiceType } from '@/core/service';
 

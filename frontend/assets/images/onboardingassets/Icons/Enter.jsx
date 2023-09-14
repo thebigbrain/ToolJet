@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-function EnterIcon({ fill }) {
+function EnterIcon({ fill = "", className = "" }) {
   return (
     <svg
       id="enter-svg"

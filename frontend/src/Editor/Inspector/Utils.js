@@ -1,7 +1,7 @@
 import React from 'react';
 import { Code } from './Elements/Code';
 import { QuerySelector } from './QuerySelector';
-import { resolveReferences } from '@/_helpers/utils';
+import { resolveReferences } from '@externals/helpers/utils';
 
 export function renderQuerySelector(component, dataQueries, eventOptionUpdated, eventName, eventMeta) {
   let definition = component.component.definition.events[eventName];

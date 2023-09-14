@@ -2,7 +2,7 @@ import React from 'react';
 import { renderElement } from '../Utils';
 import { CodeHinter } from '../../CodeBuilder/CodeHinter';
 import Accordion from '@/_ui/Accordion';
-import { resolveReferences } from '@/_helpers/utils';
+import { resolveReferences } from '@externals/helpers/utils';
 
 class Chart extends React.Component {
   constructor(props) {

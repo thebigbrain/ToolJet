@@ -1,7 +1,7 @@
 import React from 'react';
 import cx from 'classnames';
 import { isEmpty } from 'lodash';
-import { pluralize, hightlightMentionedUserInComment } from '@/_helpers/utils';
+import { pluralize, hightlightMentionedUserInComment } from '@externals/helpers/utils';
 import moment from 'moment';
 import useRouter from '@/_hooks/use-router';
 

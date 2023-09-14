@@ -18,7 +18,7 @@ import AddRectangle from '@/_ui/Icon/bulkIcons/AddRectangle';
 import { Tooltip } from 'react-tooltip';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
 import RunjsParameters from './ActionConfigurationPanels/RunjsParamters';
-import { isQueryRunnable } from '@/_helpers/utils';
+import { isQueryRunnable } from '@externals/helpers/utils';
 import { shallow } from 'zustand/shallow';
 
 export const EventManager = ({

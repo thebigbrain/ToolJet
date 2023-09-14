@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import SelectSearch from 'react-select-search';
-import { resolveReferences, validateWidget } from '@/_helpers/utils';
+import { resolveReferences, validateWidget } from '@externals/helpers/utils';
 import { CustomSelect } from '../CustomSelect';
 import { Tags } from '../Tags';
 import { Radio } from '../Radio';
@@ -106,8 +106,14 @@ export default function generateColumnsData({
           !_.isEqual(variablesExposedForPreview[id]?.rowData, rowData)
         ) {
           const customResolvables = {};
-          customResolvables[id] = { ...variablesExposedForPreview[id], rowData };
-          exposeToCodeHinter((prevState) => ({ ...prevState, ...customResolvables }));
+          customResolvables[id] = {
+            ...variablesExposedForPreview[id],
+            rowData,
+          };
+          exposeToCodeHinter((prevState) => ({
+            ...prevState,
+            ...customResolvables,
+          }));
         }
         cellValue = cellValue === undefined || cellValue === null ? '' : cellValue;
 

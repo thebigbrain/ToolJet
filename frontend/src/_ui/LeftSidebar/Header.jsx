@@ -5,7 +5,7 @@ const Header = ({ children, darkMode }) => {
   return <div className={`${darkMode && 'dark'} leftsidebar-panel-header overflow-hidden`}>{children}</div>;
 };
 
-const PanelHeader = ({ children, settings, title }) => {
+const PanelHeader = ({ children = [], settings = '', title }) => {
   return (
     <div className="panel-header-container row">
       {settings && <div className="cursor-pointer col-auto d-flex px-1">{settings}</div>}

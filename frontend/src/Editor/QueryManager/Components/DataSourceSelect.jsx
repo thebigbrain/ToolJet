@@ -4,7 +4,7 @@ import { groupBy, isEmpty } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 import DataSourceIcon from './DataSourceIcon';
 import { authenticationService } from '@/_services';
-import { getWorkspaceId } from '@/_helpers/utils';
+import { getWorkspaceId } from '@externals/helpers/utils';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
 import { useDataSources, useGlobalDataSources } from '@/_stores/dataSourcesStore';
 import { useDataQueriesActions } from '@/_stores/dataQueriesStore';
@@ -170,16 +170,25 @@ function DataSourceSelect({ darkMode, isDisabled, selectRef, closePopup }) {
             cursor: 'pointer',
             backgroundColor: isFocused && !isNested ? 'var(--slate4)' : 'transparent',
             ...(isNested
-              ? { padding: '0 8px', marginLeft: '19px', borderLeft: '1px solid var(--slate5)', width: 'auto' }
+              ? {
+                  padding: '0 8px',
+                  marginLeft: '19px',
+                  borderLeft: '1px solid var(--slate5)',
+                  width: 'auto',
+                }
               : {}),
             ...(!isNested && { borderRadius: '4px' }),
             ':hover': {
               backgroundColor: isNested ? 'transparent' : 'var(--slate4)',
-              '.option-nested-datasource-selector': { backgroundColor: 'var(--slate4)' },
+              '.option-nested-datasource-selector': {
+                backgroundColor: 'var(--slate4)',
+              },
             },
             ...(isFocused &&
               isNested && {
-                '.option-nested-datasource-selector': { backgroundColor: 'var(--slate4)' },
+                '.option-nested-datasource-selector': {
+                  backgroundColor: 'var(--slate4)',
+                },
               }),
           }),
           container: (styles) => ({

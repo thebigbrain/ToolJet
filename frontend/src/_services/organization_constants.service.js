@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse } from '@/_helpers';
+import { authHeader, handleResponse } from '@externals/helpers';
 
 export const orgEnvironmentConstantService = {
   getAll,
@@ -11,7 +11,11 @@ export const orgEnvironmentConstantService = {
 };
 
 function getAll() {
-  const requestOptions = { method: 'GET', headers: authHeader(), credentials: 'include' };
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader(),
+    credentials: 'include',
+  };
   return fetch(`${config.apiUrl}/organization-constants`, requestOptions).then(handleResponse);
 }
 
@@ -22,7 +26,12 @@ function create(name, value, environments) {
     environments: environments,
   };
 
-  const requestOptions = { method: 'POST', headers: authHeader(), credentials: 'include', body: JSON.stringify(body) };
+  const requestOptions = {
+    method: 'POST',
+    headers: authHeader(),
+    credentials: 'include',
+    body: JSON.stringify(body),
+  };
   return fetch(`${config.apiUrl}/organization-constants`, requestOptions).then(handleResponse);
 }
 
@@ -32,19 +41,32 @@ function update(id, value, envronmentId) {
     environment_id: envronmentId,
   };
 
-  const requestOptions = { method: 'PATCH', headers: authHeader(), credentials: 'include', body: JSON.stringify(body) };
+  const requestOptions = {
+    method: 'PATCH',
+    headers: authHeader(),
+    credentials: 'include',
+    body: JSON.stringify(body),
+  };
   return fetch(`${config.apiUrl}/organization-constants/${id}`, requestOptions).then(handleResponse);
 }
 
 function remove(id, environmentId) {
-  const requestOptions = { method: 'DELETE', headers: authHeader(), credentials: 'include' };
+  const requestOptions = {
+    method: 'DELETE',
+    headers: authHeader(),
+    credentials: 'include',
+  };
   return fetch(`${config.apiUrl}/organization-constants/${id}?environmentId=${environmentId}`, requestOptions).then(
     handleResponse
   );
 }
 
 function getConstantsFromEnvironment(environmentId) {
-  const requestOptions = { method: 'GET', headers: authHeader(), credentials: 'include' };
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader(),
+    credentials: 'include',
+  };
   return fetch(`${config.apiUrl}/organization-constants/environment/${environmentId}`, requestOptions).then(
     handleResponse
   );

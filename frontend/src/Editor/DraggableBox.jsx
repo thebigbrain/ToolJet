@@ -7,7 +7,7 @@ import { getEmptyImage } from 'react-dnd-html5-backend';
 import { Box } from './Box';
 import { ConfigHandle } from './ConfigHandle';
 import { Rnd } from 'react-rnd';
-import { resolveWidgetFieldValue } from '@/_helpers/utils';
+import { resolveWidgetFieldValue } from '@externals/helpers/utils';
 import ErrorBoundary from './ErrorBoundary';
 import { useCurrentState } from '@/_stores/currentStateStore';
 import { useEditorStore } from '@/_stores/editorStore';

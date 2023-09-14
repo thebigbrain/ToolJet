@@ -9,7 +9,7 @@ export default function ExportAppModal({ title, show, closeModal, customClassNam
   const [versions, getVersions] = useState(undefined);
   const [versionId, setVersionId] = useState(currentVersion.id);
 
-  const appService = () => getService(ServiceType.Application);
+  const appService = getService(ServiceType.Application);
 
   useEffect(() => {
     async function fetchAppVersions() {

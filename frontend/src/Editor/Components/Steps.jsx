@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { isExpectedDataType } from '@/_helpers/utils';
+import { isExpectedDataType } from '@externals/helpers/utils';
 
 export const Steps = function Button({ properties, styles, fireEvent, setExposedVariable, height, darkMode, dataCy }) {
   const { stepsSelectable } = properties;

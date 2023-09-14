@@ -1,4 +1,4 @@
-import HttpClient from '@/_helpers/http-client';
+import HttpClient from '@externals/helpers/http-client';
 
 const tooljetAdapter = new HttpClient();
 

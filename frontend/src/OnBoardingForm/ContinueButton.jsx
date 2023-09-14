@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import EnterIcon from '../../assets/images/onboardingassets/Icons/Enter';
+import EnterIcon from '@assets/images/onboardingassets/Icons/Enter';
 import Spinner from '@/_ui/Spinner';
 
 function ContinueButton({ setPage, formData, page, setCompleted, isLoading, setIsLoading, darkMode }) {

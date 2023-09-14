@@ -8,8 +8,8 @@ import { debounce } from 'lodash';
 import Textarea from '@/_ui/Textarea';
 import { withTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { getPrivateRoute } from '@/_helpers/routes';
-import { getSubpath } from '@/_helpers/utils';
+import { getPrivateRoute } from '@/core/routes';
+import { getSubpath } from '@externals/helpers/utils';
 import { getService, ServiceType } from '@/core/service';
 
 class ManageAppUsersComponent extends React.Component {

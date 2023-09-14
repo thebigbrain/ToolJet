@@ -2,7 +2,7 @@ import React from 'react';
 import { useDragLayer } from 'react-dnd';
 import { ItemTypes } from './ItemTypes';
 import { BoxDragPreview } from './BoxDragPreview';
-import { snapToGrid } from '@/_helpers/appUtils';
+import { snapToGrid } from '@/core/appUtils';
 const layerStyles = {
   pointerEvents: 'none',
   zIndex: 100,

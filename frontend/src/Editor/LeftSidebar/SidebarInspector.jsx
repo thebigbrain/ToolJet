@@ -3,7 +3,7 @@ import { Button, HeaderSection } from '@/_ui/LeftSidebar';
 import JSONTreeViewer from '@/_ui/JSONTreeViewer';
 import _ from 'lodash';
 import { toast } from 'react-hot-toast';
-import { getSvgIcon } from '@/_helpers/appUtils';
+import { getSvgIcon } from '@/core/appUtils';
 
 import { useGlobalDataSources } from '@/_stores/dataSourcesStore';
 import { useDataQueries } from '@/_stores/dataQueriesStore';
@@ -51,7 +51,9 @@ export const LeftSidebarInspector = ({
     const { queries: currentQueries } = currentState;
     if (!_.isEmpty(dataQueries)) {
       dataQueries.forEach((query) => {
-        updatedQueries[query.name] = _.merge(currentQueries[query.name], { id: query.id });
+        updatedQueries[query.name] = _.merge(currentQueries[query.name], {
+          id: query.id,
+        });
       });
     }
     // const data = _.merge(currentState, { queries: updatedQueries });
@@ -96,7 +98,10 @@ export const LeftSidebarInspector = ({
     const icon = allDs.find((ds) => ds.kind === value.kind);
     const iconFile = icon?.plugin?.iconFile?.data ?? undefined;
     const Icon = () => getSvgIcon(icon?.kind, 16, 16, iconFile ?? undefined);
-    return { iconName: key, jsx: () => <Icon style={{ height: 16, width: 16, marginRight: 12 }} /> };
+    return {
+      iconName: key,
+      jsx: () => <Icon style={{ height: 16, width: 16, marginRight: 12 }} />,
+    };
   });
 
   const componentIcons = Object.entries(currentState['components']).map(([key, value]) => {
@@ -152,9 +157,21 @@ export const LeftSidebarInspector = ({
     {
       for: 'components',
       actions: [
-        { name: 'Select Widget', dispatchAction: handleSelectComponentOnEditor, icon: false, onSelect: true },
+        {
+          name: 'Select Widget',
+          dispatchAction: handleSelectComponentOnEditor,
+          icon: false,
+          onSelect: true,
+        },
         ...(!isVersionReleased
-          ? [{ name: 'Delete Component', dispatchAction: handleRemoveComponent, icon: true, iconName: 'trash' }]
+          ? [
+              {
+                name: 'Delete Component',
+                dispatchAction: handleRemoveComponent,
+                icon: true,
+                iconName: 'trash',
+              },
+            ]
           : []),
       ],
       enableForAllChildren: false,

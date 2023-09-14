@@ -6,7 +6,7 @@ import Play from '@/_ui/Icon/solidIcons/Play';
 import cx from 'classnames';
 import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
-import { previewQuery, checkExistingQueryName, runQuery } from '@/_helpers/appUtils';
+import { previewQuery, checkExistingQueryName, runQuery } from '@/core/appUtils';
 
 import { useDataQueriesActions, useQueryCreationLoading, useQueryUpdationLoading } from '@/_stores/dataQueriesStore';
 import {
@@ -232,7 +232,9 @@ const NameInput = ({ onInput, value, darkMode }) => {
           >
             <span className="text-truncate">{name} </span>
             <span
-              className={cx('breadcrum-rename-query-icon', { 'd-none': isFocussed && isVersionReleased })}
+              className={cx('breadcrum-rename-query-icon', {
+                'd-none': isFocussed && isVersionReleased,
+              })}
               style={{ minWidth: 14 }}
             >
               <RenameIcon />

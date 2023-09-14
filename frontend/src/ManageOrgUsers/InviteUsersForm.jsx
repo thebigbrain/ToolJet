@@ -164,7 +164,7 @@ function InviteUsersForm({
                       ToolJet won’t be able to recognise files in any other format.{' '}
                     </p>
                     <ButtonSolid
-                      href="../../assets/csv/sample_upload.csv"
+                      href="@assets/csv/sample_upload.csv"
                       download="sample_upload.csv"
                       variant="tertiary"
                       className="download-template-btn"

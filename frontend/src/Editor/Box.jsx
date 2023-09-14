@@ -34,7 +34,7 @@ import { Pagination } from './Components/Pagination';
 import { Tags } from './Components/Tags';
 import { Spinner } from './Components/Spinner';
 import { CircularProgressBar } from './Components/CirularProgressbar';
-import { renderTooltip, getComponentName } from '@/_helpers/appUtils';
+import { renderTooltip, getComponentName } from '@/core/appUtils';
 import { RangeSlider } from './Components/RangeSlider';
 import { Timeline } from './Components/Timeline';
 import { SvgImage } from './Components/SvgImage';
@@ -55,7 +55,7 @@ import { BoundedBox } from './Components/BoundedBox/BoundedBox';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import '@/_styles/custom.scss';
 import { validateProperties } from './component-properties-validation';
-import { validateWidget } from '@/_helpers/utils';
+import { validateWidget } from '@externals/helpers/utils';
 import { componentTypes } from './WidgetManager/components';
 import {
   resolveProperties,
@@ -243,7 +243,10 @@ export const Box = function Box({
     if (customResolvables && !readOnly && mode === 'edit') {
       const newCustomResolvable = {};
       newCustomResolvable[id] = { ...customResolvables };
-      exposeToCodeHinter((prevState) => ({ ...prevState, ...newCustomResolvable }));
+      exposeToCodeHinter((prevState) => ({
+        ...prevState,
+        ...newCustomResolvable,
+      }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(customResolvables), readOnly]);
@@ -258,7 +261,11 @@ export const Box = function Box({
     if (mode === 'edit' && eventName === 'onClick') {
       onComponentClick(id, component);
     }
-    onEvent(eventName, { ...options, customVariables: { ...customResolvables }, component });
+    onEvent(eventName, {
+      ...options,
+      customVariables: { ...customResolvables },
+      component,
+    });
   };
   const validate = (value) =>
     validateWidget({
@@ -308,7 +315,10 @@ export const Box = function Box({
               canvasWidth={canvasWidth}
               properties={validatedProperties}
               exposedVariables={exposedVariables}
-              styles={{ ...validatedStyles, boxShadow: validatedGeneralStyles?.boxShadow }}
+              styles={{
+                ...validatedStyles,
+                boxShadow: validatedGeneralStyles?.boxShadow,
+              }}
               setExposedVariable={(variable, value) => onComponentOptionChanged(component, variable, value, id)}
               setExposedVariables={(variableSet) => onComponentOptionsChanged(component, Object.entries(variableSet))}
               registerAction={(actionName, func, dependencies = []) => {

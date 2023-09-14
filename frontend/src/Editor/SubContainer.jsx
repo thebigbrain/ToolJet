@@ -7,8 +7,8 @@ import update from 'immutability-helper';
 const produce = require('immer').default;
 import _ from 'lodash';
 import { componentTypes } from './WidgetManager/components';
-import { addNewWidgetToTheEditor } from '@/_helpers/appUtils';
-import { resolveReferences } from '@/_helpers/utils';
+import { addNewWidgetToTheEditor } from '@/core/appUtils';
+import { resolveReferences } from '@externals/helpers/utils';
 import { toast } from 'react-hot-toast';
 import { restrictedWidgetsObj } from '@/Editor/WidgetManager/restrictedWidgetsConfig';
 import { useCurrentState } from '@/_stores/currentStateStore';
@@ -95,7 +95,10 @@ export const SubContainer = ({
     let childWidgets = [];
     Object.keys(components).forEach((key) => {
       if (components[key].parent === parent) {
-        childWidgets[key] = { ...components[key], component: { ...components[key]['component'], parent } };
+        childWidgets[key] = {
+          ...components[key],
+          component: { ...components[key]['component'], parent },
+        };
       }
     });
     return childWidgets;

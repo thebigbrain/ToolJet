@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { isExpectedDataType } from '@/_helpers/utils';
+import { isExpectedDataType } from '@externals/helpers/utils';
 import _ from 'lodash';
 
 export const ButtonGroup = function Button({

@@ -3,7 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 // Use plotly basic bundle
 import Plotly from 'plotly.js-basic-dist-min';
 import createPlotlyComponent from 'react-plotly.js/factory';
-import { isJson } from '@/_helpers/utils';
+import { isJson } from '@externals/helpers/utils';
 const Plot = createPlotlyComponent(Plotly);
 
 export const Chart = function Chart({ width, height, darkMode, properties, styles, dataCy }) {

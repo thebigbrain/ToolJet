@@ -6,11 +6,13 @@ import {
   eraseCookie,
   handleResponseWithoutValidation,
   authHeader,
-} from '@/_helpers';
-import { excludeWorkspaceIdFromURL, getWorkspaceId } from '@/_helpers/utils';
+} from '@externals/helpers';
+import { excludeWorkspaceIdFromURL, getWorkspaceId } from '@externals/helpers/utils';
 import config from 'config';
 
 const currentSessionSubject = new BehaviorSubject({
+  id: null,
+  current_user: null,
   current_organization_id: null,
   current_organization_name: null,
   super_admin: null,
@@ -139,7 +141,16 @@ function resendInvite(email) {
       return response;
     });
 }
-function onboarding({ companyName, companySize, role, token, organizationToken, source, password, phoneNumber }) {
+function onboarding({
+  companyName,
+  companySize,
+  role,
+  token,
+  organizationToken,
+  source,
+  password,
+  phoneNumber = undefined,
+}) {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

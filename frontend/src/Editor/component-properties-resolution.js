@@ -1,4 +1,4 @@
-import { resolveReferences } from '@/_helpers/utils';
+import { resolveReferences } from '@externals/helpers/utils';
 
 export const resolveProperties = (component, currentState, defaultValue, customResolvables) => {
   if (currentState) {

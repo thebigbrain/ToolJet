@@ -1,6 +1,6 @@
 import React from 'react';
 import { ToolTip } from '@/_components';
-import { handleHttpErrorMessages, validateName } from '../../_helpers/utils';
+import { handleHttpErrorMessages, validateName } from '@externals/helpers/utils';
 import { getService, ServiceType } from '@/core/service';
 
 function EditAppName({ appId, appName = '', onNameChanged }) {
@@ -11,7 +11,7 @@ function EditAppName({ appId, appName = '', onNameChanged }) {
     setName(appName);
   }, [appName]);
 
-  const appService = () => getService(ServiceType.Application);
+  const appService = getService(ServiceType.Application);
 
   const saveAppName = async (name) => {
     const newName = name.trim();

@@ -5,8 +5,8 @@ import { toast } from 'react-hot-toast';
 import { withTranslation } from 'react-i18next';
 import urlJoin from 'url-join';
 import ErrorBoundary from '@/Editor/ErrorBoundary';
-import UsersTable from '../../ee/components/UsersPage/UsersTable';
-import UsersFilter from '../../ee/components/UsersPage/UsersFilter';
+import UsersTable from '../_components/UsersPage/UsersTable';
+import UsersFilter from '../_components/UsersPage/UsersFilter';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
 import ManageOrgUsersDrawer from './ManageOrgUsersDrawer';
 

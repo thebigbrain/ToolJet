@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { SubCustomDragLayer } from '../SubCustomDragLayer';
 import { SubContainer } from '../SubContainer';
-import { resolveReferences, resolveWidgetFieldValue, isExpectedDataType } from '@/_helpers/utils';
+import { resolveReferences, resolveWidgetFieldValue, isExpectedDataType } from '@externals/helpers/utils';
 
 export const Tabs = function Tabs({
   id,
@@ -34,7 +34,10 @@ export const Tabs = function Tabs({
   const renderOnlyActiveTab = component.definition.properties?.renderOnlyActiveTab?.value ?? false;
 
   // set index as id if id is not provided
-  parsedTabs = parsedTabs.map((parsedTab, index) => ({ ...parsedTab, id: parsedTab.id ? parsedTab.id : index }));
+  parsedTabs = parsedTabs.map((parsedTab, index) => ({
+    ...parsedTab,
+    id: parsedTab.id ? parsedTab.id : index,
+  }));
 
   // Highlight color - for active tab text and border
   const highlightColor = component.definition.styles?.highlightColor?.value ?? '#f44336';
@@ -134,7 +137,12 @@ export const Tabs = function Tabs({
     <div
       data-disabled={parsedDisabledState}
       className="jet-tabs card"
-      style={{ height, display: parsedWidgetVisibility ? 'flex' : 'none', backgroundColor: bgColor, boxShadow }}
+      style={{
+        height,
+        display: parsedWidgetVisibility ? 'flex' : 'none',
+        backgroundColor: bgColor,
+        boxShadow,
+      }}
       data-cy={dataCy}
     >
       <ul
@@ -150,7 +158,10 @@ export const Tabs = function Tabs({
         {parsedTabs.map((tab) => (
           <li
             className="nav-item"
-            style={{ opacity: tab?.disabled && '0.5', width: tabWidth == 'split' && '33.3%' }}
+            style={{
+              opacity: tab?.disabled && '0.5',
+              width: tabWidth == 'split' && '33.3%',
+            }}
             onClick={() => {
               !tab?.disabled && setCurrentTab(tab.id);
               !tab?.disabled && setExposedVariable('currentTab', tab.id).then(() => fireEvent('onTabSwitch'));

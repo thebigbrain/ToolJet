@@ -1,13 +1,13 @@
 import { InviteInfo } from "./invite";
+import { JetComponentEntity, JetComponentsMap } from "./jetcomponent";
+import { PageId, PagesMap } from "./page";
 import { PasswordInfo } from "./password";
+import { UserId } from "./user";
 
 export type AppId = string;
-export type OrgUserId = string;
 export type AccessType = "edit" | "";
 
 export interface ApplicationService {
-  getConfig: () => Promise<any>;
-
   getAll: (page: number, folder: string, searchKey: string) => Promise<any>;
   getApp: (id: AppId, accessType?: AccessType) => Promise<any>;
   getAppBySlug: (slug: string) => Promise<any>;
@@ -24,7 +24,7 @@ export interface ApplicationService {
   getAppUsers: (id: AppId) => Promise<any>;
   createAppUser: (
     app_id: AppId,
-    org_user_id: OrgUserId,
+    org_user_id: UserId,
     role: string
   ) => Promise<any>;
 
@@ -41,4 +41,41 @@ export interface ApplicationService {
   getVersions: (id: AppId) => Promise<any>;
 
   acceptInvite: (info: InviteInfo) => Promise<any>;
+}
+
+export interface Application {
+  id?: AppId;
+  name?: string;
+  is_maintenance_on?: boolean;
+  current_version_id?: VersionId;
+}
+
+export type VersionId = number;
+
+export interface Version {
+  id?: VersionId;
+  definition?: ApplicationDefinition;
+}
+
+export interface ApplicationDefinition {
+  components?: JetComponentsMap;
+  selectedComponent?: JetComponentEntity;
+  showViewerNavigation: boolean;
+  homePageId: PageId;
+  pages: PagesMap;
+  globalSettings?: {
+    hideHeader: boolean;
+    appInMaintenance: boolean;
+    canvasMaxWidth: number;
+    canvasMaxWidthType: string;
+    canvasMaxHeight: number;
+    canvasBackgroundColor: string;
+    backgroundFxQuery: string;
+  };
+}
+
+export interface ApplicationDefinitionOption {
+  skipAutoSave?: boolean;
+  skipYmapUpdate?: boolean;
+  versionChanged?: boolean;
 }

@@ -4,7 +4,7 @@ import { useOthers, useSelf, useUpdatePresence } from '@y-presence/react';
 import { useEventListener } from '@/_hooks/use-event-listener';
 import { xorWith, isEqual } from 'lodash';
 import { Cursor } from './Cursor';
-import { USER_COLORS } from '@/_helpers/constants';
+import { USER_COLORS } from '@externals/helpers/constants';
 import { userService, authenticationService } from '@/_services';
 import { useAppVersionStore } from '@/_stores/appVersionStore';
 import { shallow } from 'zustand/shallow';
@@ -23,7 +23,9 @@ const RealtimeCursors = ({ editingPageId }) => {
   const updatePresence = useUpdatePresence();
 
   React.useEffect(() => {
-    updatePresence({ color: availableColors[Math.floor(Math.random() * availableColors.length)] });
+    updatePresence({
+      color: availableColors[Math.floor(Math.random() * availableColors.length)],
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

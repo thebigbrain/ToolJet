@@ -69,8 +69,8 @@ module.exports = {
     ],
     alias: {
       "@": path.resolve(__dirname, "src/"),
-      "@ee": path.resolve(__dirname, "ee/"),
       "@assets": path.resolve(__dirname, "assets/"),
+      "@externals": path.resolve(__dirname, "externals/"),
     },
   },
   devtool: environment === "development" ? "eval-cheap-source-map" : false,

@@ -14,7 +14,7 @@ import 'codemirror/theme/base16-light.css';
 import 'codemirror/theme/duotone-light.css';
 import 'codemirror/theme/monokai.css';
 import { onBeforeChange, handleChange } from './utils';
-import { resolveReferences, hasCircularDependency, handleCircularStructureToJSON } from '@/_helpers/utils';
+import { resolveReferences, hasCircularDependency, handleCircularStructureToJSON } from '@externals/helpers/utils';
 import useHeight from '@/_hooks/use-height-transition';
 import usePortal from '@/_hooks/use-portal';
 import { Color } from './Elements/Color';
@@ -51,24 +51,24 @@ export function CodeHinter({
   mode,
   theme,
   lineNumbers,
-  placeholder,
-  ignoreBraces,
-  enablePreview,
-  height,
-  minHeight,
-  lineWrapping,
+  placeholder = '',
+  ignoreBraces = false,
+  enablePreview = false,
+  height = undefined,
+  minHeight = undefined,
+  lineWrapping = false,
   componentName = null,
   usePortalEditor = true,
-  className,
+  className = '',
   width = '',
-  paramName,
-  paramLabel,
-  type,
-  fieldMeta,
-  onFxPress,
-  fxActive,
-  component,
-  popOverCallback,
+  paramName = '',
+  paramLabel = '',
+  type = '',
+  fieldMeta = undefined,
+  onFxPress = undefined,
+  fxActive = false,
+  component = undefined,
+  popOverCallback = undefined,
   cyLabel = '',
   callgpt = () => null,
   isCopilotEnabled = false,
@@ -300,7 +300,13 @@ export function CodeHinter({
           </div>
         )}
         <div className={`col-auto ${(type ?? 'code') === 'code' ? 'd-none' : ''} `}>
-          <div style={{ width: width, display: codeShow ? 'flex' : 'none', marginTop: '-1px' }}>
+          <div
+            style={{
+              width: width,
+              display: codeShow ? 'flex' : 'none',
+              marginTop: '-1px',
+            }}
+          >
             <FxButton
               active={true}
               onPress={() => {

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { libraryAppService } from '@/_services';
 import EmptyIllustration from '@assets/images/no-apps.svg';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
-import { getWorkspaceId } from '../_helpers/utils';
+import { getWorkspaceId } from '@externals/helpers/utils';
 import { useNavigate } from 'react-router-dom';
 
 export const BlankPage = function BlankPage({
@@ -89,10 +89,13 @@ export const BlankPage = function BlankPage({
                       >
                         <label
                           className="cursor-pointer"
-                          style={{ visibility: isImportingApp ? 'hidden' : 'visible' }}
+                          style={{
+                            visibility: isImportingApp ? 'hidden' : 'visible',
+                          }}
                           data-cy="import-an-application"
                         >
-                          &nbsp;{t('blankPage.importApplication', 'Import an app')}
+                          &nbsp;
+                          {t('blankPage.importApplication', 'Import an app')}
                           <input
                             type="file"
                             ref={fileInput}
@@ -121,7 +124,9 @@ export const BlankPage = function BlankPage({
                       >
                         <div
                           className="img-responsive img-responsive-21x9 card-img-top template-card-img"
-                          style={{ backgroundImage: `url(assets/images/templates/${id}.png)` }}
+                          style={{
+                            backgroundImage: `url(assets/images/templates/${id}.png)`,
+                          }}
                           data-cy={`${name.toLowerCase().replace(/\s+/g, '-')}-app-template-image`}
                         />
                         <div className="card-body">

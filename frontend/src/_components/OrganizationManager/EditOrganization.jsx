@@ -4,7 +4,7 @@ import AlertDialog from '@/_ui/AlertDialog';
 import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
-import { validateName, handleHttpErrorMessages } from '@/_helpers/utils';
+import { validateName, handleHttpErrorMessages } from '@externals/helpers/utils';
 
 export const EditOrganization = ({ showEditOrg, setShowEditOrg, currentValue }) => {
   const [isCreating, setIsCreating] = useState(false);

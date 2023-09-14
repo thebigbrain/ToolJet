@@ -24,7 +24,7 @@ export const ReleaseVersionButton = function DeployVersionButton({
   );
   const [showPageDeletionConfirmation, setShowPageDeletionConfirmation] = useState(false);
 
-  const appService = () => getService(ServiceType.Application);
+  const appService = getService(ServiceType.Application);
 
   const { t } = useTranslation();
   const releaseVersion = (editingVersion) => {

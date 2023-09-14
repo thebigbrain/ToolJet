@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { resolveWidgetFieldValue } from '@/_helpers/utils';
+import { resolveWidgetFieldValue } from '@externals/helpers/utils';
 import { toast } from 'react-hot-toast';
 import * as XLSX from 'xlsx/xlsx.mjs';
 import { useCurrentState } from '@/_stores/currentStateStore';
@@ -190,7 +190,10 @@ export const FilePicker = ({
       dataURL: readFileAsDataURL, // TODO: Fix dataURL to have correct format
       base64Data: readFileAsDataURL,
       parsedData: shouldProcessFileParsing
-        ? await processFileContent(file.type, { readFileAsDataURL, readFileAsText })
+        ? await processFileContent(file.type, {
+            readFileAsDataURL,
+            readFileAsText,
+          })
         : null,
       filePath: file.path,
     };

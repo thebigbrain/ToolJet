@@ -4,7 +4,9 @@
     "baseUrl": "./src",
     "outDir": "./build",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@assets/*": ["../assets/*"],
+      "@externals/*": ["../externals/*"]
     },
     "sourceMap": true,
     "noImplicitAny": false,

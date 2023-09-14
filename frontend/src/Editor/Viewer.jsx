@@ -18,9 +18,9 @@ import {
   onEvent,
   runQuery,
   computeComponentState,
-} from '@/_helpers/appUtils';
+} from '@/core/appUtils';
 import queryString from 'query-string';
-import ViewerLogoIcon from './Icons/viewer-logo.svg';
+import ViewerLogoIcon from '@assets/Icons/viewer-logo.svg';
 import { DataSourceTypes } from './DataSourceManager/SourceComponents';
 import {
   resolveReferences,
@@ -31,7 +31,7 @@ import {
   isQueryRunnable,
   redirectToDashboard,
   getWorkspaceId,
-} from '@/_helpers/utils';
+} from '@externals/helpers/utils';
 import { withTranslation } from 'react-i18next';
 import _ from 'lodash';
 import { Navigate } from 'react-router-dom';
@@ -39,7 +39,7 @@ import Spinner from '@/_ui/Spinner';
 import { toast } from 'react-hot-toast';
 import { withRouter } from '@/_hoc/withRouter';
 import { useEditorStore } from '@/_stores/editorStore';
-import { setCookie } from '@/_helpers/cookie';
+import { setCookie } from '@externals/helpers/cookie';
 import { useDataQueriesStore } from '@/_stores/dataQueriesStore';
 import { useCurrentStateStore } from '@/_stores/currentStateStore';
 import { shallow } from 'zustand/shallow';

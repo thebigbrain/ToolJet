@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse } from '@/_helpers';
+import { authHeader, handleResponse } from '@externals/helpers';
 
 export const datasourceService = {
   create,
@@ -12,7 +12,11 @@ export const datasourceService = {
 };
 
 function getAll(appVersionId) {
-  const requestOptions = { method: 'GET', headers: authHeader(), credentials: 'include' };
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader(),
+    credentials: 'include',
+  };
   let searchParams = new URLSearchParams(`app_version_id=${appVersionId}`);
   return fetch(`${config.apiUrl}/data_sources?` + searchParams, requestOptions).then(handleResponse);
 }
@@ -27,7 +31,12 @@ function create({ plugin_id, name, kind, options, app_id, app_version_id }) {
     app_version_id,
   };
 
-  const requestOptions = { method: 'POST', headers: authHeader(), credentials: 'include', body: JSON.stringify(body) };
+  const requestOptions = {
+    method: 'POST',
+    headers: authHeader(),
+    credentials: 'include',
+    body: JSON.stringify(body),
+  };
   return fetch(`${config.apiUrl}/data_sources`, requestOptions).then(handleResponse);
 }
 
@@ -38,12 +47,21 @@ function save({ id, name, options, app_id }) {
     app_id,
   };
 
-  const requestOptions = { method: 'PUT', headers: authHeader(), credentials: 'include', body: JSON.stringify(body) };
+  const requestOptions = {
+    method: 'PUT',
+    headers: authHeader(),
+    credentials: 'include',
+    body: JSON.stringify(body),
+  };
   return fetch(`${config.apiUrl}/data_sources/${id}`, requestOptions).then(handleResponse);
 }
 
 function deleteDataSource(id) {
-  const requestOptions = { method: 'DELETE', headers: authHeader(), credentials: 'include' };
+  const requestOptions = {
+    method: 'DELETE',
+    headers: authHeader(),
+    credentials: 'include',
+  };
   return fetch(`${config.apiUrl}/data_sources/${id}`, requestOptions).then(handleResponse);
 }
 
@@ -55,7 +73,12 @@ function test(kind, options, plugin_id, environment_id) {
     environment_id,
   };
 
-  const requestOptions = { method: 'POST', headers: authHeader(), credentials: 'include', body: JSON.stringify(body) };
+  const requestOptions = {
+    method: 'POST',
+    headers: authHeader(),
+    credentials: 'include',
+    body: JSON.stringify(body),
+  };
   return fetch(`${config.apiUrl}/data_sources/test_connection`, requestOptions).then(handleResponse);
 }
 

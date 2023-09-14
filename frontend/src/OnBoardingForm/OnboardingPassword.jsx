@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import EyeHide from '../../assets/images/onboardingassets/Icons/EyeHide';
-import EyeShow from '../../assets/images/onboardingassets/Icons/EyeShow';
+import EyeHide from '@assets/images/onboardingassets/Icons/EyeHide';
+import EyeShow from '@assets/images/onboardingassets/Icons/EyeShow';
 
 function OnboardingPassword({ setFormData, formData, fieldType }) {
   const [showPassword, setShowPassword] = useState(false);

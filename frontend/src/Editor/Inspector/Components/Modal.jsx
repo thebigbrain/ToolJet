@@ -2,7 +2,7 @@ import React from 'react';
 import Accordion from '@/_ui/Accordion';
 import { renderElement } from '../Utils';
 import { baseComponentProperties } from './DefaultComponent';
-import { resolveReferences } from '@/_helpers/utils';
+import { resolveReferences } from '@externals/helpers/utils';
 
 export const Modal = ({ componentMeta, darkMode, ...restProps }) => {
   const {

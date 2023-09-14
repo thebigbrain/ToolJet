@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { HeaderSection, Button } from '@/_ui/LeftSidebar';
 import { DataSourceManager } from '../DataSourceManager';
 import { DataSourceTypes } from '../DataSourceManager/SourceComponents';
-import { getSvgIcon } from '@/_helpers/appUtils';
+import { getSvgIcon } from '@/core/appUtils';
 import { datasourceService, globalDatasourceService, authenticationService } from '@/_services';
 import { ConfirmDialog } from '@/_components';
 import toast from 'react-hot-toast';
@@ -13,7 +13,7 @@ import { Popover as PopoverBS, OverlayTrigger } from 'react-bootstrap';
 // eslint-disable-next-line import/no-unresolved
 import TrashIcon from '@assets/images/icons/query-trash-icon.svg';
 import VerticalIcon from '@assets/images/icons/vertical-menu.svg';
-import { getPrivateRoute } from '@/_helpers/routes';
+import { getPrivateRoute } from '@/core/routes';
 import { useDataSources } from '@/_stores/dataSourcesStore';
 import { useAppVersionStore } from '@/_stores/appVersionStore';
 import { shallow } from 'zustand/shallow';

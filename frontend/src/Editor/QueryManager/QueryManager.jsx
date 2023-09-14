@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import cx from 'classnames';
 import { QueryManagerHeader } from './Components/QueryManagerHeader';
 import { QueryManagerBody } from './Components/QueryManagerBody';
-import { runQuery } from '@/_helpers/appUtils';
+import { runQuery } from '@/core/appUtils';
 import { defaultSources } from './constants';
 
 import { useQueryCreationLoading, useQueryUpdationLoading } from '@/_stores/dataQueriesStore';

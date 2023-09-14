@@ -1,4 +1,4 @@
-import HttpClient from '@/_helpers/http-client';
+import HttpClient from '@externals/helpers/http-client';
 
 // TODO: antipattern to initialize a new instance @ every service
 // TODO: use singleton pattern and move it to a static variable on page load

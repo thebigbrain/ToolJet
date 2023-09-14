@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { authenticationService } from '@/_services';
 import { CustomSelect } from './CustomSelect';
-import { getWorkspaceIdFromURL, appendWorkspaceId, getAvatar } from '../../_helpers/utils';
+import { getWorkspaceIdFromURL, appendWorkspaceId, getAvatar } from '@externals/helpers/utils';
 import { ToolTip } from '@/_components';
 
 export const OrganizationList = function () {

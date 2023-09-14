@@ -2,7 +2,7 @@ import React from 'react';
 import Accordion from '@/_ui/Accordion';
 
 import { renderElement } from '../../Utils';
-import { computeActionName, resolveReferences } from '@/_helpers/utils';
+import { computeActionName, resolveReferences } from '@externals/helpers/utils';
 // eslint-disable-next-line import/no-unresolved
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
@@ -123,9 +123,13 @@ class TableComponent extends React.Component {
 
   setColumnPopoverRootCloseBlocker(key, isBlocking) {
     if (isBlocking) {
-      this.setState((prev) => ({ popOverRootCloseBlockers: [...prev.popOverRootCloseBlockers, key] }));
+      this.setState((prev) => ({
+        popOverRootCloseBlockers: [...prev.popOverRootCloseBlockers, key],
+      }));
     } else {
-      this.setState((prev) => ({ popOverRootCloseBlockers: prev.popOverRootCloseBlockers.filter((b) => b !== key) }));
+      this.setState((prev) => ({
+        popOverRootCloseBlockers: prev.popOverRootCloseBlockers.filter((b) => b !== key),
+      }));
     }
   }
 
@@ -424,7 +428,9 @@ class TableComponent extends React.Component {
                 <Color
                   param={{ name: 'Active color' }}
                   paramType="properties"
-                  componentMeta={{ properties: { color: { displayName: 'Active color' } } }}
+                  componentMeta={{
+                    properties: { color: { displayName: 'Active color' } },
+                  }}
                   definition={{ value: column.activeColor || '#3c92dc' }}
                   onChange={(name, value, color) => this.onColumnItemChange(index, 'activeColor', color)}
                 />
@@ -438,7 +444,9 @@ class TableComponent extends React.Component {
                   },
                 }}
                 hideEmptyEventsAlert={true}
-                componentMeta={{ events: { onChange: { displayName: 'On change' } } }}
+                componentMeta={{
+                  events: { onChange: { displayName: 'On change' } },
+                }}
                 currentState={this.props.currentState}
                 dataQueries={this.props.dataQueries}
                 components={this.props.components}
@@ -863,14 +871,21 @@ class TableComponent extends React.Component {
   addNewColumn = () => {
     const columns = this.props.component.component.definition.properties.columns;
     const newValue = columns.value;
-    newValue.push({ name: this.generateNewColumnName(columns.value), id: uuidv4() });
+    newValue.push({
+      name: this.generateNewColumnName(columns.value),
+      id: uuidv4(),
+    });
     this.props.paramUpdated({ name: 'columns' }, 'value', newValue, 'properties');
   };
 
   addNewAction = () => {
     const actions = this.props.component.component.definition.properties.actions;
     const newValue = actions ? actions.value : [];
-    newValue.push({ name: computeActionName(actions), buttonText: 'Button', events: [] });
+    newValue.push({
+      name: computeActionName(actions),
+      buttonText: 'Button',
+      events: [],
+    });
     this.props.paramUpdated({ name: 'actions' }, 'value', newValue, 'properties');
   };
 
@@ -931,7 +946,9 @@ class TableComponent extends React.Component {
     const { dataQueries, component, paramUpdated, componentMeta, components, currentState, darkMode } = this.props;
 
     const columns = component.component.definition.properties.columns;
-    const actions = component.component.definition.properties.actions || { value: [] };
+    const actions = component.component.definition.properties.actions || {
+      value: [],
+    };
 
     if (!component.component.definition.properties.displaySearchBox)
       paramUpdated({ name: 'displaySearchBox' }, 'value', true, 'properties');

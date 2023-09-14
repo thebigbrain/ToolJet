@@ -5,7 +5,7 @@ import Avatar from '@/_ui/Avatar';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import { useTranslation } from 'react-i18next';
 import { ToolTip } from '@/_components/ToolTip';
-import { getPrivateRoute } from '@/_helpers/routes';
+import { getPrivateRoute } from '@/core/routes';
 import SolidIcon from '@/_ui/Icon/SolidIcons';
 
 export const Profile = function Header({ darkMode, checkForUnsavedChanges }) {
@@ -24,7 +24,11 @@ export const Profile = function Header({ darkMode, checkForUnsavedChanges }) {
   function getUserDetails() {
     authenticationService.getUserDetails().then((currentUser) => {
       const { firstName, lastName, avatarId } = currentUser;
-      setCurrentUser({ first_name: firstName, last_name: lastName, avatar_id: avatarId });
+      setCurrentUser({
+        first_name: firstName,
+        last_name: lastName,
+        avatar_id: avatarId,
+      });
     });
   }
 
@@ -32,7 +36,10 @@ export const Profile = function Header({ darkMode, checkForUnsavedChanges }) {
     const observable = authenticationService.currentSession.subscribe((session) => {
       if (session.isUserUpdated) {
         getUserDetails();
-        authenticationService.updateCurrentSession({ ...session, isUserUpdated: false });
+        authenticationService.updateCurrentSession({
+          ...session,
+          isUserUpdated: false,
+        });
       }
     });
 

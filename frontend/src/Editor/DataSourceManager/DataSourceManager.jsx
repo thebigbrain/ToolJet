@@ -3,7 +3,7 @@ import { datasourceService, pluginsService, globalDatasourceService } from '@/_s
 import cx from 'classnames';
 import { Modal, Button, Tab, Row, Col, ListGroup } from 'react-bootstrap';
 import { toast } from 'react-hot-toast';
-import { getSvgIcon } from '@/_helpers/appUtils';
+import { getSvgIcon } from '@/core/appUtils';
 import { TestConnection } from './TestConnection';
 import {
   DataBaseSources,
@@ -23,7 +23,7 @@ import { ButtonSolid } from '@/_ui/AppButton/AppButton';
 import SolidIcon from '@/_ui/Icon/SolidIcons';
 import { useAppVersionStore } from '@/_stores/appVersionStore';
 import { ConfirmDialog } from '@/_components';
-import { deepEqual } from '../../_helpers/utils';
+import { deepEqual } from '@externals/helpers/utils';
 import { shallow } from 'zustand/shallow';
 import { useDataSourcesStore } from '../../_stores/dataSourcesStore';
 import { withRouter } from '@/_hoc/withRouter';
@@ -201,14 +201,19 @@ class DataSourceManagerComponent extends React.Component {
         key: key,
         value: options[key].value,
         encrypted: keyMeta ? keyMeta.encrypted : false,
-        ...(!options[key]?.value && { credential_id: options[key]?.credential_id }),
+        ...(!options[key]?.value && {
+          credential_id: options[key]?.credential_id,
+        }),
       };
     });
     if (name.trim() !== '') {
       let service = scope === 'global' ? globalDatasourceService : datasourceService;
       if (selectedDataSource.id) {
         this.setState({ isSaving: true });
-        this.props.setGlobalDataSourceStatus({ isSaving: true, isEditing: false });
+        this.props.setGlobalDataSourceStatus({
+          isSaving: true,
+          isEditing: false,
+        });
         service
           .save({
             id: selectedDataSource.id,
@@ -227,7 +232,10 @@ class DataSourceManagerComponent extends React.Component {
             );
             this.props.dataSourcesChanged(false, selectedDataSource);
             this.props.globalDataSourcesChanged && this.props.globalDataSourcesChanged();
-            this.props.setGlobalDataSourceStatus({ isSaving: false, isEditing: false });
+            this.props.setGlobalDataSourceStatus({
+              isSaving: false,
+              isEditing: false,
+            });
             this.resetDataSourceConfirmModal();
           })
           .catch(({ error }) => {
@@ -235,7 +243,10 @@ class DataSourceManagerComponent extends React.Component {
             this.hideModal();
             error && toast.error(error, { position: 'top-center' });
             this.resetDataSourceConfirmModal();
-            this.props.setGlobalDataSourceStatus({ isSaving: false, isEditing: false });
+            this.props.setGlobalDataSourceStatus({
+              isSaving: false,
+              isEditing: false,
+            });
           });
       } else {
         this.setState({ isSaving: true, addingDataSource: true });
@@ -682,7 +693,9 @@ class DataSourceManagerComponent extends React.Component {
             <a
               key={env?.id}
               onClick={() => this.props.environmentChanged(env, selectedDataSource?.id)}
-              className={cx('nav-item nav-link', { active: this.props.currentEnvironment?.name === env.name })}
+              className={cx('nav-item nav-link', {
+                active: this.props.currentEnvironment?.name === env.name,
+              })}
             >
               {capitalize(env.name)}
             </a>

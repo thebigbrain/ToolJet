@@ -4,7 +4,7 @@ import { authenticationService } from '@/_services';
 import { Navigate } from 'react-router-dom';
 import Configs from './Configs/Config.json';
 import { RedirectLoader } from '@/_components';
-import { redirectToWorkspace } from '@/_helpers/utils';
+import { redirectToWorkspace } from '@externals/helpers/utils';
 
 export function Authorize() {
   const [error, setError] = useState('');

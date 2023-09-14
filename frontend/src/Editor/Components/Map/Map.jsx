@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker, Autocomplete, Polygon } from '@react-google-maps/api';
-import { resolveReferences, resolveWidgetFieldValue } from '@/_helpers/utils';
+import { resolveReferences, resolveWidgetFieldValue } from '@externals/helpers/utils';
 import { darkModeStyles } from './styles';
 import { useTranslation } from 'react-i18next';
 

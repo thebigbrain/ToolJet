@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import EnterIcon from '../../assets/images/onboardingassets/Icons/Enter';
+import EnterIcon from '@assets/images/onboardingassets/Icons/Enter';
 import { ButtonSolid } from '@/_components/AppButton';
 import OnbboardingFromSH from '../OnBoardingForm/OnbboardingFromSH';
 import LogoLightMode from '@assets/images/Logomark.svg';

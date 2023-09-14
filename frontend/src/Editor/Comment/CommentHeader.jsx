@@ -4,7 +4,7 @@ import { toast } from 'react-hot-toast';
 
 import { commentsService } from '@/_services';
 
-import { pluralize } from '@/_helpers/utils';
+import { pluralize } from '@externals/helpers/utils';
 
 import Spinner from '@/_ui/Spinner';
 import useRouter from '@/_hooks/use-router';
@@ -77,7 +77,10 @@ const CommentHeader = ({ socket, count = 0, threadId, isResolved, isThreadOwner,
       <div className="ms-auto d-flex">
         <span
           title={isThreadOwner ? 'toggle resolved' : 'only creator of thread can resolve'}
-          className={cx('m-1 cursor-pointer', { disabled: !isThreadOwner, 'd-none': !isResolved && !isThreadOwner })}
+          className={cx('m-1 cursor-pointer', {
+            disabled: !isThreadOwner,
+            'd-none': !isResolved && !isThreadOwner,
+          })}
           onClick={handleResolved}
         >
           {getResolveIcon()}

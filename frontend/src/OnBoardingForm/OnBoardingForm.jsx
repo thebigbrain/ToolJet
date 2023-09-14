@@ -5,8 +5,8 @@ import OnBoardingInput from './OnBoardingInput';
 import OnBoardingRadioInput from './OnBoardingRadioInput';
 import ContinueButton from './ContinueButton';
 import OnBoardingBubbles from './OnBoardingBubbles';
-import { getuserName, getSubpath } from '@/_helpers/utils';
-import { ON_BOARDING_SIZE, ON_BOARDING_ROLES } from '@/_helpers/constants';
+import { getuserName, getSubpath } from '@externals/helpers/utils';
+import { ON_BOARDING_SIZE, ON_BOARDING_ROLES } from '@externals/helpers/constants';
 import LogoLightMode from '@assets/images/Logomark.svg';
 import LogoDarkMode from '@assets/images/Logomark-dark-mode.svg';
 import startsWith from 'lodash.startswith';
@@ -188,7 +188,14 @@ function OnBoardingForm({ userDetails = {}, token = '', organizationToken = '', 
 
 export function Page0({ formData, setFormData, setPage, page, setCompleted, isLoading, darkMode }) {
   const props = { formData, setFormData, setPage };
-  const btnProps = { setPage, page, formData, setCompleted, isLoading, darkMode };
+  const btnProps = {
+    setPage,
+    page,
+    formData,
+    setCompleted,
+    isLoading,
+    darkMode,
+  };
   return (
     <div className="onboarding-pages-wrapper">
       <OnBoardingInput
@@ -205,7 +212,14 @@ export function Page0({ formData, setFormData, setPage, page, setCompleted, isLo
 
 export function Page1({ formData, setFormData, setPage, page, setCompleted, isLoading, darkMode }) {
   const props = { formData, setFormData, fieldType: 'role' };
-  const btnProps = { setPage, page, formData, setCompleted, isLoading, darkMode };
+  const btnProps = {
+    setPage,
+    page,
+    formData,
+    setCompleted,
+    isLoading,
+    darkMode,
+  };
 
   return (
     <div className="onboarding-pages-wrapper">

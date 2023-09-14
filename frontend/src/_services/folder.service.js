@@ -1,5 +1,5 @@
 import config from 'config';
-import { authHeader, handleResponse } from '@/_helpers';
+import { authHeader, handleResponse } from '@externals/helpers';
 
 export const folderService = {
   create,
@@ -11,7 +11,11 @@ export const folderService = {
 };
 
 function getAll(searchKey = '') {
-  const requestOptions = { method: 'GET', headers: authHeader(), credentials: 'include' };
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader(),
+    credentials: 'include',
+  };
   return fetch(`${config.apiUrl}/folders?searchKey=${searchKey}`, requestOptions).then(handleResponse);
 }
 

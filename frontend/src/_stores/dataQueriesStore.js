@@ -5,7 +5,7 @@ import debounce from 'lodash/debounce';
 import { useAppDataStore } from '@/_stores/appDataStore';
 import { useQueryPanelStore } from '@/_stores/queryPanelStore';
 import { useAppVersionStore } from '@/_stores/appVersionStore';
-import { runQueries } from '@/_helpers/appUtils';
+import { runQueries } from '@/core/appUtils';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'react-hot-toast';
 
@@ -158,7 +158,11 @@ export const useDataQueriesStore = create(
               set((state) => ({
                 dataQueries: state.dataQueries.map((query) => {
                   if (query.id === id) {
-                    return { ...query, name: newName, updated_at: data.updated_at };
+                    return {
+                      ...query,
+                      name: newName,
+                      updated_at: data.updated_at,
+                    };
                   }
                   return query;
                 }),
@@ -180,7 +184,11 @@ export const useDataQueriesStore = create(
                 isUpdatingQueryInProcess: false,
                 dataQueries: state.dataQueries.map((query) => {
                   if (query?.id === selectedQuery?.id) {
-                    return { ...query, dataSourceId: newDataSource?.id, data_source_id: newDataSource?.id };
+                    return {
+                      ...query,
+                      dataSourceId: newDataSource?.id,
+                      data_source_id: newDataSource?.id,
+                    };
                   }
                   return query;
                 }),
@@ -199,7 +207,9 @@ export const useDataQueriesStore = create(
           set({ isCreatingQueryInProcess: true });
           const { actions } = useQueryPanelStore.getState();
           const { dataQueries } = useDataQueriesStore.getState();
-          const queryToClone = { ...dataQueries.find((query) => query.id === id) };
+          const queryToClone = {
+            ...dataQueries.find((query) => query.id === id),
+          };
           let newName = queryToClone.name + '_copy';
           const names = dataQueries.map(({ name }) => name);
           let count = 0;
@@ -225,7 +235,10 @@ export const useDataQueriesStore = create(
                 isCreatingQueryInProcess: false,
                 dataQueries: [{ ...data, data_source_id: queryToClone.data_source_id }, ...state.dataQueries],
               }));
-              actions.setSelectedQuery(data.id, { ...data, data_source_id: queryToClone.data_source_id });
+              actions.setSelectedQuery(data.id, {
+                ...data,
+                data_source_id: queryToClone.data_source_id,
+              });
             })
             .catch((error) => {
               console.error('error', error);
