@@ -1,3 +1,4 @@
+import { Folder } from "./folder";
 import { InviteInfo } from "./invite";
 import { JetComponentEntity, JetComponentsMap } from "./jetcomponent";
 import { PageId, PagesMap } from "./page";
@@ -6,6 +7,8 @@ import { UserId } from "./user";
 
 export type AppId = string;
 export type AccessType = "edit" | "";
+
+type ApplicationIcon = string;
 
 export interface ApplicationService {
   getAll: (page: number, folder: string, searchKey: string) => Promise<any>;
@@ -44,13 +47,19 @@ export interface ApplicationService {
 }
 
 export interface Application {
+  icon?: ApplicationIcon;
   id?: AppId;
   name?: string;
   is_maintenance_on?: boolean;
   current_version_id?: VersionId;
+  isLoading?: boolean;
+  is_public?: boolean;
 }
 
 export type VersionId = number;
+export function toVersionId(v: string | number): VersionId {
+  return Number(v);
+}
 
 export interface Version {
   id?: VersionId;
@@ -60,9 +69,9 @@ export interface Version {
 export interface ApplicationDefinition {
   components?: JetComponentsMap;
   selectedComponent?: JetComponentEntity;
-  showViewerNavigation: boolean;
-  homePageId: PageId;
-  pages: PagesMap;
+  showViewerNavigation?: boolean;
+  homePageId?: PageId;
+  pages?: PagesMap;
   globalSettings?: {
     hideHeader: boolean;
     appInMaintenance: boolean;
@@ -78,4 +87,11 @@ export interface ApplicationDefinitionOption {
   skipAutoSave?: boolean;
   skipYmapUpdate?: boolean;
   versionChanged?: boolean;
+}
+
+export interface ApplicationOperation {
+  selectedApp?: Application;
+  selectedFolder?: Folder;
+  selectedIcon?: ApplicationIcon;
+  isAdding?: boolean;
 }

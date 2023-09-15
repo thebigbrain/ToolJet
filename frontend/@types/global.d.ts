@@ -2,6 +2,8 @@ export {};
 
 declare global {
   interface AppConfig {
+    TOOLJET_HOST: any;
+    ENABLE_PRIVATE_APP_EMBED: string;
     LANGUAGE: string;
     TOOLJET_SERVER_URL: string;
     RELEASE_VERSION: string;

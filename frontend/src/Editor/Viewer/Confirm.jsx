@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next';
 
 export function Confirm({
   show,
-  title,
-  message,
-  onConfirm,
-  onCancel,
+  title = '',
+  message = '',
+  onConfirm = null,
+  onCancel = null,
   queryConfirmationData,
   darkMode,
   confirmButtonText = '',

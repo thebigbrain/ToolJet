@@ -1,18 +1,45 @@
-import React from 'react';
-import { authenticationService } from '@/_services';
-import Modal from 'react-bootstrap/Modal';
-import { toast } from 'react-hot-toast';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import Skeleton from 'react-loading-skeleton';
-import { debounce } from 'lodash';
-import Textarea from '@/_ui/Textarea';
-import { withTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-import { getPrivateRoute } from '@/core/routes';
-import { getSubpath } from '@externals/helpers/utils';
-import { getService, ServiceType } from '@/core/service';
+import React from "react";
+import { authenticationService } from "@/_services";
+import Modal from "react-bootstrap/Modal";
+import { toast } from "react-hot-toast";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import Skeleton from "react-loading-skeleton";
+import { debounce } from "lodash";
+import Textarea from "@/_ui/Textarea";
+import { WithTranslation, withTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import { getPrivateRoute } from "@/core/routes";
+import { getSubpath } from "@externals/helpers/utils";
+import { getService, ServiceType } from "@/core/service";
+import { AppId, Application } from "@/interfaces/application";
+import { User } from "@/interfaces/user";
 
-class ManageAppUsersComponent extends React.Component {
+type ManageAppUsersProps = {
+  app?: Application;
+  handleSlugChange?;
+  slug?;
+  darkMode?: boolean;
+} & WithTranslation;
+
+interface ManageAppUsersState {
+  showModal?: boolean;
+  app?: Application;
+  appId?: AppId;
+  slugError?;
+  isLoading?: boolean;
+  isSlugVerificationInProgress?: boolean;
+  addingUser?: boolean;
+  newUser?: User;
+  users?: Array<User>;
+  ischangingVisibility?: boolean;
+}
+
+class ManageAppUsersComponent extends React.Component<
+  ManageAppUsersProps,
+  ManageAppUsersState
+> {
+  isUserAdmin: boolean;
+
   constructor(props) {
     super(props);
     this.isUserAdmin = authenticationService.currentSessionValue?.admin;
@@ -70,7 +97,7 @@ class ManageAppUsersComponent extends React.Component {
       .createAppUser(this.state.app.id, organizationUserId, role)
       .then(() => {
         this.setState({ addingUser: false, newUser: {} });
-        toast.success('Added user successfully');
+        toast.success("Added user successfully");
         this.fetchAppUsers();
       })
       .catch(({ error }) => {
@@ -98,9 +125,9 @@ class ManageAppUsersComponent extends React.Component {
         });
 
         if (newState) {
-          toast('Application is now public.');
+          toast("Application is now public.");
         } else {
-          toast('Application visibility set to private');
+          toast("Application visibility set to private");
         }
       })
       .catch((error) => {
@@ -137,11 +164,18 @@ class ManageAppUsersComponent extends React.Component {
   }, 500);
 
   render() {
-    const { isLoading, app, slugError, isSlugVerificationInProgress } = this.state;
+    const { isLoading, app, slugError, isSlugVerificationInProgress } =
+      this.state;
     const appId = app.id;
-    const appLink = `${window.appConfig?.TOOLJET_HOST}${getSubpath() ? getSubpath() : ''}/applications/`;
+    const appLink = `${window.appConfig?.TOOLJET_HOST}${
+      getSubpath() ? getSubpath() : ""
+    }/applications/`;
     const shareableLink = appLink + (this.props.slug || appId);
-    const slugButtonClass = isSlugVerificationInProgress ? '' : slugError !== null ? 'is-invalid' : 'is-valid';
+    const slugButtonClass = isSlugVerificationInProgress
+      ? ""
+      : slugError !== null
+      ? "is-invalid"
+      : "is-valid";
     const embeddableLink = `<iframe width="560" height="315" src="${appLink}${this.props.slug}" title="Tooljet app - ${this.props.slug}" frameborder="0" allowfullscreen></iframe>`;
 
     return (
@@ -156,7 +190,14 @@ class ManageAppUsersComponent extends React.Component {
           xmlns="http://www.w3.org/2000/svg"
           data-cy="share-button-link"
         >
-          <rect x="0.363281" y="0.220703" width="32" height="32" rx="6" fill="#F0F4FF" />
+          <rect
+            x="0.363281"
+            y="0.220703"
+            width="32"
+            height="32"
+            rx="6"
+            fill="#F0F4FF"
+          />
           <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -173,15 +214,22 @@ class ManageAppUsersComponent extends React.Component {
           animation={false}
           onEscapeKeyDown={this.hideModal}
           className="app-sharing-modal animation-fade"
-          contentClassName={this.props.darkMode ? 'theme-dark' : ''}
+          contentClassName={this.props.darkMode ? "theme-dark" : ""}
         >
           <Modal.Header>
-            <Modal.Title data-cy="modal-header">{this.props.t('editor.share', 'Share')}</Modal.Title>
-            <button className="btn-close" aria-label="Close" onClick={this.hideModal} data-cy="modal-close-button" />
+            <Modal.Title data-cy="modal-header">
+              {this.props.t("editor.share", "Share")}
+            </Modal.Title>
+            <button
+              className="btn-close"
+              aria-label="Close"
+              onClick={this.hideModal}
+              data-cy="modal-close-button"
+            />
           </Modal.Header>
           <Modal.Body>
             {isLoading ? (
-              <div style={{ width: '100%' }} className="p-5">
+              <div style={{ width: "100%" }} className="p-5">
                 <Skeleton count={5} />
               </div>
             ) : (
@@ -196,16 +244,28 @@ class ManageAppUsersComponent extends React.Component {
                       disabled={this.state.ischangingVisibility}
                       data-cy="make-public-app-toggle"
                     />
-                    <span className="form-check-label" data-cy="make-public-app-label">
-                      {this.props.t('editor.shareModal.makeApplicationPublic', 'Make application public?')}
+                    <span
+                      className="form-check-label"
+                      data-cy="make-public-app-label"
+                    >
+                      {this.props.t(
+                        "editor.shareModal.makeApplicationPublic",
+                        "Make application public?"
+                      )}
                     </span>
                   </div>
                 </div>
 
                 <div className="shareable-link mb-3">
-                  <label className="form-label" data-cy="shareable-app-link-label">
+                  <label
+                    className="form-label"
+                    data-cy="shareable-app-link-label"
+                  >
                     <small>
-                      {this.props.t('editor.shareModal.shareableLink', 'Get shareable link for this application')}
+                      {this.props.t(
+                        "editor.shareModal.shareableLink",
+                        "Get shareable link for this application"
+                      )}
                     </small>
                   </label>
                   <div className="input-group">
@@ -226,14 +286,23 @@ class ManageAppUsersComponent extends React.Component {
                       />
                       {isSlugVerificationInProgress && (
                         <div className="icon-container">
-                          <div className="spinner-border text-azure spinner-border-sm" role="status"></div>
+                          <div
+                            className="spinner-border text-azure spinner-border-sm"
+                            role="status"
+                          ></div>
                         </div>
                       )}
                     </div>
                     <span className="input-group-text">
-                      <CopyToClipboard text={shareableLink} onCopy={() => toast.success('Link copied to clipboard')}>
-                        <button className="btn btn-secondary btn-sm" data-cy="copy-app-link-button">
-                          {this.props.t('editor.shareModal.copy', 'copy')}
+                      <CopyToClipboard
+                        text={shareableLink}
+                        onCopy={() => toast.success("Link copied to clipboard")}
+                      >
+                        <button
+                          className="btn btn-secondary btn-sm"
+                          data-cy="copy-app-link-button"
+                        >
+                          {this.props.t("editor.shareModal.copy", "copy")}
                         </button>
                       </CopyToClipboard>
                     </span>
@@ -241,28 +310,40 @@ class ManageAppUsersComponent extends React.Component {
                   </div>
                 </div>
                 <hr />
-                {(this.state.app.is_public || window?.appConfig?.ENABLE_PRIVATE_APP_EMBED === 'true') && (
+                {(this.state.app.is_public ||
+                  window?.appConfig?.ENABLE_PRIVATE_APP_EMBED === "true") && (
                   <div className="shareable-link mb-3">
                     <label className="form-label" data-cy="iframe-link-label">
                       <small>
-                        {this.props.t('editor.shareModal.embeddableLink', 'Get embeddable link for this application')}
+                        {this.props.t(
+                          "editor.shareModal.embeddableLink",
+                          "Get embeddable link for this application"
+                        )}
                       </small>
                     </label>
                     <div className="input-group">
                       <Textarea
                         disabled
-                        className={`input-with-icon ${this.props.darkMode && 'text-light'}`}
+                        className={`input-with-icon ${
+                          this.props.darkMode && "text-light"
+                        }`}
                         rows={5}
                         value={embeddableLink}
                         data-cy="iframe-link"
+                        helpText={undefined}
                       />
                       <span className="input-group-text">
                         <CopyToClipboard
                           text={embeddableLink}
-                          onCopy={() => toast.success('Embeddable link copied to clipboard')}
+                          onCopy={() =>
+                            toast.success("Embeddable link copied to clipboard")
+                          }
                         >
-                          <button className="btn btn-secondary btn-sm" data-cy="iframe-link-copy-button">
-                            {this.props.t('editor.shareModal.copy', 'copy')}
+                          <button
+                            className="btn btn-secondary btn-sm"
+                            data-cy="iframe-link-copy-button"
+                          >
+                            {this.props.t("editor.shareModal.copy", "copy")}
                           </button>
                         </CopyToClipboard>
                       </span>
@@ -276,7 +357,7 @@ class ManageAppUsersComponent extends React.Component {
           <Modal.Footer>
             {this.isUserAdmin && (
               <Link
-                to={getPrivateRoute('workspace_settings')}
+                to={getPrivateRoute("workspace_settings")}
                 target="_blank"
                 className="btn color-primary mt-3"
                 data-cy="manage-users-button"

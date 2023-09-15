@@ -1,5 +1,5 @@
-{
-  "iconList": [
+export default {
+  iconList: [
     "apps",
     "archive",
     "floppydisk",
@@ -15,8 +15,7 @@
     "sun",
     "table",
     "menuhome",
-    "draghandle"
-
+    "draghandle",
   ],
-  "defaultIcon": "apps"
-}
+  defaultIcon: "apps",
+};

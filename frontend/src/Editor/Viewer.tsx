@@ -1,15 +1,15 @@
-import React from 'react';
+import React from "react";
 import {
   authenticationService,
   orgEnvironmentVariableService,
   orgEnvironmentConstantService,
   organizationService,
-} from '@/_services';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { Container } from './Container';
-import { Confirm } from './Viewer/Confirm';
-import { ViewerNavigation } from './Viewer/ViewerNavigation';
+} from "@/_services";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { Container } from "./Container";
+import { Confirm } from "./Viewer/Confirm";
+import { ViewerNavigation } from "./Viewer/ViewerNavigation";
 import {
   onComponentOptionChanged,
   onComponentOptionsChanged,
@@ -18,10 +18,10 @@ import {
   onEvent,
   runQuery,
   computeComponentState,
-} from '@/core/appUtils';
-import queryString from 'query-string';
-import ViewerLogoIcon from '@assets/Icons/viewer-logo.svg';
-import { DataSourceTypes } from './DataSourceManager/SourceComponents';
+} from "@/core/appUtils";
+import queryString from "query-string";
+import ViewerLogoIcon from "@assets/Icons/viewer-logo.svg";
+import { DataSourceTypes } from "./DataSourceManager/SourceComponents";
 import {
   resolveReferences,
   safelyParseJSON,
@@ -31,21 +31,75 @@ import {
   isQueryRunnable,
   redirectToDashboard,
   getWorkspaceId,
-} from '@externals/helpers/utils';
-import { withTranslation } from 'react-i18next';
-import _ from 'lodash';
-import { Navigate } from 'react-router-dom';
-import Spinner from '@/_ui/Spinner';
-import { toast } from 'react-hot-toast';
-import { withRouter } from '@/_hoc/withRouter';
-import { useEditorStore } from '@/_stores/editorStore';
-import { setCookie } from '@externals/helpers/cookie';
-import { useDataQueriesStore } from '@/_stores/dataQueriesStore';
-import { useCurrentStateStore } from '@/_stores/currentStateStore';
-import { shallow } from 'zustand/shallow';
-import { getService, ServiceType } from '@/core/service';
+} from "@externals/helpers/utils";
+import { WithTranslation, withTranslation } from "react-i18next";
+import _ from "lodash";
+import { Navigate } from "react-router-dom";
+import Spinner from "@/_ui/Spinner";
+import { toast } from "react-hot-toast";
+import { withRouter } from "@/_hoc/withRouter";
+import { useEditorStore } from "@/_stores/editorStore";
+import { setCookie } from "@externals/helpers/cookie";
+import { useDataQueriesStore } from "@/_stores/dataQueriesStore";
+import { useCurrentStateStore } from "@/_stores/currentStateStore";
+import { shallow } from "zustand/shallow";
+import { getService, ServiceType } from "@/core/service";
+import { WithRouterProps } from "@/interfaces/router";
+import { Subscription } from "rxjs";
+import { User } from "@/interfaces/user";
+import {
+  AppId,
+  Application,
+  ApplicationDefinition,
+  VersionId,
+  toVersionId,
+} from "@/interfaces/application";
+import { PageHandle, PageId, PagesMap } from "@/interfaces/page";
+import { JetComponentEntity } from "@/interfaces/jetcomponent";
+import { navigateTo } from "@externals/helpers/routes";
 
-class ViewerComponent extends React.Component {
+type ViewerProps = {
+  darkMode?: boolean;
+  switchDarkMode: (newMode: boolean) => void;
+} & {
+  currentState;
+  setCurrentState;
+  currentLayout;
+} & WithRouterProps &
+  WithTranslation;
+
+interface ViewerState {
+  currentUser?: User;
+  slug;
+  app?: Application;
+  appId?: AppId;
+  versionId?: VersionId;
+  deviceWindowWidth;
+  isLoading: boolean;
+  users?: Array<User>;
+  appDefinition?: ApplicationDefinition;
+  queryConfirmationList: Array<any>;
+  isAppLoaded: boolean;
+  errorAppId?: AppId;
+  errorVersionId?: VersionId;
+  errorDetails;
+  pages?: PagesMap;
+  homepage;
+  initialComputationOfStateDone?: boolean;
+  currentPageId?: PageId;
+  currentSidebarTab?: number;
+  canvasWidth?: string | number;
+  selectedComponent?: JetComponentEntity;
+  dataQueries?;
+  handle?: PageHandle;
+  name?: string;
+  showQuerySearchField?: boolean;
+  defaultComponentStateComputed?: boolean;
+}
+
+class ViewerComponent extends React.Component<ViewerProps, ViewerState> {
+  subscription?: Subscription;
+
   constructor(props) {
     super(props);
 
@@ -53,7 +107,7 @@ class ViewerComponent extends React.Component {
 
     const slug = this.props.params.slug;
     const appId = this.props.params.id;
-    const versionId = this.props.params.versionId;
+    const versionId = toVersionId(this.props.params.versionId);
 
     this.subscription = null;
 
@@ -65,13 +119,13 @@ class ViewerComponent extends React.Component {
       currentUser: null,
       isLoading: true,
       users: null,
-      appDefinition: { pages: {} },
+      appDefinition: { pages: new Map() },
       queryConfirmationList: [],
       isAppLoaded: false,
       errorAppId: null,
       errorVersionId: null,
       errorDetails: null,
-      pages: {},
+      pages: new Map(),
       homepage: null,
     };
   }
@@ -102,17 +156,22 @@ class ViewerComponent extends React.Component {
         email: currentUser.email,
         firstName: currentUser.first_name,
         lastName: currentUser.last_name,
-        groups: authenticationService.currentSessionValue?.group_permissions.map((group) => group.group),
+        groups:
+          authenticationService.currentSessionValue?.group_permissions.map(
+            (group) => group.group
+          ),
       };
     }
 
     let mobileLayoutHasWidgets = false;
 
-    if (this.props.currentLayout === 'mobile') {
-      const currentComponents = data.definition.pages[data.definition.homePageId].components;
+    if (this.props.currentLayout === "mobile") {
+      const currentComponents =
+        data.definition.pages[data.definition.homePageId].components;
       mobileLayoutHasWidgets =
-        Object.keys(currentComponents).filter((componentId) => currentComponents[componentId]['layouts']['mobile'])
-          .length > 0;
+        Object.keys(currentComponents).filter(
+          (componentId) => currentComponents[componentId]["layouts"]["mobile"]
+        ).length > 0;
     }
 
     let queryState = {};
@@ -123,7 +182,9 @@ class ViewerComponent extends React.Component {
           ...this.props.currentState.queries[query.name],
         };
       } else {
-        const dataSourceTypeDetail = DataSourceTypes.find((source) => source.kind === query.kind);
+        const dataSourceTypeDetail = DataSourceTypes.find(
+          (source) => source.kind === query.kind
+        );
         queryState[query.name] = {
           ...dataSourceTypeDetail.exposedVariables,
           ...this.props.currentState.queries[query.name],
@@ -131,13 +192,26 @@ class ViewerComponent extends React.Component {
       }
     });
 
-    const variables = await this.fetchOrgEnvironmentVariables(data.slug, data.is_public);
-    const constants = await this.fetchOrgEnvironmentConstants(data.slug, data.is_public);
+    const variables = await this.fetchOrgEnvironmentVariables(
+      data.slug,
+      data.is_public
+    );
+    const constants = await this.fetchOrgEnvironmentConstants(
+      data.slug,
+      data.is_public
+    );
 
-    const pages = Object.entries(data.definition.pages).map(([pageId, page]) => ({ id: pageId, ...page }));
-    const homePageId = data.definition.homePageId;
+    const definition: ApplicationDefinition = data.definition;
+
+    const pages = Object.entries(definition.pages).map(([pageId, page]) => ({
+      id: pageId,
+      ...page,
+    }));
+    const homePageId = definition.homePageId;
     const startingPageHandle = this.props?.params?.pageHandle;
-    const currentPageId = pages.filter((page) => page.handle === startingPageHandle)[0]?.id ?? homePageId;
+    const currentPageId =
+      pages.filter((page) => page.handle === startingPageHandle)[0]?.id ??
+      homePageId;
     const currentPage = pages.find((page) => page.id === currentPageId);
 
     useDataQueriesStore.getState().actions.setDataQueries(data.data_queries);
@@ -146,10 +220,12 @@ class ViewerComponent extends React.Component {
       components: {},
       globals: {
         currentUser: userVars, // currentUser is updated in setupViewer function as well
-        theme: { name: this.props.darkMode ? 'dark' : 'light' },
-        urlparams: JSON.parse(JSON.stringify(queryString.parse(this.props.location.search))),
+        theme: { name: this.props.darkMode ? "dark" : "light" },
+        urlparams: JSON.parse(
+          JSON.stringify(queryString.parse(this.props.location.search))
+        ),
         mode: {
-          value: this.state.slug ? 'view' : 'preview',
+          value: this.state.slug ? "view" : "preview",
         },
       },
       variables: {},
@@ -162,30 +238,41 @@ class ViewerComponent extends React.Component {
       ...variables,
       ...constants,
     });
-    useEditorStore.getState().actions.toggleCurrentLayout(mobileLayoutHasWidgets ? 'mobile' : 'desktop');
+    useEditorStore
+      .getState()
+      .actions.toggleCurrentLayout(
+        mobileLayoutHasWidgets ? "mobile" : "desktop"
+      );
     this.setState(
       {
         currentUser,
         currentSidebarTab: 2,
         canvasWidth:
-          this.props.currentLayout === 'desktop'
-            ? '100%'
+          this.props.currentLayout === "desktop"
+            ? "100%"
             : mobileLayoutHasWidgets
             ? `${this.state.deviceWindowWidth}px`
-            : '1292px',
+            : "1292px",
         selectedComponent: null,
         dataQueries: data.data_queries,
         currentPageId: currentPage.id,
-        pages: {},
-        homepage: this.state.appDefinition?.pages?.[this.state.appDefinition?.homePageId]?.handle,
+        pages: new Map(),
+        homepage:
+          this.state.appDefinition?.pages?.[
+            this.state.appDefinition?.homePageId
+          ]?.handle,
       },
       () => {
-        computeComponentState(this, data?.definition?.pages[currentPage.id]?.components).then(async () => {
+        computeComponentState(
+          this,
+          data?.definition?.pages[currentPage.id]?.components
+        ).then(async () => {
           this.setState({ initialComputationOfStateDone: true });
-          console.log('Default component state computed and set');
+          console.log("Default component state computed and set");
           this.runQueries(data.data_queries);
           // eslint-disable-next-line no-unsafe-optional-chaining
-          const { events } = this.state.appDefinition?.pages[this.state.currentPageId];
+          const { events } =
+            this.state.appDefinition?.pages[this.state.currentPageId];
           for (const event of events ?? []) {
             await this.handleEvent(event.eventId, event);
           }
@@ -197,7 +284,7 @@ class ViewerComponent extends React.Component {
   runQueries = (data_queries) => {
     data_queries.forEach((query) => {
       if (query.options.runOnPageLoad && isQueryRunnable(query)) {
-        runQuery(this, query.id, query.name, undefined, 'view');
+        runQuery(this, query.id, query.name, undefined, "view");
       }
     });
   };
@@ -210,16 +297,19 @@ class ViewerComponent extends React.Component {
       const { constants } = await orgEnvironmentConstantService.getAll();
       variablesResult = constants;
     } else {
-      const { constants } = await orgEnvironmentConstantService.getConstantsFromPublicApp(slug);
+      const { constants } =
+        await orgEnvironmentConstantService.getConstantsFromPublicApp(slug);
 
       variablesResult = constants;
     }
 
-    console.log('--org constant 2.0', { variablesResult });
+    console.log("--org constant 2.0", { variablesResult });
 
     if (variablesResult && Array.isArray(variablesResult)) {
       variablesResult.map((constant) => {
-        const constantValue = constant.values.find((value) => value.environmentName === 'production')['value'];
+        const constantValue = constant.values.find(
+          (value) => value.environmentName === "production"
+        )["value"];
         orgConstants[constant.name] = constantValue;
       });
 
@@ -243,12 +333,15 @@ class ViewerComponent extends React.Component {
     if (!isPublic) {
       variablesResult = await orgEnvironmentVariableService.getVariables();
     } else {
-      variablesResult = await orgEnvironmentVariableService.getVariablesFromPublicApp(slug);
+      variablesResult =
+        await orgEnvironmentVariableService.getVariablesFromPublicApp(slug);
     }
 
     variablesResult.variables.map((variable) => {
       variables[variable.variable_type][variable.variable_name] =
-        variable.variable_type === 'server' ? 'HiddenEnvironmentVariable' : variable.value;
+        variable.variable_type === "server"
+          ? "HiddenEnvironmentVariable"
+          : variable.value;
     });
     return variables;
   };
@@ -293,8 +386,12 @@ class ViewerComponent extends React.Component {
   };
 
   switchOrganization = (orgId, appId, versionId) => {
-    const path = `/applications/${appId}${versionId ? `/versions/${versionId}` : ''}`;
-    const sub_path = window?.appConfig?.SUB_PATH ? stripTrailingSlash(window?.appConfig?.SUB_PATH) : '';
+    const path = `/applications/${appId}${
+      versionId ? `/versions/${versionId}` : ""
+    }`;
+    const sub_path = window?.appConfig?.SUB_PATH
+      ? stripTrailingSlash(window?.appConfig?.SUB_PATH)
+      : "";
 
     organizationService.switchOrganization(orgId).then(
       () => {
@@ -316,30 +413,33 @@ class ViewerComponent extends React.Component {
           if (
             errorObj?.organizationId &&
             this.state.currentUser &&
-            currentSessionValue.current_organization_id !== errorObj?.organizationId
+            currentSessionValue.current_organization_id !==
+              errorObj?.organizationId
           ) {
             this.switchOrganization(errorObj?.organizationId, appId, versionId);
             return;
           }
           /* router dom Navigate is not working now. so hard reloading */
           redirectToDashboard();
-          return <Navigate replace to={'/'} />;
+          return <Navigate replace to={"/"} />;
         } else if (statusCode === 401) {
-          window.location = `${getSubpath() ?? ''}/login${
-            !_.isEmpty(getWorkspaceId()) ? `/${getWorkspaceId()}` : ''
-          }?redirectTo=${this.props.location.pathname}`;
+          navigateTo(
+            `${getSubpath() ?? ""}/login${
+              !_.isEmpty(getWorkspaceId()) ? `/${getWorkspaceId()}` : ""
+            }?redirectTo=${this.props.location.pathname}`
+          );
         } else if (statusCode === 404) {
-          toast.error(errorDetails?.error ?? 'App not found', {
-            position: 'top-center',
+          toast.error(errorDetails?.error ?? "App not found", {
+            position: "top-center",
           });
         } else {
           redirectToDashboard();
-          return <Navigate replace to={'/'} />;
+          return <Navigate replace to={"/"} />;
         }
       }
     } catch (err) {
       redirectToDashboard();
-      return <Navigate replace to={'/'} />;
+      return <Navigate replace to={"/"} />;
     }
   };
 
@@ -348,38 +448,45 @@ class ViewerComponent extends React.Component {
     const appId = this.props.params.id;
     const versionId = this.props.params.versionId;
 
-    this.subscription = authenticationService.currentSession.subscribe((currentSession) => {
-      if (currentSession?.load_app) {
-        if (currentSession?.group_permissions) {
-          const currentUser = currentSession.current_user;
-          const userVars = {
-            email: currentUser.email,
-            firstName: currentUser.first_name,
-            lastName: currentUser.last_name,
-            groups: currentSession?.group_permissions?.map((group) => group.group),
-          };
-          this.props.setCurrentState({
-            globals: {
-              ...this.props.currentState.globals,
-              currentUser: userVars, // currentUser is updated in setStateForContainer function as well
-            },
-          });
-          this.setState({
-            currentUser,
-
-            userVars,
-          });
-          slug ? this.loadApplicationBySlug(slug) : this.loadApplicationByVersion(appId, versionId);
-        } else if (currentSession?.authentication_failed && !slug) {
-          const loginPath = (window.appConfig?.SUB_PATH || '/') + 'login';
-          const pathname = getSubpath() ? window.location.pathname.replace(getSubpath(), '') : window.location.pathname;
-          window.location.href = loginPath + `?redirectTo=${excludeWorkspaceIdFromURL(pathname)}`;
-        } else {
-          slug && this.loadApplicationBySlug(slug);
+    this.subscription = authenticationService.currentSession.subscribe(
+      (currentSession) => {
+        if (currentSession?.load_app) {
+          if (currentSession?.group_permissions) {
+            const currentUser = currentSession.current_user;
+            const userVars = {
+              email: currentUser.email,
+              firstName: currentUser.first_name,
+              lastName: currentUser.last_name,
+              groups: currentSession?.group_permissions?.map(
+                (group) => group.group
+              ),
+            };
+            this.props.setCurrentState({
+              globals: {
+                ...this.props.currentState.globals,
+                currentUser: userVars, // currentUser is updated in setStateForContainer function as well
+              },
+            });
+            this.setState({
+              currentUser,
+            });
+            slug
+              ? this.loadApplicationBySlug(slug)
+              : this.loadApplicationByVersion(appId, versionId);
+          } else if (currentSession?.authentication_failed && !slug) {
+            const loginPath = (window.appConfig?.SUB_PATH || "/") + "login";
+            const pathname = getSubpath()
+              ? window.location.pathname.replace(getSubpath(), "")
+              : window.location.pathname;
+            window.location.href =
+              loginPath + `?redirectTo=${excludeWorkspaceIdFromURL(pathname)}`;
+          } else {
+            slug && this.loadApplicationBySlug(slug);
+          }
         }
+        this.setState({ isLoading: false });
       }
-      this.setState({ isLoading: false });
-    });
+    );
   }
 
   /**
@@ -392,28 +499,39 @@ class ViewerComponent extends React.Component {
   handleMessage = (event) => {
     const { data } = event;
 
-    if (data?.type === 'redirectTo') {
-      const redirectCookie = data?.payload['redirectPath'];
-      setCookie('redirectPath', redirectCookie, 1);
+    if (data?.type === "redirectTo") {
+      const redirectCookie = data?.payload["redirectPath"];
+      setCookie("redirectPath", redirectCookie, true);
     }
   };
 
   componentDidMount() {
     this.setupViewer();
     const isMobileDevice = this.state.deviceWindowWidth < 600;
-    useEditorStore.getState().actions.toggleCurrentLayout(isMobileDevice ? 'mobile' : 'desktop');
-    window.addEventListener('message', this.handleMessage);
+    useEditorStore
+      .getState()
+      .actions.toggleCurrentLayout(isMobileDevice ? "mobile" : "desktop");
+    window.addEventListener("message", this.handleMessage);
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.params.slug && this.props.params.slug !== prevProps.params.slug) {
+    if (
+      this.props.params.slug &&
+      this.props.params.slug !== prevProps.params.slug
+    ) {
       this.setState({ isLoading: true });
       this.loadApplicationBySlug(this.props.params.slug);
     }
 
-    if (this.state.initialComputationOfStateDone) this.handlePageSwitchingBasedOnURLparam();
+    if (this.state.initialComputationOfStateDone)
+      this.handlePageSwitchingBasedOnURLparam();
     if (this.state.homepage !== prevState.homepage && !this.state.isLoading) {
-      <Navigate to={`${this.state.homepage}${this.props.params.pageHandle ? '' : window.location.search}`} replace />;
+      <Navigate
+        to={`${this.state.homepage}${
+          this.props.params.pageHandle ? "" : window.location.search
+        }`}
+        replace
+      />;
     }
   }
 
@@ -425,17 +543,22 @@ class ViewerComponent extends React.Component {
     const currentPageId = this.state.currentPageId;
 
     if (pageIdCorrespondingToHandleOnURL != this.state.currentPageId) {
-      const targetPage = this.state.appDefinition.pages[pageIdCorrespondingToHandleOnURL];
+      const targetPage =
+        this.state.appDefinition.pages[pageIdCorrespondingToHandleOnURL];
       this.props.setCurrentState({
         globals: {
           ...this.props.currentState.globals,
-          urlparams: JSON.parse(JSON.stringify(queryString.parse(this.props.location.search))),
+          urlparams: JSON.parse(
+            JSON.stringify(queryString.parse(this.props.location.search))
+          ),
         },
         page: {
           ...this.props.currentState.page,
           name: targetPage.name,
           handle: targetPage.handle,
-          variables: this.state.pages?.[pageIdCorrespondingToHandleOnURL]?.variables ?? {},
+          variables:
+            this.state.pages?.[pageIdCorrespondingToHandleOnURL]?.variables ??
+            {},
           id: pageIdCorrespondingToHandleOnURL,
         },
       });
@@ -455,15 +578,17 @@ class ViewerComponent extends React.Component {
           name: targetPage.name,
         },
         async () => {
-          computeComponentState(this, this.state.appDefinition?.pages[this.state.currentPageId].components).then(
-            async () => {
-              // eslint-disable-next-line no-unsafe-optional-chaining
-              const { events } = this.state.appDefinition?.pages[this.state.currentPageId];
-              for (const event of events ?? []) {
-                await this.handleEvent(event.eventId, event);
-              }
+          computeComponentState(
+            this,
+            this.state.appDefinition?.pages[this.state.currentPageId].components
+          ).then(async () => {
+            // eslint-disable-next-line no-unsafe-optional-chaining
+            const { events } =
+              this.state.appDefinition?.pages[this.state.currentPageId];
+            for (const event of events ?? []) {
+              await this.handleEvent(event.eventId, event);
             }
-          );
+          });
         }
       );
     }
@@ -471,28 +596,34 @@ class ViewerComponent extends React.Component {
 
   findPageIdFromHandle(handle) {
     return (
-      Object.entries(this.state.appDefinition.pages).filter(([_id, page]) => page.handle === handle)?.[0]?.[0] ??
-      this.state.appDefinition.homePageId
+      Object.entries(this.state.appDefinition.pages).filter(
+        ([_id, page]) => page.handle === handle
+      )?.[0]?.[0] ?? this.state.appDefinition.homePageId
     );
   }
 
   getCanvasWidth = () => {
-    const canvasBoundingRect = document.getElementsByClassName('canvas-area')[0]?.getBoundingClientRect();
+    const canvasBoundingRect = document
+      .getElementsByClassName("canvas-area")[0]
+      ?.getBoundingClientRect();
     return canvasBoundingRect?.width;
   };
 
   setWindowTitle(name) {
-    document.title = name ?? 'My App';
+    document.title = name ?? "My App";
   }
 
   computeCanvasBackgroundColor = () => {
     const bgColor =
       (this.state.appDefinition.globalSettings?.backgroundFxQuery ||
         this.state.appDefinition.globalSettings?.canvasBackgroundColor) ??
-      '#edeff5';
-    const resolvedBackgroundColor = resolveReferences(bgColor, this.props.currentState);
-    if (['#2f3c4c', '#edeff5'].includes(resolvedBackgroundColor)) {
-      return this.props.darkMode ? '#2f3c4c' : '#edeff5';
+      "#edeff5";
+    const resolvedBackgroundColor = resolveReferences(
+      bgColor,
+      this.props.currentState
+    );
+    if (["#2f3c4c", "#edeff5"].includes(resolvedBackgroundColor)) {
+      return this.props.darkMode ? "#2f3c4c" : "#edeff5";
     }
     return resolvedBackgroundColor;
   };
@@ -501,7 +632,7 @@ class ViewerComponent extends React.Component {
     this.props.setCurrentState({
       globals: {
         ...this.props.currentState.globals,
-        theme: { name: newMode ? 'dark' : 'light' },
+        theme: { name: newMode ? "dark" : "light" },
       },
     });
     this.setState({
@@ -511,32 +642,40 @@ class ViewerComponent extends React.Component {
   };
 
   switchPage = (id, queryParams = []) => {
-    document.getElementById('real-canvas').scrollIntoView();
+    document.getElementById("real-canvas").scrollIntoView();
 
     if (this.state.currentPageId === id) return;
 
     const { handle } = this.state.appDefinition.pages[id];
 
-    const queryParamsString = queryParams.map(([key, value]) => `${key}=${value}`).join('&');
+    const queryParamsString = queryParams
+      .map(([key, value]) => `${key}=${value}`)
+      .join("&");
 
-    if (this.state.slug) this.props.navigate(`/applications/${this.state.slug}/${handle}?${queryParamsString}`);
+    if (this.state.slug)
+      this.props.navigate(
+        `/applications/${this.state.slug}/${handle}?${queryParamsString}`
+      );
     else
       this.props.navigate(
         `/applications/${this.state.appId}/versions/${this.state.versionId}/${handle}?${queryParamsString}`
       );
   };
 
-  handleEvent = (eventName, options) => onEvent(this, eventName, options, 'view');
+  handleEvent = (eventName, options) =>
+    onEvent(this, eventName, options, "view");
 
   computeCanvasMaxWidth = () => {
     const { appDefinition } = this.state;
-    let computedCanvasMaxWidth = 1292;
+    let computedCanvasMaxWidth: number | string = 1292;
 
-    if (appDefinition.globalSettings?.canvasMaxWidthType === 'px')
+    if (appDefinition.globalSettings?.canvasMaxWidthType === "px")
       computedCanvasMaxWidth =
-        (+appDefinition.globalSettings?.canvasMaxWidth || 1292) - (appDefinition?.showViewerNavigation ? 200 : 0);
-    else if (appDefinition.globalSettings?.canvasMaxWidthType === '%')
-      computedCanvasMaxWidth = +appDefinition.globalSettings?.canvasMaxWidth + '%';
+        (+appDefinition.globalSettings?.canvasMaxWidth || 1292) -
+        (appDefinition?.showViewerNavigation ? 200 : 0);
+    else if (appDefinition.globalSettings?.canvasMaxWidthType === "%")
+      computedCanvasMaxWidth =
+        +appDefinition.globalSettings?.canvasMaxWidth + "%";
 
     return computedCanvasMaxWidth;
   };
@@ -585,12 +724,17 @@ class ViewerComponent extends React.Component {
               <div
                 className="card-body"
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <h3>{this.props.t('viewer', 'Sorry!. This app is under maintenance')}</h3>
+                <h3>
+                  {this.props.t(
+                    "viewer",
+                    "Sorry!. This app is under maintenance"
+                  )}
+                </h3>
               </div>
             </div>
           </div>
@@ -605,20 +749,39 @@ class ViewerComponent extends React.Component {
             <Confirm
               darkMode={this.props.darkMode}
               show={queryConfirmationList.length > 0}
-              message={'Do you want to run this query?'}
-              onConfirm={(queryConfirmationData) => onQueryConfirmOrCancel(this, queryConfirmationData, true, 'view')}
-              onCancel={() => onQueryConfirmOrCancel(this, queryConfirmationList[0], false, 'view')}
+              message={"Do you want to run this query?"}
+              onConfirm={(queryConfirmationData) =>
+                onQueryConfirmOrCancel(
+                  this,
+                  queryConfirmationData,
+                  true,
+                  "view"
+                )
+              }
+              onCancel={() =>
+                onQueryConfirmOrCancel(
+                  this,
+                  queryConfirmationList[0],
+                  false,
+                  "view"
+                )
+              }
               queryConfirmationData={queryConfirmationList[0]}
               key={queryConfirmationList[0]?.queryName}
             />
             <DndProvider backend={HTML5Backend}>
               <ViewerNavigation.Header
-                showHeader={!appDefinition.globalSettings?.hideHeader && isAppLoaded}
+                showHeader={
+                  !appDefinition.globalSettings?.hideHeader && isAppLoaded
+                }
                 appName={this.state.app?.name ?? null}
                 changeDarkMode={this.changeDarkMode}
                 darkMode={this.props.darkMode}
                 pages={Object.entries(this.state.appDefinition?.pages) ?? []}
-                currentPageId={this.state?.currentPageId ?? this.state.appDefinition?.homePageId}
+                currentPageId={
+                  this.state?.currentPageId ??
+                  this.state.appDefinition?.homePageId
+                }
                 switchPage={this.switchPage}
               />
               <div className="sub-section">
@@ -627,10 +790,15 @@ class ViewerComponent extends React.Component {
                     <div className="areas d-flex flex-rows justify-content-center">
                       {appDefinition?.showViewerNavigation && (
                         <ViewerNavigation
-                          isMobileDevice={this.props.currentLayout === 'mobile'}
-                          canvasBackgroundColor={this.computeCanvasBackgroundColor()}
-                          pages={Object.entries(this.state.appDefinition?.pages) ?? []}
-                          currentPageId={this.state?.currentPageId ?? this.state.appDefinition?.homePageId}
+                          isMobileDevice={this.props.currentLayout === "mobile"}
+                          pages={
+                            Object.entries(this.state.appDefinition?.pages) ??
+                            []
+                          }
+                          currentPageId={
+                            this.state?.currentPageId ??
+                            this.state.appDefinition?.homePageId
+                          }
                           switchPage={this.switchPage}
                           darkMode={this.props.darkMode}
                         />
@@ -650,7 +818,10 @@ class ViewerComponent extends React.Component {
                             {isLoading ? (
                               <div className="mx-auto mt-5 w-50 p-5">
                                 <center>
-                                  <div className="spinner-border text-azure" role="status"></div>
+                                  <div
+                                    className="spinner-border text-azure"
+                                    role="status"
+                                  ></div>
                                 </center>
                               </div>
                             ) : (
@@ -660,25 +831,53 @@ class ViewerComponent extends React.Component {
                                 snapToGrid={true}
                                 appLoading={isLoading}
                                 darkMode={this.props.darkMode}
-                                onEvent={(eventName, options) => onEvent(this, eventName, options, 'view')}
+                                onEvent={(eventName, options) =>
+                                  onEvent(this, eventName, options, "view")
+                                }
                                 mode="view"
                                 deviceWindowWidth={deviceWindowWidth}
-                                selectedComponent={this.state.selectedComponent}
+                                // selectedComponent={this.state.selectedComponent}
                                 onComponentClick={(id, component) => {
                                   this.setState({
                                     selectedComponent: { id, component },
                                   });
-                                  onComponentClick(this, id, component, 'view');
+                                  onComponentClick(this, id, component, "view");
                                 }}
-                                onComponentOptionChanged={(component, optionName, value) => {
-                                  return onComponentOptionChanged(this, component, optionName, value);
+                                onComponentOptionChanged={(
+                                  component,
+                                  optionName,
+                                  value
+                                ) => {
+                                  return onComponentOptionChanged(
+                                    this,
+                                    component,
+                                    optionName,
+                                    value
+                                  );
                                 }}
-                                onComponentOptionsChanged={(component, options) =>
-                                  onComponentOptionsChanged(this, component, options)
+                                onComponentOptionsChanged={(
+                                  component,
+                                  options
+                                ) =>
+                                  onComponentOptionsChanged(
+                                    this,
+                                    component,
+                                    options
+                                  )
                                 }
                                 canvasWidth={this.getCanvasWidth()}
-                                dataQueries={dataQueries}
+                                // dataQueries={dataQueries}
                                 currentPageId={this.state.currentPageId}
+                                setSelectedComponent={undefined}
+                                zoomLevel={undefined}
+                                removeComponent={undefined}
+                                selectedComponents={undefined}
+                                socket={undefined}
+                                handleUndo={undefined}
+                                handleRedo={undefined}
+                                onComponentHover={undefined}
+                                hoveredComponent={undefined}
+                                sideBarDebugger={undefined}
                               />
                             )}
                           </>

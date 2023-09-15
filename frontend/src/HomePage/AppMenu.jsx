@@ -60,7 +60,7 @@ export const AppMenu = function AppMenu({
                       onClick={() => openAppActionModal('add-to-folder')}
                     />
 
-                    {currentFolder.id && (
+                    {currentFolder?.id && (
                       <Field
                         text={t('homePage.appCard.removeFromFolder', 'Remove from folder')}
                         onClick={() => openAppActionModal('remove-app-from-folder')}

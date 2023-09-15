@@ -1,10 +1,13 @@
-import React from 'react';
-import { ToolTip } from '@/_components';
-import { handleHttpErrorMessages, validateName } from '@externals/helpers/utils';
-import { getService, ServiceType } from '@/core/service';
+import React from "react";
+import { ToolTip } from "@/_components";
+import {
+  handleHttpErrorMessages,
+  validateName,
+} from "@externals/helpers/utils";
+import { getService, ServiceType } from "@/core/service";
 
-function EditAppName({ appId, appName = '', onNameChanged }) {
-  const darkMode = localStorage.getItem('darkMode') === 'true';
+function EditAppName({ appId, appName = "", onNameChanged }) {
+  const darkMode = localStorage.getItem("darkMode") === "true";
   const [name, setName] = React.useState(appName);
 
   React.useEffect(() => {
@@ -15,7 +18,7 @@ function EditAppName({ appId, appName = '', onNameChanged }) {
 
   const saveAppName = async (name) => {
     const newName = name.trim();
-    if (!validateName(name, 'App name').status) {
+    if (!validateName(name, "App name").status) {
       return;
     }
     if (newName === appName) {
@@ -29,21 +32,24 @@ function EditAppName({ appId, appName = '', onNameChanged }) {
         onNameChanged(newName);
       })
       .catch((error) => {
-        handleHttpErrorMessages(error, 'app');
+        handleHttpErrorMessages(error, "app");
       });
   };
 
   return (
     <ToolTip message={name} placement="bottom">
-      <div className={`app-name input-icon ${darkMode ? 'dark' : ''}`}>
+      <div className={`app-name input-icon ${darkMode ? "dark" : ""}`}>
         <input
           type="text"
           onChange={(e) => {
             //this was quick fix. replace this with actual tooltip props and state later
-            if (document.getElementsByClassName('tooltip').length) {
-              document.getElementsByClassName('tooltip')[0].style.display = 'none';
+            if (document.getElementsByClassName("tooltip").length) {
+              const element = document.getElementsByClassName(
+                "tooltip"
+              )[0] as HTMLElement;
+              element.style.display = "none";
             }
-            validateName(e.target.value, 'App name', true);
+            validateName(e.target.value, "App name", true);
             setName(e.target.value);
           }}
           onBlur={(e) => saveAppName(e.target.value)}

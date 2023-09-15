@@ -1,7 +1,7 @@
-import React from 'react';
-import AppCard from './AppCard';
-import { useTranslation } from 'react-i18next';
-import EmptyFoldersIllustration from '@assets/images/icons/no-queries-added.svg';
+import React from "react";
+import AppCard from "./AppCard";
+import { useTranslation } from "react-i18next";
+import EmptyFoldersIllustration from "@assets/images/icons/no-queries-added.svg";
 
 const AppList = (props) => {
   const { t } = useTranslation();
@@ -49,14 +49,19 @@ const AppList = (props) => {
           </div>
         </div>
       )}
-      {!props.isLoading && props.currentFolder.count === 0 && (
+      {!props.isLoading && props.currentFolder?.count === 0 && (
         <div className="text-center d-block">
-          <EmptyFoldersIllustration className="mb-4" data-cy="empty-folder-image" />
+          <EmptyFoldersIllustration
+            className="mb-4"
+            data-cy="empty-folder-image"
+          />
           <span
-            className={`d-block text-center text-body ${props.darkMode && 'text-white-50'}`}
+            className={`d-block text-center text-body ${
+              props.darkMode && "text-white-50"
+            }`}
             data-cy="empty-folder-text"
           >
-            {t('homePage.thisFolderIsEmpty', 'This folder is empty')}
+            {t("homePage.thisFolderIsEmpty", "This folder is empty")}
           </span>
         </div>
       )}

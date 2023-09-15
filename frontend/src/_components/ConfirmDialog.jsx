@@ -5,18 +5,18 @@ import { ButtonSolid } from '@/_ui/AppButton/AppButton';
 
 export function ConfirmDialog({
   show,
-  title,
-  message,
-  onConfirm,
-  onCancel,
-  confirmButtonLoading,
+  title = '',
+  message = '',
+  onConfirm = null,
+  onCancel = null,
+  confirmButtonLoading = false,
   darkMode,
-  confirmButtonText,
+  confirmButtonText = '',
   confirmButtonType = 'dangerPrimary',
   cancelButtonType = 'secondary',
   cancelButtonText = 'Cancel',
-  backdropClassName,
-  onCloseIconClick,
+  backdropClassName = '',
+  onCloseIconClick = null,
 }) {
   darkMode = darkMode ?? (localStorage.getItem('darkMode') === 'true' || false);
   const [showModal, setShow] = useState(show);

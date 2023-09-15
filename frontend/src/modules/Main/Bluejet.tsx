@@ -41,6 +41,7 @@ import { ToastOptions } from "react-hot-toast";
 
 import { navigateTo } from "@externals/helpers/routes";
 import { BreadCrumbContextProvider } from "@/core/context";
+import { Config } from "@/core/config";
 
 interface BluejetMainState {
   currentUser?: any;
@@ -514,9 +515,11 @@ class BluejetMainComponent extends React.Component<{}, BluejetMainState> {
 const AppWithRouter = withRouter(BluejetMainComponent);
 
 export const BluejetMain = (props) => {
+  const config = Config.getInstance();
+
   return (
     <Suspense fallback={null}>
-      <BrowserRouter basename={window.appConfig?.SUB_PATH || "/"}>
+      <BrowserRouter basename={config?.SUB_PATH || "/"}>
         <AppWithRouter props={props} />
       </BrowserRouter>
     </Suspense>

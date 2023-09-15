@@ -1,18 +1,18 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import cx from 'classnames';
-import { AppMenu } from './AppMenu';
-import moment from 'moment';
-import { ToolTip } from '@/_components';
-import useHover from '@/_hooks/useHover';
-import configs from './Configs/AppIcon.json';
-import { Link, useNavigate } from 'react-router-dom';
-import urlJoin from 'url-join';
-import { useTranslation } from 'react-i18next';
-import SolidIcon from '@/_ui/Icon/SolidIcons';
-import BulkIcon from '@/_ui/Icon/BulkIcons';
+import React, { useState, useCallback, useEffect, RefObject } from "react";
+import cx from "classnames";
+import { AppMenu } from "./AppMenu";
+import moment from "moment";
+import { ToolTip } from "@/_components";
+import useHover from "@/_hooks/useHover";
+import configs from "./Configs/AppIcon";
+import { Link, useNavigate } from "react-router-dom";
+import urlJoin from "url-join";
+import { useTranslation } from "react-i18next";
+import SolidIcon from "@/_ui/Icon/SolidIcons";
+import BulkIcon from "@/_ui/Icon/BulkIcons";
 
-import { getPrivateRoute } from '@/core/routes';
-import { getSubpath } from '@externals/helpers/utils';
+import { getPrivateRoute } from "@/core/routes";
+import { getSubpath } from "@externals/helpers/utils";
 const { defaultIcon } = configs;
 
 export default function AppCard({
@@ -55,23 +55,30 @@ export default function AppCard({
 
   const updated_at = app?.editing_version?.updated_at || app?.updated_at;
   const updated = moment(updated_at).fromNow(true);
-  const darkMode = localStorage.getItem('darkMode') === 'true';
+  const darkMode = localStorage.getItem("darkMode") === "true";
 
   let AppIcon;
   try {
-    AppIcon = <BulkIcon fill={'#3E63DD'} name={app?.icon || defaultIcon} />;
+    AppIcon = <BulkIcon fill={"#3E63DD"} name={app?.icon || defaultIcon} />;
   } catch (e) {
-    console.error('App icon not found', app.icon);
+    console.error("App icon not found", app.icon);
   }
 
   return (
     <div className="card homepage-app-card animation-fade">
-      <div key={app.id} ref={hoverRef} data-cy={`${app.name.toLowerCase().replace(/\s+/g, '-')}-card`}>
+      <div
+        key={app.id}
+        ref={hoverRef as RefObject<HTMLDivElement>}
+        data-cy={`${app.name.toLowerCase().replace(/\s+/g, "-")}-card`}
+      >
         <div className="row home-app-card-header">
           <div className="col-12 d-flex justify-content-between">
             <div>
               <div className="app-icon-main">
-                <div className="app-icon d-flex" data-cy={`app-card-${app.icon}-icon`}>
+                <div
+                  className="app-icon d-flex"
+                  data-cy={`app-card-${app.icon}-icon`}
+                >
                   {AppIcon && AppIcon}
                 </div>
               </div>
@@ -88,7 +95,6 @@ export default function AppCard({
                     deleteApp={() => deleteApp(app)}
                     cloneApp={() => cloneApp(app)}
                     exportApp={() => exportApp(app)}
-                    isMenuOpen={isMenuOpen}
                     darkMode={darkMode}
                     currentFolder={currentFolder}
                   />
@@ -101,20 +107,37 @@ export default function AppCard({
           <ToolTip message={app.name}>
             <h3
               className="app-card-name font-weight-500 tj-text-md"
-              data-cy={`${app.name.toLowerCase().replace(/\s+/g, '-')}-title`}
+              data-cy={`${app.name.toLowerCase().replace(/\s+/g, "-")}-title`}
             >
               {app.name}
             </h3>
           </ToolTip>
         </div>
-        <div className="app-creation-time-container" style={{ marginBottom: '12px' }}>
+        <div
+          className="app-creation-time-container"
+          style={{ marginBottom: "12px" }}
+        >
           {canUpdate && (
-            <div className="app-creation-time tj-text-xsm" data-cy="app-creation-details">
-              <ToolTip message={app.created_at && moment(app.created_at).format('dddd, MMMM Do YYYY, h:mm:ss a')}>
-                <span>{updated === 'just now' ? `Edited ${updated}` : `Edited ${updated} ago`}</span>
+            <div
+              className="app-creation-time tj-text-xsm"
+              data-cy="app-creation-details"
+            >
+              <ToolTip
+                message={
+                  app.created_at &&
+                  moment(app.created_at).format("dddd, MMMM Do YYYY, h:mm:ss a")
+                }
+              >
+                <span>
+                  {updated === "just now"
+                    ? `Edited ${updated}`
+                    : `Edited ${updated} ago`}
+                </span>
               </ToolTip>
-              &nbsp;by{' '}
-              {`${app.user?.first_name ? app.user.first_name : ''} ${app.user?.last_name ? app.user.last_name : ''}`}
+              &nbsp;by{" "}
+              {`${app.user?.first_name ? app.user.first_name : ""} ${
+                app.user?.last_name ? app.user.last_name : ""
+              }`}
             </div>
           )}
         </div>
@@ -123,13 +146,21 @@ export default function AppCard({
             <div>
               <ToolTip message="Open in app builder">
                 <Link
-                  to={getPrivateRoute('editor', {
+                  to={getPrivateRoute("editor", {
                     id: app.id,
                   })}
                 >
-                  <button type="button" className="tj-primary-btn edit-button tj-text-xsm" data-cy="edit-button">
-                    <SolidIcon name="editrectangle" width="14" fill={darkMode ? '#11181C' : '#FDFDFE'} />
-                    &nbsp;{t('globals.edit', 'Edit')}
+                  <button
+                    type="button"
+                    className="tj-primary-btn edit-button tj-text-xsm"
+                    data-cy="edit-button"
+                  >
+                    <SolidIcon
+                      name="editrectangle"
+                      width="14"
+                      fill={darkMode ? "#11181C" : "#FDFDFE"}
+                    />
+                    &nbsp;{t("globals.edit", "Edit")}
                   </button>
                 </Link>
               </ToolTip>
@@ -139,24 +170,35 @@ export default function AppCard({
             <ToolTip
               message={
                 app?.current_version_id === null
-                  ? t('homePage.appCard.noDeployedVersion', 'App does not have a deployed version')
-                  : t('homePage.appCard.openInAppViewer', 'Open in app viewer')
+                  ? t(
+                      "homePage.appCard.noDeployedVersion",
+                      "App does not have a deployed version"
+                    )
+                  : t("homePage.appCard.openInAppViewer", "Open in app viewer")
               }
             >
               <button
                 type="button"
                 className={cx(
                   ` launch-button tj-text-xsm ${
-                    app?.current_version_id === null || app?.is_maintenance_on ? 'tj-disabled-btn ' : 'tj-tertiary-btn'
+                    app?.current_version_id === null || app?.is_maintenance_on
+                      ? "tj-disabled-btn "
+                      : "tj-tertiary-btn"
                   }`
                 )}
                 onClick={() => {
                   if (app?.current_version_id) {
                     window.open(
-                      urlJoin(window.appConfig?.TOOLJET_HOST, getSubpath() ?? '', `/applications/${app.slug}`)
+                      urlJoin(
+                        window.appConfig?.TOOLJET_HOST,
+                        getSubpath() ?? "",
+                        `/applications/${app.slug}`
+                      )
                     );
                   } else {
-                    navigate(app?.current_version_id ? `/applications/${app.slug}` : '');
+                    navigate(
+                      app?.current_version_id ? `/applications/${app.slug}` : ""
+                    );
                   }
                 }}
                 data-cy="launch-button"
@@ -166,16 +208,16 @@ export default function AppCard({
                   width="14"
                   fill={
                     app?.current_version_id === null || app?.is_maintenance_on
-                      ? '#4C5155'
+                      ? "#4C5155"
                       : darkMode
-                      ? '#FDFDFE'
-                      : '#11181C'
+                      ? "#FDFDFE"
+                      : "#11181C"
                   }
                 />
 
                 {app?.is_maintenance_on
-                  ? t('homePage.appCard.maintenance', 'Maintenance')
-                  : t('homePage.appCard.launch', 'Launch')}
+                  ? t("homePage.appCard.maintenance", "Maintenance")
+                  : t("homePage.appCard.launch", "Launch")}
               </button>
             </ToolTip>
           </div>
