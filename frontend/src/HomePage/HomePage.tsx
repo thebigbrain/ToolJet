@@ -22,10 +22,14 @@ import { ButtonSolid } from "@/_ui/AppButton/AppButton";
 import BulkIcon from "@/_ui/Icon/bulkIcons/index";
 import { getWorkspaceId } from "@externals/helpers/utils";
 import { withRouter } from "@/_hoc/withRouter";
-import { getService, ServiceType } from "@/core/service";
+import { getService } from "@/core/service";
 import { User } from "@/interfaces/user";
 import { Folder } from "@/interfaces/folder";
-import { Application, ApplicationOperation } from "@/interfaces/application";
+import {
+  Application,
+  ApplicationOperation,
+  ApplicationService,
+} from "@/interfaces/application";
 import { WithRouterProps } from "@/interfaces/router";
 
 const { iconList, defaultIcon } = configs;
@@ -117,7 +121,7 @@ class HomePageComponent extends React.Component<HomePageProps, HomePageState> {
   }
 
   get appService() {
-    return getService(ServiceType.Application);
+    return getService<ApplicationService>(ApplicationService);
   }
 
   fetchApps = (page = 1, folder?: string, searchKey?: string) => {

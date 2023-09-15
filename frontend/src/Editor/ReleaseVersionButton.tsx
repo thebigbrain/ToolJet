@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import cx from 'classnames';
-import { toast } from 'react-hot-toast';
-import { useTranslation } from 'react-i18next';
-import { useAppVersionStore } from '@/_stores/appVersionStore';
-import { ConfirmDialog } from '@/_components/ConfirmDialog';
-import { shallow } from 'zustand/shallow';
-import { getService, ServiceType } from '@/core/service';
+import React, { useState } from "react";
+import cx from "classnames";
+import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+import { useAppVersionStore } from "@/_stores/appVersionStore";
+import { ConfirmDialog } from "@/_components/ConfirmDialog";
+import { shallow } from "zustand/shallow";
+import { getService } from "@/core/service";
+import { ApplicationService } from "@/interfaces/application";
 
 export const ReleaseVersionButton = function DeployVersionButton({
   appId,
@@ -22,9 +23,10 @@ export const ReleaseVersionButton = function DeployVersionButton({
     }),
     shallow
   );
-  const [showPageDeletionConfirmation, setShowPageDeletionConfirmation] = useState(false);
+  const [showPageDeletionConfirmation, setShowPageDeletionConfirmation] =
+    useState(false);
 
-  const appService = getService(ServiceType.Application);
+  const appService = getService<ApplicationService>(ApplicationService);
 
   const { t } = useTranslation();
   const releaseVersion = (editingVersion) => {
@@ -38,14 +40,14 @@ export const ReleaseVersionButton = function DeployVersionButton({
       })
       .then(() => {
         toast(`Version ${editingVersion.name} released`, {
-          icon: '🚀',
+          icon: "🚀",
         });
         fetchApp && fetchApp();
         onVersionRelease(editingVersion.id);
         setIsReleasing(false);
       })
       .catch((_error) => {
-        toast.error('Oops, something went wrong');
+        toast.error("Oops, something went wrong");
         setIsReleasing(false);
       });
   };
@@ -55,7 +57,7 @@ export const ReleaseVersionButton = function DeployVersionButton({
     setIsReleasing(false);
   };
 
-  const darkMode = localStorage.getItem('darkMode') === 'true';
+  const darkMode = localStorage.getItem("darkMode") === "true";
 
   return (
     <>
@@ -71,19 +73,22 @@ export const ReleaseVersionButton = function DeployVersionButton({
       <div>
         <button
           data-cy={`button-release`}
-          className={cx('btn btn-primary btn-sm rounded-2 bg-light-indigo-09 release-button', {
-            disabled: isVersionReleased,
-            'btn-loading': isReleasing,
-            'released-button': isVersionReleased,
-          })}
-          style={{ padding: '6px 16px' }}
+          className={cx(
+            "btn btn-primary btn-sm rounded-2 bg-light-indigo-09 release-button",
+            {
+              disabled: isVersionReleased,
+              "btn-loading": isReleasing,
+              "released-button": isVersionReleased,
+            }
+          )}
+          style={{ padding: "6px 16px" }}
           onClick={() => setShowPageDeletionConfirmation(true)}
         >
           {isVersionReleased ? (
-            'Released'
+            "Released"
           ) : (
             <>
-              {t('editor.release', 'Release')}
+              {t("editor.release", "Release")}
               <svg
                 className="ms-2"
                 width="17"

@@ -10,8 +10,12 @@ import { WithTranslation, withTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { getPrivateRoute } from "@/core/routes";
 import { getSubpath } from "@externals/helpers/utils";
-import { getService, ServiceType } from "@/core/service";
-import { AppId, Application } from "@/interfaces/application";
+import { getService } from "@/core/service";
+import {
+  AppId,
+  Application,
+  ApplicationService,
+} from "@/interfaces/application";
 import { User } from "@/interfaces/user";
 
 type ManageAppUsersProps = {
@@ -62,7 +66,7 @@ class ManageAppUsersComponent extends React.Component<
   }
 
   get appService() {
-    return getService(ServiceType.Application);
+    return getService<ApplicationService>(ApplicationService);
   }
 
   fetchAppUsers = () => {

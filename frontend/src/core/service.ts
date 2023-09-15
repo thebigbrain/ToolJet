@@ -1,13 +1,34 @@
-const _services = new Map();
+import { Constructor } from "./mixin";
+const _services = new Map<Object, Object>();
 
-export function registerService(name, service) {
-  _services.set(name, service);
+export function registerService<T extends Service>(
+  type: Object,
+  impl: Constructor<T>
+) {
+  _services.set(type, createService<T>(impl));
 }
 
-export function getService(name) {
-  return _services.get(name);
+export function ServiceGetter(type: Object) {
+  return function (
+    target: any,
+    propertyKey: string,
+    descriptor?: PropertyDescriptor
+  ) {
+    target[propertyKey] = new Proxy(target, {
+      get(target, prop, receiver) {
+        const service = _services.get(type);
+        return service[prop];
+      },
+    });
+  };
 }
 
-export class ServiceType {
-  static Application = 'Application';
+export function getService<T extends Service>(type: Object): T {
+  return _services.get(type) as T;
+}
+
+export abstract class Service {}
+
+export function createService<T extends Service>(ctor: Constructor<T>): T {
+  return new ctor() as T;
 }

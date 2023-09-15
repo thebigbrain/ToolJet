@@ -68,12 +68,13 @@ import {
 import { resetAllStores } from "@/_stores/utils";
 import { setCookie } from "@externals/helpers/cookie";
 
-import { getService, ServiceType } from "@/core/service";
+import { ServiceGetter, getService } from "@/core/service";
 import { Subscription } from "rxjs";
 import { EditorProps, EditorState } from "@/interfaces/editor";
 import {
   ApplicationDefinition,
   ApplicationDefinitionOption,
+  ApplicationService,
   Version,
   VersionId,
 } from "@/interfaces/application";
@@ -107,6 +108,9 @@ class EditorComponent extends React.Component<EditorProps, EditorState> {
   socket: WebSocket;
   subscription: Subscription;
   defaultDefinition: ApplicationDefinition;
+
+  @ServiceGetter(ApplicationService)
+  appService: ApplicationService;
 
   constructor(props) {
     super(props);
@@ -233,7 +237,7 @@ class EditorComponent extends React.Component<EditorProps, EditorState> {
     }
   };
 
-  async componentDidMount() {
+  override async componentDidMount() {
     window.addEventListener("message", this.handleMessage);
     await this.getCurrentOrganizationDetails();
     this.autoSave();
@@ -357,7 +361,7 @@ class EditorComponent extends React.Component<EditorProps, EditorState> {
     });
   };
 
-  componentDidUpdate(prevProps, prevState) {
+  override componentDidUpdate(prevProps, prevState) {
     if (!isEqual(prevState.appDefinition, this.state.appDefinition)) {
       computeComponentState(
         this,
@@ -383,7 +387,7 @@ class EditorComponent extends React.Component<EditorProps, EditorState> {
     });
   }
 
-  componentWillUnmount() {
+  override componentWillUnmount() {
     document.title = "Tooljet - Dashboard";
     this.socket && this.socket?.close();
     this.subscription && this.subscription.unsubscribe();
@@ -432,10 +436,6 @@ class EditorComponent extends React.Component<EditorProps, EditorState> {
       );
   };
 
-  get appService() {
-    return getService(ServiceType.Application);
-  }
-
   toggleAppMaintenance = () => {
     const newState = !this.state.app.is_maintenance_on;
 
@@ -457,7 +457,7 @@ class EditorComponent extends React.Component<EditorProps, EditorState> {
   };
 
   fetchApps = (page) => {
-    this.appService.getAll(page).then((data) =>
+    this.appService?.getAll(page).then((data) =>
       this.setState({
         apps: data.apps,
       })
@@ -1734,7 +1734,7 @@ class EditorComponent extends React.Component<EditorProps, EditorState> {
   handleEditorMarginLeftChange = (value) =>
     this.setState({ editorMarginLeft: value });
 
-  render() {
+  override render() {
     const {
       currentSidebarTab,
       selectedComponents = [],

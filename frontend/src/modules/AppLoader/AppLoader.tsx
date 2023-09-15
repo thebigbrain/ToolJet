@@ -10,7 +10,8 @@ import { toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import _ from "lodash";
 import { navigateTo } from "@externals/helpers/routes";
-import { ServiceType, getService } from "@/core/service";
+import { getService } from "@/core/service";
+import { ApplicationService } from "@/interfaces/application";
 
 const AppLoaderComponent = (props) => {
   const params = useParams();
@@ -19,7 +20,7 @@ const AppLoaderComponent = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => loadAppDetails(), []);
 
-  const appService = getService(ServiceType.Application);
+  const appService = getService<ApplicationService>(ApplicationService);
 
   const loadAppDetails = () => {
     appService.getApp(appId, "edit").catch((error) => {

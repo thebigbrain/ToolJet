@@ -9,7 +9,7 @@ import { InviteInfo } from "@/interfaces/invite";
 import { PasswordInfo } from "@/interfaces/password";
 import { OrgId } from "@/interfaces/org";
 
-export const appService: ApplicationService = {
+const appService: ApplicationService = {
   getAll,
   createApp,
   cloneApp,
@@ -31,6 +31,13 @@ export const appService: ApplicationService = {
   getVersions,
 };
 
+export class ApplicationServiceImpl extends ApplicationService {
+  constructor() {
+    super();
+    return appService;
+  }
+}
+
 function getConfig() {
   const requestOptions: RequestInit = {
     method: "GET",
@@ -40,7 +47,7 @@ function getConfig() {
   return fetch(`${config.apiUrl}/config`, requestOptions).then(handleResponse);
 }
 
-function getAll(page: number, folder: string, searchKey: string) {
+function getAll(page: number, folder?: string, searchKey?: string) {
   const requestOptions: RequestInit = {
     method: "GET",
     headers: authHeader(),

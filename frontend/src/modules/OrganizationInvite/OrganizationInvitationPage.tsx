@@ -13,7 +13,8 @@ import { LinkExpiredInfoScreen } from "../../SuccessInfoScreen/LinkExpiredInfoSc
 import { withRouter } from "@/_hoc/withRouter";
 
 import { WithRouterProps } from "@/interfaces/router";
-import { ServiceType, getService } from "@/core/service";
+import { getService } from "@/core/service";
+import { ApplicationService } from "@/interfaces/application";
 
 type OrganizationInvitationPageProps = {
   params?: { token?: string };
@@ -125,7 +126,7 @@ class OrganizationInvitationPageComponent extends React.Component<
       }
     }
 
-    const appService = getService(ServiceType.Application);
+    const appService = getService<ApplicationService>(ApplicationService);
 
     appService
       .acceptInvite({

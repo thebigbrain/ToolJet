@@ -43,7 +43,7 @@ import { setCookie } from "@externals/helpers/cookie";
 import { useDataQueriesStore } from "@/_stores/dataQueriesStore";
 import { useCurrentStateStore } from "@/_stores/currentStateStore";
 import { shallow } from "zustand/shallow";
-import { getService, ServiceType } from "@/core/service";
+import { getService } from "@/core/service";
 import { WithRouterProps } from "@/interfaces/router";
 import { Subscription } from "rxjs";
 import { User } from "@/interfaces/user";
@@ -51,6 +51,7 @@ import {
   AppId,
   Application,
   ApplicationDefinition,
+  ApplicationService,
   VersionId,
   toVersionId,
 } from "@/interfaces/application";
@@ -347,7 +348,7 @@ class ViewerComponent extends React.Component<ViewerProps, ViewerState> {
   };
 
   get appService() {
-    return getService(ServiceType.Application);
+    return getService<ApplicationService>(ApplicationService);
   }
 
   loadApplicationBySlug = (slug) => {

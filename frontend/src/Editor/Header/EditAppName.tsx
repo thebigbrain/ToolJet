@@ -4,7 +4,8 @@ import {
   handleHttpErrorMessages,
   validateName,
 } from "@externals/helpers/utils";
-import { getService, ServiceType } from "@/core/service";
+import { getService } from "@/core/service";
+import { ApplicationService } from "@/interfaces/application";
 
 function EditAppName({ appId, appName = "", onNameChanged }) {
   const darkMode = localStorage.getItem("darkMode") === "true";
@@ -14,7 +15,7 @@ function EditAppName({ appId, appName = "", onNameChanged }) {
     setName(appName);
   }, [appName]);
 
-  const appService = getService(ServiceType.Application);
+  const appService = getService<ApplicationService>(ApplicationService);
 
   const saveAppName = async (name) => {
     const newName = name.trim();

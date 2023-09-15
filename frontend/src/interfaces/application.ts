@@ -1,3 +1,4 @@
+import { Service } from "@/core/service";
 import { Folder } from "./folder";
 import { InviteInfo } from "./invite";
 import { JetComponentEntity, JetComponentsMap } from "./jetcomponent";
@@ -10,8 +11,8 @@ export type AccessType = "edit" | "";
 
 type ApplicationIcon = string;
 
-export interface ApplicationService {
-  getAll: (page: number, folder: string, searchKey: string) => Promise<any>;
+export abstract class ApplicationService implements Service {
+  getAll: (page: number, folder?: string, searchKey?: string) => Promise<any>;
   getApp: (id: AppId, accessType?: AccessType) => Promise<any>;
   getAppBySlug: (slug: string) => Promise<any>;
   getAppByVersion: (appId: AppId, versionId: string) => Promise<any>;

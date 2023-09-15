@@ -1,1 +1,3 @@
-export type Constructor = new (...args: any[]) => {};
+export interface Constructor<T> {
+  new (...args: any[]): T;
+}

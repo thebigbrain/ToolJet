@@ -8,15 +8,16 @@ import {
   matchRoutes,
 } from "react-router-dom";
 import { BrowserTracing } from "@sentry/browser";
-import { BluejetMain, appService } from "./modules/Main";
+import { BluejetMain, ApplicationServiceImpl } from "./modules/Main";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import HttpBackend, { HttpBackendOptions } from "i18next-http-backend";
-import { ServiceType, registerService } from "./core/service";
+import { registerService } from "./core/service";
 import { installPlugin } from "./core/plugin";
 import configPlugin, { getAppConfig } from "./plugins/config/config";
 import { Config } from "./core/config";
+import { ApplicationService } from "./interfaces/application";
 
 bootstrap().then(render);
 
@@ -31,7 +32,7 @@ function loadPlugins(config: Config) {
   installI18n(config);
   installTracing(config);
 
-  installApp(config);
+  installServices(config);
 }
 
 function installI18n(config: Config) {
@@ -82,8 +83,8 @@ function installTracing(config: Config) {
   }
 }
 
-function installApp(config: Config) {
-  registerService(ServiceType.Application, appService);
+function installServices(config: Config) {
+  registerService(ApplicationService, ApplicationServiceImpl);
 }
 
 function render() {
