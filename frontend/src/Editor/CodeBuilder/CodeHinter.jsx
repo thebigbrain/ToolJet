@@ -281,7 +281,7 @@ export function CodeHinter({
   const defaultClassName =
     className === 'query-hinter' || className === 'custom-component' || undefined ? '' : 'code-hinter';
 
-  const ElementToRender = AllElements[TypeMapping[type]];
+  const ElementToRender = type && AllElements[TypeMapping[type]];
 
   const [forceCodeBox, setForceCodeBox] = useState(fxActive);
   const codeShow = (type ?? 'code') === 'code' || forceCodeBox;
@@ -386,7 +386,7 @@ export function CodeHinter({
           </div>
         </div>
       </div>
-      {!codeShow && (
+      {!codeShow && ElementToRender && (
         <div style={{ display: !codeShow ? 'block' : 'none' }}>
           <ElementToRender
             value={resolveReferences(initialValue, realState)}

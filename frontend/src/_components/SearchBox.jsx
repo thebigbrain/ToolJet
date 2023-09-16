@@ -9,7 +9,7 @@ export const SearchBox = forwardRef(
   (
     {
       width = '200px',
-      onSubmit,
+      onSubmit = null,
       className,
       debounceDelay = 300,
       darkMode = false,
@@ -89,7 +89,7 @@ export const SearchBox = forwardRef(
 );
 
 SearchBox.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func,
   debounceDelay: PropTypes.number,
   width: PropTypes.string,
 };

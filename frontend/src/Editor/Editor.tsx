@@ -1923,8 +1923,8 @@ class EditorComponent extends React.Component<EditorProps, EditorState> {
                             ? "100%"
                             : "450px",
                         maxWidth:
-                          +this.state.appDefinition.globalSettings
-                            .canvasMaxWidth +
+                          (+this.state.appDefinition.globalSettings
+                            .canvasMaxWidth).toString() +
                           this.state.appDefinition.globalSettings
                             .canvasMaxWidthType,
                         /**
