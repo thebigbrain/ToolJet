@@ -11,7 +11,7 @@ import Layout from "@/_ui/Layout";
 import AppList from "./AppList";
 import TemplateLibraryModal from "./TemplateLibraryModal";
 import HomeHeader from "./Header";
-import Modal from "./Modal";
+import Modal from "@/_components/Modal";
 import configs from "./Configs/AppIcon";
 import { WithTranslation, withTranslation } from "react-i18next";
 import { sample } from "lodash";

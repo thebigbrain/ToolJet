@@ -5,7 +5,7 @@ import { toast } from 'react-hot-toast';
 import { withTranslation } from 'react-i18next';
 import { ManageGroupPermissionResources } from '@/ManageGroupPermissionResources';
 import ErrorBoundary from '@/Editor/ErrorBoundary';
-import Modal from '../HomePage/Modal';
+import Modal from '@/_components/Modal';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
 import FolderList from '@/_ui/FolderList/FolderList';
 import { Loader } from '../ManageSSO/Loader';
@@ -159,9 +159,14 @@ class ManageGroupPermissionsComponent extends React.Component {
   };
 
   executeGroupUpdation = () => {
-    this.setState({ isUpdatingGroupName: true, selectedGroup: this.state.newGroupName });
+    this.setState({
+      isUpdatingGroupName: true,
+      selectedGroup: this.state.newGroupName,
+    });
     groupPermissionService
-      .update(this.state.groupToBeUpdated?.id, { name: this.state.newGroupName })
+      .update(this.state.groupToBeUpdated?.id, {
+        name: this.state.newGroupName,
+      })
       .then(() => {
         toast.success('Group name updated successfully');
         this.fetchGroups('current');
@@ -211,7 +216,11 @@ class ManageGroupPermissionsComponent extends React.Component {
                   className="btn btn-primary create-new-group-button"
                   onClick={(e) => {
                     e.preventDefault();
-                    this.setState({ newGroupName: null, showNewGroupForm: true, isSaveBtnDisabled: true });
+                    this.setState({
+                      newGroupName: null,
+                      showNewGroupForm: true,
+                      isSaveBtnDisabled: true,
+                    });
                   }}
                   data-cy="create-new-group-button"
                   leftIcon="plus"

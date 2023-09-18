@@ -15,7 +15,7 @@ import {
 } from "@/_services";
 import { withRouter } from "@/_hoc/withRouter";
 import { PrivateRoute, AdminRoute } from "@/_components";
-import { HomePage } from "@/HomePage";
+import { HomePage, SwitchWorkspacePage } from "@/modules/HomePage";
 import { LoginPage } from "@/modules/LoginPage";
 import { SignupPage } from "@/SignupPage";
 import { TooljetDatabase } from "@/TooljetDatabase";
@@ -28,7 +28,6 @@ import { SettingsPage } from "../../SettingsPage/SettingsPage";
 import { ForgotPassword } from "@/modules/ForgotPassword";
 import { ResetPassword } from "@/ResetPassword";
 import { MarketplacePage } from "@/MarketplacePage";
-import SwitchWorkspacePage from "@/HomePage/SwitchWorkspacePage";
 import { GlobalDatasources } from "@/GlobalDatasources";
 import { lt } from "semver";
 import Toast from "@/_ui/Toast";

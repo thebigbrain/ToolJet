@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import cx from 'classnames';
 import { folderService } from '@/_services';
 import { toast } from 'react-hot-toast';
-import Modal from './Modal';
+import Modal from '@/_components/Modal';
 import { FolderMenu } from './FolderMenu';
 import { ConfirmDialog, ToolTip } from '@/_components';
 import { useTranslation } from 'react-i18next';
