@@ -830,7 +830,7 @@ class HomePageComponent extends React.Component<HomePageProps, HomePageState> {
                 )}
                 {!isLoading &&
                   meta?.total_count === 0 &&
-                  !currentFolder.id &&
+                  !currentFolder?.id &&
                   !appSearchKey && (
                     <BlankPage
                       createApp={this.createApp}
