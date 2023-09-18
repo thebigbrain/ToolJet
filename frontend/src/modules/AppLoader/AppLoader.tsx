@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { withTranslation } from "react-i18next";
+import { WithTranslation, withTranslation } from "react-i18next";
 import { organizationService, authenticationService } from "@/_services";
 import { Editor } from "../../Editor/Editor";
 import { RealtimeEditor } from "@/Editor/RealtimeEditor";
@@ -12,10 +12,18 @@ import _ from "lodash";
 import { navigateTo } from "@externals/helpers/routes";
 import { getService } from "@/core/service";
 import { ApplicationService } from "@/interfaces/application";
+import useRouter from "@/_hooks/use-router";
 
-const AppLoaderComponent = (props) => {
+type AppLoaderProps = {
+  darkMode?: boolean;
+  switchDarkMode?: (dardMode: boolean) => void;
+} & WithTranslation;
+
+const AppLoaderComponent = (props: AppLoaderProps) => {
   const params = useParams();
   const appId = params.id;
+
+  const router = useRouter();
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => loadAppDetails(), []);
@@ -62,7 +70,7 @@ const AppLoaderComponent = (props) => {
           navigateTo(
             `${getSubpath() ?? ""}/login${
               !_.isEmpty(getWorkspaceId()) ? `/${getWorkspaceId()}` : ""
-            }?redirectTo=${props.location.pathname}`
+            }?redirectTo=${router.location.pathname}`
           );
           return;
         } else if (statusCode === 404 || statusCode === 422) {
