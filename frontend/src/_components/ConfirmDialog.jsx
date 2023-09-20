@@ -10,7 +10,7 @@ export function ConfirmDialog({
   onConfirm = null,
   onCancel = null,
   confirmButtonLoading = false,
-  darkMode,
+  darkMode = false,
   confirmButtonText = '',
   confirmButtonType = 'dangerPrimary',
   cancelButtonType = 'secondary',

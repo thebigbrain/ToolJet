@@ -18,10 +18,16 @@ import { installPlugin } from "./core/plugin";
 import configPlugin, { getAppConfig } from "./plugins/config/config";
 import { Config } from "./core/config";
 import { ApplicationService } from "./interfaces/application";
+import { Bluejet } from "./core/bluejet";
+import { BluejetWebImpl } from "./modules/Main/bluejetImpl";
+import { Theme } from "./core/theme";
 
 bootstrap().then(render);
 
 async function bootstrap() {
+  Bluejet.setInstance(new BluejetWebImpl());
+  Theme.setInstance(new Theme());
+
   const config = await getAppConfig();
   installPlugin(configPlugin);
 

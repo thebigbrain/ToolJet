@@ -7,7 +7,7 @@ import { Folders } from "./Folders";
 import { BlankPage } from "./BlankPage";
 import { toast } from "react-hot-toast";
 import { Button, ButtonGroup, Dropdown } from "react-bootstrap";
-import Layout from "@/_ui/Layout";
+import Layout from "./Layouts/Layout";
 import AppList from "./AppList";
 import TemplateLibraryModal from "./TemplateLibraryModal";
 import HomeHeader from "./Header";
@@ -569,10 +569,7 @@ class HomePageComponent extends React.Component<HomePageProps, HomePageState> {
       app,
     } = this.state;
     return (
-      <Layout
-        switchDarkMode={this.props.switchDarkMode}
-        darkMode={this.props.darkMode}
-      >
+      <Layout>
         <div className="wrapper home-page">
           <ConfirmDialog
             show={showAppDeletionConfirmation}

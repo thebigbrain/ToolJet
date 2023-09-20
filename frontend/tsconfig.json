@@ -17,7 +17,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "module": "ESNext",
-    "target": "es5",
+    "target": "ES2015",
     "jsx": "react",
     "allowJs": true,
     "moduleResolution": "Node"

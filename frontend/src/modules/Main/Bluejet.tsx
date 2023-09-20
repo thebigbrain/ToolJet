@@ -41,6 +41,9 @@ import { ToastOptions } from "react-hot-toast";
 import { navigateTo } from "@externals/helpers/routes";
 import { BreadCrumbContextProvider } from "@/core/context";
 import { Config } from "@/core/config";
+import { observables } from "@externals/observables/react";
+import { ThemeMode } from "../theme";
+import { isDarkObservable } from "../theme/mode";
 
 interface BluejetMainState {
   currentUser?: any;
@@ -50,16 +53,29 @@ interface BluejetMainState {
   updateAvailable?: boolean;
 }
 
-class BluejetMainComponent extends React.Component<{}, BluejetMainState> {
-  constructor(props) {
+type BluejetMainProps = {};
+
+class BluejetMainComponent extends React.Component<
+  BluejetMainProps,
+  BluejetMainState
+> {
+  constructor(props: BluejetMainProps) {
     super(props);
 
     this.state = {
       currentUser: null,
       fetchedMetadata: false,
-      darkMode: localStorage.getItem("darkMode") === "true",
     };
   }
+
+  get themeMode(): ThemeMode {
+    return ThemeMode.getInstance();
+  }
+
+  switchDarkMode = () => {
+    this.themeMode.switchMode();
+  };
+
   updateSidebarNAV = (val: string) => {
     this.setState({ sidebarNav: val });
   };
@@ -145,6 +161,8 @@ class BluejetMainComponent extends React.Component<{}, BluejetMainState> {
     this.fetchMetadata();
     setInterval(this.fetchMetadata, 1000 * 60 * 60 * 1);
   }
+
+  componentWillUnmount(): void {}
 
   isThisWorkspaceLoginPage = (justLoginPage = false) => {
     const subpath = window?.appConfig?.SUB_PATH
@@ -259,13 +277,9 @@ class BluejetMainComponent extends React.Component<{}, BluejetMainState> {
     authenticationService.logout();
   };
 
-  switchDarkMode = (newMode) => {
-    this.setState({ darkMode: newMode });
-    localStorage.setItem("darkMode", newMode);
-  };
-
-  render() {
-    const { updateAvailable, darkMode } = this.state;
+  render(): React.ReactNode {
+    const darkMode = this.themeMode.isDark;
+    const { updateAvailable } = this.state;
     let toastOptions: ToastOptions = {
       style: {
         wordBreak: "break-all",
@@ -500,7 +514,7 @@ class BluejetMainComponent extends React.Component<{}, BluejetMainState> {
                   }
                   return <Navigate to="/login" />;
                 }}
-              ></Route>
+              />
             </Routes>
           </BreadCrumbContextProvider>
         </div>
@@ -511,15 +525,17 @@ class BluejetMainComponent extends React.Component<{}, BluejetMainState> {
   }
 }
 
-const AppWithRouter = withRouter(BluejetMainComponent);
+const AppWithRouter = observables(isDarkObservable)(
+  withRouter(BluejetMainComponent)
+);
 
-export const BluejetMain = (props) => {
+export const BluejetMain = (props: any) => {
   const config = Config.getInstance();
 
   return (
     <Suspense fallback={null}>
       <BrowserRouter basename={config?.SUB_PATH || "/"}>
-        <AppWithRouter props={props} />
+        <AppWithRouter {...props} />
       </BrowserRouter>
     </Suspense>
   );
