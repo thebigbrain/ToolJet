@@ -1,6 +1,6 @@
 export enum JetRouteName {
-  home,
-  login = "/login/:organizationId",
+  home = "/",
+  login = "/login",
   setup = "/setup",
   sso = "/sso/:origin/:configId",
   signup = "/signup",
