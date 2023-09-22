@@ -31,3 +31,7 @@ export class ThemeMode {
 export const isDarkObservable = createObservable(
   ThemeMode.getInstance().isDark
 );
+
+export function getThemeMode() {
+  return ThemeMode.getInstance();
+}

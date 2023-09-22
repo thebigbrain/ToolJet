@@ -5,12 +5,9 @@ import { Link, Navigate } from "react-router-dom";
 import queryString from "query-string";
 import GoogleSSOLoginButton from "@/_components/LoginPage/GoogleSSOLoginButton";
 import GitSSOLoginButton from "@/_components/LoginPage/GitSSOLoginButton";
-import {
-  redirectToWorkspace,
-  validateEmail,
-  eraseRedirectUrl,
-  returnWorkspaceIdIfNeed,
-} from "@externals/helpers/utils";
+import { validateEmail, eraseRedirectUrl } from "@externals/helpers/utils";
+import { returnWorkspaceIdIfNeed, redirectToWorkspace } from "@/core/utils";
+
 import { getSubpath } from "@/core/utils";
 import { ShowLoading } from "@/_components";
 import { withTranslation } from "react-i18next";

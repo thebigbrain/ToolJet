@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 import {
   getWorkspaceIdFromURL,
@@ -8,90 +8,24 @@ import {
   pathnameWithoutSubpath,
 } from "@externals/helpers/utils";
 import { getSubpath } from "@/core/utils";
-import {
-  authenticationService,
-  tooljetService,
-  organizationService,
-} from "@/_services";
+import { authenticationService, organizationService } from "@/_services";
 import { withRouter } from "@/_hoc/withRouter";
-import { PrivateRoute, AdminRoute } from "@/_components";
-import { HomePage, SwitchWorkspacePage } from "@/modules/HomePage";
-import { LoginPage } from "@/modules/LoginPage";
-import { SignupPage } from "@/SignupPage";
-import { TooljetDatabase } from "@/TooljetDatabase";
-import { OrganizationInvitationPage } from "../OrganizationInvite";
-import { Authorize } from "@/Oauth2";
-import { Authorize as Oauth } from "@/Oauth";
-import { Viewer } from "@/Editor";
-import { OrganizationSettings } from "@/modules/OrganizationSettingsPage";
-import { SettingsPage } from "../../SettingsPage/SettingsPage";
-import { ForgotPassword } from "@/modules/ForgotPassword";
-import { ResetPassword } from "@/ResetPassword";
-import { MarketplacePage } from "@/MarketplacePage";
-import { GlobalDatasources } from "@/GlobalDatasources";
-import { lt } from "semver";
-import Toast from "@/_ui/Toast";
-import { VerificationSuccessInfoScreen } from "@/SuccessInfoScreen";
 import "@/_styles/theme.scss";
-import { AppLoader } from "../AppLoader";
-import SetupScreenSelfHost from "../../SuccessInfoScreen/SetupScreenSelfHost";
 import "react-tooltip/dist/react-tooltip.css";
-import { ToastOptions } from "react-hot-toast";
 
 import { navigateTo } from "@externals/helpers/routes";
-import { BreadCrumbContextProvider } from "@/core/context";
 import { Config } from "@/core/config";
 import { observables } from "@externals/observables/react";
-import { ThemeMode } from "../theme";
 import { isDarkObservable } from "../theme/mode";
+import { JetRoutesView } from "@/modules/routes";
+import { authRoutes, routes } from "./allRoutes";
+import JetUpdate from "./JetUpdate";
+import JetToast from "./JetToast";
+import JetSidebar from "./JetSidebar";
+import JetThemeWrapper from "./JetThemeWrapper";
+import { UnknowPage } from "./UnknowPage";
 
-interface BluejetMainState {
-  currentUser?: any;
-  fetchedMetadata?: boolean;
-  darkMode?: boolean;
-  sidebarNav?: string;
-  updateAvailable?: boolean;
-}
-
-type BluejetMainProps = {};
-
-class BluejetMainComponent extends React.Component<
-  BluejetMainProps,
-  BluejetMainState
-> {
-  constructor(props: BluejetMainProps) {
-    super(props);
-
-    this.state = {
-      currentUser: null,
-      fetchedMetadata: false,
-    };
-  }
-
-  get themeMode(): ThemeMode {
-    return ThemeMode.getInstance();
-  }
-
-  switchDarkMode = () => {
-    this.themeMode.switchMode();
-  };
-
-  updateSidebarNAV = (val: string) => {
-    this.setState({ sidebarNav: val });
-  };
-  fetchMetadata = () => {
-    tooljetService.fetchMetaData().then((data) => {
-      localStorage.setItem("currentVersion", data.installed_version);
-      if (
-        data.latest_version &&
-        lt(data.installed_version, data.latest_version) &&
-        data.version_ignored === false
-      ) {
-        this.setState({ updateAvailable: true });
-      }
-    });
-  };
-
+class BluejetMainComponent extends React.Component {
   isThisExistedRoute = () => {
     const existedPaths = [
       "forgot-password",
@@ -157,12 +91,7 @@ class BluejetMainComponent extends React.Component<
           });
       }
     }
-
-    this.fetchMetadata();
-    setInterval(this.fetchMetadata, 1000 * 60 * 60 * 1);
   }
-
-  componentWillUnmount(): void {}
 
   isThisWorkspaceLoginPage = (justLoginPage = false) => {
     const subpath = window?.appConfig?.SUB_PATH
@@ -271,255 +200,27 @@ class BluejetMainComponent extends React.Component<
       ...currentSession,
       ...newSession,
     });
+
+    authRoutes();
+
+    this.setState({});
   };
 
   logout = () => {
     authenticationService.logout();
   };
 
-  render(): React.ReactNode {
-    const darkMode = this.themeMode.isDark;
-    const { updateAvailable } = this.state;
-    let toastOptions: ToastOptions = {
-      style: {
-        wordBreak: "break-all",
-      },
-    };
-
-    if (darkMode) {
-      toastOptions = {
-        className: "toast-dark-mode",
-        style: {
-          borderRadius: "10px",
-          background: "#333",
-          color: "#fff",
-          wordBreak: "break-all",
-        },
-      };
-    }
-    const { sidebarNav } = this.state;
-    const { updateSidebarNAV } = this;
+  render() {
     return (
       <>
-        <div
-          className={`main-wrapper ${darkMode ? "theme-dark dark-theme" : ""}`}
-          data-cy="main-wrapper"
-        >
-          {updateAvailable && (
-            <div className="alert alert-info alert-dismissible" role="alert">
-              <h3 className="mb-1">Update available</h3>
-              <p>A new version of ToolJet has been released.</p>
-              <div className="btn-list">
-                <a
-                  href="https://docs.tooljet.io/docs/setup/updating"
-                  target="_blank"
-                  className="btn btn-info"
-                  rel="noreferrer"
-                >
-                  Read release notes & update
-                </a>
-                <a
-                  onClick={() => {
-                    tooljetService.skipVersion();
-                    this.setState({ updateAvailable: false });
-                  }}
-                  className="btn"
-                >
-                  Skip this version
-                </a>
-              </div>
-            </div>
-          )}
-          <BreadCrumbContextProvider value={{ sidebarNav, updateSidebarNAV }}>
-            <Routes>
-              <Route path="/login/:organizationId" element={<LoginPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route
-                path="/setup"
-                element={
-                  <SetupScreenSelfHost {...this.props} darkMode={darkMode} />
-                }
-              />
-              <Route path="/sso/:origin/:configId" element={<Oauth />} />
-              <Route path="/sso/:origin" element={<Oauth />} />
-              <Route path="/signup" element={<SignupPage />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route
-                path="/reset-password/:token"
-                element={<ResetPassword />}
-              />
-              <Route path="/reset-password" element={<ResetPassword />} />
-              <Route
-                path="/invitations/:token"
-                element={<VerificationSuccessInfoScreen />}
-              />
-              <Route
-                path="/invitations/:token/workspaces/:organizationToken"
-                element={<VerificationSuccessInfoScreen />}
-              />
-              <Route
-                path="/confirm"
-                element={<VerificationSuccessInfoScreen />}
-              />
-              <Route
-                path="/organization-invitations/:token"
-                element={
-                  <OrganizationInvitationPage
-                    {...this.props}
-                    darkMode={darkMode}
-                  />
-                }
-              />
-              <Route
-                path="/confirm-invite"
-                element={
-                  <OrganizationInvitationPage
-                    {...this.props}
-                    darkMode={darkMode}
-                  />
-                }
-              />
-              <Route
-                path="/:workspaceId/apps/:id/:pageHandle?/*"
-                element={
-                  <PrivateRoute>
-                    <AppLoader
-                      switchDarkMode={this.switchDarkMode}
-                      darkMode={darkMode}
-                    />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/applications/:id/versions/:versionId/:pageHandle?"
-                element={
-                  <PrivateRoute>
-                    <Viewer
-                      switchDarkMode={this.switchDarkMode}
-                      darkMode={darkMode}
-                    />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/applications/:slug/:pageHandle?"
-                element={
-                  <PrivateRoute>
-                    <Viewer
-                      switchDarkMode={this.switchDarkMode}
-                      darkMode={darkMode}
-                    />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/oauth2/authorize"
-                element={
-                  <PrivateRoute>
-                    <Authorize
-                      switchDarkMode={this.switchDarkMode}
-                      darkMode={darkMode}
-                    />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/:workspaceId/workspace-settings"
-                element={
-                  <PrivateRoute>
-                    <OrganizationSettings
-                      switchDarkMode={this.switchDarkMode}
-                      darkMode={darkMode}
-                    />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/:workspaceId/settings"
-                element={
-                  <PrivateRoute>
-                    <SettingsPage
-                      switchDarkMode={this.switchDarkMode}
-                      darkMode={darkMode}
-                    />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/:workspaceId/data-sources"
-                element={
-                  <PrivateRoute>
-                    <GlobalDatasources
-                      switchDarkMode={this.switchDarkMode}
-                      darkMode={darkMode}
-                    />
-                  </PrivateRoute>
-                }
-              />
-              {window.appConfig?.ENABLE_TOOLJET_DB == true && (
-                <Route
-                  path="/:workspaceId/database"
-                  element={
-                    <PrivateRoute>
-                      <TooljetDatabase
-                        switchDarkMode={this.switchDarkMode}
-                        darkMode={darkMode}
-                      />
-                    </PrivateRoute>
-                  }
-                />
-              )}
+        <JetThemeWrapper>
+          <JetUpdate />
+          <JetSidebar>
+            <JetRoutesView routes={routes} unknown={UnknowPage} />
+          </JetSidebar>
+        </JetThemeWrapper>
 
-              {window.appConfig?.ENABLE_MARKETPLACE_FEATURE === true && (
-                <Route
-                  path="/integrations"
-                  element={
-                    <AdminRoute>
-                      <MarketplacePage
-                        switchDarkMode={this.switchDarkMode}
-                        darkMode={darkMode}
-                      />
-                    </AdminRoute>
-                  }
-                />
-              )}
-              <Route path="/" element={<Navigate to="/:workspaceId" />} />
-              <Route
-                path="/switch-workspace"
-                element={
-                  <PrivateRoute>
-                    <SwitchWorkspacePage darkMode={darkMode} />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/:workspaceId"
-                element={
-                  <PrivateRoute>
-                    <HomePage
-                      switchDarkMode={this.switchDarkMode}
-                      darkMode={darkMode}
-                    />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="*"
-                Component={() => {
-                  if (
-                    authenticationService?.currentSessionValue
-                      ?.current_organization_id
-                  ) {
-                    return <Navigate to="/:workspaceId" />;
-                  }
-                  return <Navigate to="/login" />;
-                }}
-              />
-            </Routes>
-          </BreadCrumbContextProvider>
-        </div>
-
-        <Toast toastOptions={toastOptions} />
+        <JetToast />
       </>
     );
   }

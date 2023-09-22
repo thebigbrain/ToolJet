@@ -86,7 +86,7 @@ class HomePageComponent extends React.Component<HomePageProps, HomePageState> {
     this.fileInput = React.createRef();
     this.state = {
       currentUser: {
-        id: currentSession?.current_user.id,
+        id: currentSession.current_user.id,
       },
       users: null,
       isLoading: true,

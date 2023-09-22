@@ -21,12 +21,15 @@ import { ApplicationService } from "./interfaces/application";
 import { Bluejet } from "./core/bluejet";
 import { BluejetWebImpl } from "./modules/Main/bluejetImpl";
 import { Theme } from "./core/theme";
+import { installRouter } from "./modules/routes";
+import { RrJetRouter } from "./modules/Main/allRoutes";
 
 bootstrap().then(render);
 
 async function bootstrap() {
   Bluejet.setInstance(new BluejetWebImpl());
   Theme.setInstance(new Theme());
+  installRouter(new RrJetRouter());
 
   const config = await getAppConfig();
   installPlugin(configPlugin);

@@ -882,23 +882,6 @@ export function eraseRedirectUrl() {
   return redirectPath;
 }
 
-export const returnWorkspaceIdIfNeed = (path) => {
-  if (path) {
-    return !path.includes("applications") && !path.includes("integrations")
-      ? `/${getWorkspaceId()}`
-      : "";
-  }
-  return `/${getWorkspaceId()}`;
-};
-
-export const redirectToWorkspace = () => {
-  const path = eraseRedirectUrl();
-  const redirectPath = `${returnWorkspaceIdIfNeed(path)}${
-    path && path !== "/" ? path : ""
-  }`;
-  navigateTo(getSubpath() ? `${getSubpath()}${redirectPath}` : redirectPath);
-};
-
 /** Check if the query is connected to a DS. */
 export const isQueryRunnable = (query) => {
   if (staticDataSources.find((source) => query.kind === source.kind)) {
