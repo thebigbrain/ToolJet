@@ -22,7 +22,7 @@ export function ConfirmDialog({
   const [showModal, setShow] = useState(show);
   const { t } = useTranslation();
 
-  const buttonText = confirmButtonText ?? t('globals.yes', 'Yes');
+  const buttonText = confirmButtonText || t('globals.yes', 'Yes');
 
   useEffect(() => {
     setShow(show);
