@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { validateEmail } from "@externals/helpers/utils";
 import { authenticationService } from "@/_services";
-import { ForgotPasswordInfoScreen } from "@/SuccessInfoScreen";
+import { ForgotPasswordInfoScreen } from "@/modules/SuccessInfoScreen";
 import OnboardingNavbar from "@/_components/OnboardingNavbar";
 import { ButtonSolid } from "@/_components/AppButton";
 import { withTranslation } from "react-i18next";

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Copy = ({ fill = '#C1C8CD', width = '25', className = 'tj-icon', viewBox = '0 0 25 25', onClick }) => (
+const Copy = ({ fill = '#C1C8CD', width = '25', className = 'tj-icon', viewBox = '0 0 25 25', onClick = null }) => (
   <svg
     width={width}
     height={width}

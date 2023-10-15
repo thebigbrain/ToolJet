@@ -3,7 +3,7 @@ import { useDroppable } from '@dnd-kit/core';
 import '@/_styles/widgets/kanban.scss';
 import cx from 'classnames';
 
-export const Container = ({ children, id, disabled, ...props }) => {
+export const Container = ({ children, id, disabled = false, ...props }) => {
   const { setNodeRef } = useDroppable({
     id,
   });

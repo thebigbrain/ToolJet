@@ -1,23 +1,23 @@
 import { Navigate, generatePath } from "react-router-dom";
 
 import { HomePage, SwitchWorkspacePage } from "@/modules/HomePage";
-import { LoginPage } from "@/modules/LoginPage";
-import { SignupPage } from "@/SignupPage";
-import { TooljetDatabase } from "@/TooljetDatabase";
+import { AuthState, LoginPage } from "@/modules/auth";
+import { SignupPage } from "@/modules/SignupPage";
+import { TooljetDatabase } from "@/modules/TooljetDatabase";
 import { OrganizationInvitationPage } from "@/modules/OrganizationInvite";
 import { Authorize as Oauth2 } from "@/Oauth2";
 import { Authorize as Oauth } from "@/Oauth";
 import { Viewer } from "@/Editor";
 import { OrganizationSettings } from "@/modules/OrganizationSettingsPage";
-import { SettingsPage } from "@/SettingsPage/SettingsPage";
+import { SettingsPage } from "@/modules/SettingsPage/SettingsPage";
 import { ForgotPassword } from "@/modules/ForgotPassword";
-import { ResetPassword } from "@/ResetPassword";
-import { MarketplacePage } from "@/MarketplacePage";
-import { GlobalDatasources } from "@/GlobalDatasources";
-import { VerificationSuccessInfoScreen } from "@/SuccessInfoScreen";
+import { ResetPassword } from "@/modules/ResetPassword";
+import { MarketplacePage } from "@/modules/MarketplacePage";
+import { GlobalDatasources } from "@/modules/GlobalDatasources";
+import { VerificationSuccessInfoScreen } from "@/modules/SuccessInfoScreen";
 import "@/_styles/theme.scss";
 import { AppLoader } from "@/modules/AppLoader";
-import SetupScreenSelfHost from "@/SuccessInfoScreen/SetupScreenSelfHost";
+import SetupScreenSelfHost from "@/modules/SuccessInfoScreen/SetupScreenSelfHost";
 
 import {
   JetRouteName,
@@ -55,12 +55,17 @@ export const routes: Array<JetRoute> = [
   { name: JetRouteName.integrations, component: MarketplacePage },
 ];
 
-export function authRoutes() {
-  const visibilityConfig = getRoutesVisibilityMap();
+export function initRoutes(auth: AuthState) {
+  const visibilityConfig = getRoutesVisibilityMap({
+    hasLogged: auth.hasLogged,
+    isAdmin: auth.isAdmin,
+  });
 
   routes.forEach((r) => {
     r.visible = visibilityConfig[r.name];
   });
+
+  return routes;
 }
 
 export class RrJetRouter extends JetRouter {
@@ -90,5 +95,9 @@ export class RrJetRouter extends JetRouter {
 
   getCurrentRouteParam<P>(): P {
     return (RrJetRouter._currentRouteParam ?? {}) as P;
+  }
+
+  getCurrentRoute(): JetRoute {
+    return RrJetRouter._currentRoute;
   }
 }

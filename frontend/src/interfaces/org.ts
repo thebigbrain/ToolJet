@@ -1,3 +1,6 @@
 export type OrgId = string;
 
-export interface Organization {}
+export interface Organization {
+  id?: OrgId;
+  name?: string;
+}

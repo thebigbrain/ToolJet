@@ -8,12 +8,12 @@ import { useAppVersionStore } from '@/_stores/appVersionStore';
 import { shallow } from 'zustand/shallow';
 
 export const CreateVersion = ({
-  appId,
-  appVersions,
-  setAppVersions,
-  setAppDefinitionFromVersion,
-  showCreateAppVersion,
-  setShowCreateAppVersion,
+  appId = null,
+  appVersions = null,
+  setAppVersions = null,
+  setAppDefinitionFromVersion = null,
+  showCreateAppVersion = null,
+  setShowCreateAppVersion = null,
 }) => {
   const [isCreatingVersion, setIsCreatingVersion] = useState(false);
   const [versionName, setVersionName] = useState('');

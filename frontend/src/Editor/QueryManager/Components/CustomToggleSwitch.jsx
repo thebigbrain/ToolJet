@@ -6,7 +6,7 @@ export const CustomToggleSwitch = ({
   toggleSwitchFunction,
   action,
   darkMode = false,
-  label = '',
+  label = null,
   dataCy = '',
   disabled = false,
 }) => {

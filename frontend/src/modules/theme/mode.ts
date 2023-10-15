@@ -16,7 +16,7 @@ export class ThemeMode {
   switchMode() {
     this.isDark = !this.isDark;
     persist(STORAGE_KEY, this.isDark);
-    notify(isDarkObservable, this.isDark);
+    notify(isDarkObs, this.isDark);
   }
 
   get name(): string {
@@ -28,9 +28,11 @@ export class ThemeMode {
   }
 }
 
-export const isDarkObservable = createObservable(
-  ThemeMode.getInstance().isDark
-);
+export const isDarkObs = createObservable(ThemeMode.getInstance().isDark);
+
+export function getIsDark(): boolean {
+  return isDarkObs.value;
+}
 
 export function getThemeMode() {
   return ThemeMode.getInstance();

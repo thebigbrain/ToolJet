@@ -5,10 +5,10 @@ import defaultStyles from './styles';
 
 export const SelectComponent = ({
   options = [],
-  value,
-  onChange,
-  closeMenuOnSelect,
-  customWrap, //used so that editor selects remains with old theme , remove when whole theme is same !
+  value = null,
+  onChange = null,
+  closeMenuOnSelect = null,
+  customWrap = null, //used so that editor selects remains with old theme , remove when whole theme is same !
   ...restProps
 }) => {
   const darkMode = localStorage.getItem('darkMode') === 'true';

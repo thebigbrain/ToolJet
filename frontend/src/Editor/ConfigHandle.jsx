@@ -2,17 +2,17 @@ import React from 'react';
 
 export const ConfigHandle = function ConfigHandle({
   id,
-  component,
-  dragRef,
-  removeComponent,
-  position,
-  widgetTop,
-  widgetHeight,
+  component = null,
+  dragRef = null,
+  removeComponent = null,
+  position = null,
+  widgetTop = null,
+  widgetHeight = null,
   isMultipleComponentsSelected = false,
   setSelectedComponent = () => null, //! Only Modal widget passes this uses props down. All other widgets use selecto lib
   customClassName = '',
   configWidgetHandlerForModalComponent = false,
-  isVersionReleased,
+  isVersionReleased = false,
 }) {
   return (
     <div
@@ -39,7 +39,11 @@ export const ConfigHandle = function ConfigHandle({
           data-cy={`${component.name.toLowerCase()}-config-handle`}
         >
           <img
-            style={{ cursor: 'pointer', marginRight: '5px', verticalAlign: 'middle' }}
+            style={{
+              cursor: 'pointer',
+              marginRight: '5px',
+              verticalAlign: 'middle',
+            }}
             src="assets/images/icons/settings.svg"
             width="12"
             height="12"

@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import { SketchPicker } from 'react-color';
 import { ToolTip } from './Components/ToolTip';
 
-export const Color = ({ param, definition, onChange, paramType, componentMeta, cyLabel }) => {
+export const Color = ({
+  param,
+  definition = null,
+  onChange = null,
+  paramType = '',
+  componentMeta = {},
+  cyLabel = '',
+}) => {
   const [showPicker, setShowPicker] = useState(false);
 
   const coverStyles = {

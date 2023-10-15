@@ -1,7 +1,13 @@
 import React from 'react';
 import { default as BootstrapModal } from 'react-bootstrap/Modal';
 
-export default function Modal({ title, show, closeModal, customClassName = '', children = [] }) {
+export default function Modal({
+  title = '' || React.Element,
+  show = false,
+  closeModal = null,
+  customClassName = '',
+  children = [] || React.Element,
+}) {
   const darkMode = localStorage.getItem('darkMode') === 'true';
   return (
     <BootstrapModal

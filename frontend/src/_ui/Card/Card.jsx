@@ -3,15 +3,15 @@ import React from 'react';
 import { allSvgs } from '@tooljet/plugins/client';
 
 const Card = ({
-  title,
-  src,
-  handleClick,
-  height = 50,
-  width = 50,
+  title = null,
+  src = null,
+  handleClick = null,
+  height = `50px`,
+  width = `50px`,
   usePluginIcon = false,
-  className,
-  titleClassName,
-  actionButton,
+  className = null,
+  titleClassName = null,
+  actionButton = null,
 }) => {
   const DisplayIcon = ({ src }) => {
     if (typeof src !== 'string') return;

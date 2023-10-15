@@ -3,13 +3,13 @@ import Modal from 'react-bootstrap/Modal';
 import { useTranslation } from 'react-i18next';
 
 export function Confirm({
-  show,
+  show = false,
   title = '',
   message = '',
   onConfirm = null,
   onCancel = null,
-  queryConfirmationData,
-  darkMode,
+  queryConfirmationData = null,
+  darkMode = false,
   confirmButtonText = '',
   cancelButtonText = '',
   callCancelFnOnConfirm = true,

@@ -29,7 +29,12 @@ const Button = ({
     <div
       type="button"
       title={title}
-      style={{ height: baseHeight, width: baseWidth, ...styles, ...(disabled ? diabledStyles : {}) }}
+      style={{
+        height: baseHeight,
+        width: baseWidth,
+        ...styles,
+        ...(disabled ? diabledStyles : {}),
+      }}
       className={`btn base-button m-1 ${darkMode && 'dark'} ${classNames} ${isLoading && 'btn-loading'}`}
       onClick={onClick}
     >
@@ -38,7 +43,7 @@ const Button = ({
   );
 };
 
-const Content = ({ title = null, iconSrc = null, direction = 'left', dataCy }) => {
+const Content = ({ title = null, iconSrc = null, direction = 'left', dataCy = null }) => {
   const Icon = !iconSrc ? (
     ''
   ) : (
@@ -89,7 +94,11 @@ const UnstyledButton = ({ children, onClick, classNames = '', styles = {}, disab
   return (
     <div
       type="button"
-      style={{ ...styles, ...(disabled ? defaultDisabledStyles : {}), ...cursorNotPointer }}
+      style={{
+        ...styles,
+        ...(disabled ? defaultDisabledStyles : {}),
+        ...cursorNotPointer,
+      }}
       className={`unstyled-button ${classNames} ${disabled && 'disabled'} ${darkMode && 'dark'}`}
       onClick={onClick}
     >

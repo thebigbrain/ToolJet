@@ -1,3 +1,5 @@
+import { matchPath } from "react-router";
+
 export enum JetRouteName {
   home = "/",
   login = "/login",
@@ -22,4 +24,25 @@ export enum JetRouteName {
 
 export function routeName2Path(name: JetRouteName): string {
   return name.toString();
+}
+
+export function findRouteName(path: string): JetRouteName {
+  return Object.values(JetRouteName).find((value) => {
+    return matchPath(routeName2Path(value), path);
+  });
+}
+
+export function isLoginPage(path: string): boolean {
+  const name = findRouteName(path);
+  return name == JetRouteName.login;
+}
+
+export function isSwitchWorkspace(path: string): boolean {
+  const name = findRouteName(path);
+  return name == JetRouteName.switch_workspace;
+}
+
+export function isApplications(path: string): boolean {
+  const name = findRouteName(path);
+  return name == JetRouteName.applications;
 }

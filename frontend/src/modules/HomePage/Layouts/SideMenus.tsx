@@ -2,14 +2,14 @@ import React from "react";
 import { Link } from "react-router-dom";
 import useRouter from "@/_hooks/use-router";
 import { ToolTip } from "@/_components/ToolTip";
-import { Profile } from "@/_components/Profile";
+import { Profile } from "@/modules/users/Profile";
 import { NotificationCenter } from "@/_components/NotificationCenter";
-import { authenticationService } from "@/_services";
 import SolidIcon from "@/_ui/Icon/SolidIcons";
 import { getPrivateRoute } from "@/core/routes";
 import useGlobalDatasourceUnsavedChanges from "@/_hooks/useGlobalDatasourceUnsavedChanges";
 import { Bluejet } from "@/core/bluejet";
 import { ThemeMode } from "@/modules/theme";
+import { getCurrentSession } from "@/modules/users";
 
 const SideMenus = () => {
   const jet = Bluejet.getInstance();
@@ -17,7 +17,7 @@ const SideMenus = () => {
   const themeMode = ThemeMode.getInstance();
 
   const router = useRouter();
-  const currentUserValue = authenticationService.currentSessionValue;
+  const currentUserValue = getCurrentSession();
   const admin = currentUserValue?.admin;
   const marketplaceEnabled = admin && config?.ENABLE_MARKETPLACE_FEATURE;
 

@@ -4,7 +4,16 @@ import cx from 'classnames';
 import { Tooltip } from 'react-tooltip';
 
 // eslint-disable-next-line no-unused-vars
-const Avatar = ({ text, image, avatarId, title = '', borderColor = '', borderShape, indexId = 0, className }) => {
+const Avatar = ({
+  text,
+  image = '',
+  avatarId,
+  title = '',
+  borderColor = '',
+  borderShape = '',
+  indexId = 0,
+  className = '',
+}) => {
   const formattedTitle = String(title).toLowerCase().replace(/\s+/g, '-');
   const [avatar, setAvatar] = React.useState();
 
@@ -15,7 +24,9 @@ const Avatar = ({ text, image, avatarId, title = '', borderColor = '', borderSha
     }
     if (avatarId) fetchAvatar();
 
-    () => avatar && URL.revokeObjectURL(avatar);
+    return () => {
+      avatar && URL.revokeObjectURL(avatar);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [avatarId]);
 

@@ -17,13 +17,12 @@ import { WithTranslation, withTranslation } from "react-i18next";
 import { sample } from "lodash";
 import ExportAppModal from "./ExportAppModal";
 import Footer from "./Footer";
-import { OrganizationList } from "@/_components/OrganizationManager/List";
+import { OrganizationList } from "@/modules/OrganizationManager/List";
 import { ButtonSolid } from "@/_ui/AppButton/AppButton";
 import BulkIcon from "@/_ui/Icon/bulkIcons/index";
 import { getWorkspaceId } from "@externals/helpers/utils";
 import { withRouter } from "@/_hoc/withRouter";
 import { getService } from "@/core/service";
-import { User } from "@/interfaces/user";
 import { Folder } from "@/interfaces/folder";
 import {
   Application,
@@ -31,6 +30,7 @@ import {
   ApplicationService,
 } from "@/interfaces/application";
 import { WithRouterProps } from "@/interfaces/router";
+import { User, getCurrentSession, getCurrentUser } from "@/modules/users";
 
 const { iconList, defaultIcon } = configs;
 
@@ -81,13 +81,11 @@ class HomePageComponent extends React.Component<HomePageProps, HomePageState> {
   constructor(props) {
     super(props);
 
-    const currentSession = authenticationService.currentSessionValue;
+    const currentUser = getCurrentUser();
 
     this.fileInput = React.createRef();
     this.state = {
-      currentUser: {
-        id: currentSession.current_user.id,
-      },
+      currentUser,
       users: null,
       isLoading: true,
       creatingApp: false,
@@ -122,6 +120,14 @@ class HomePageComponent extends React.Component<HomePageProps, HomePageState> {
 
   get appService() {
     return getService<ApplicationService>(ApplicationService);
+  }
+
+  get session() {
+    return getCurrentSession();
+  }
+
+  get user() {
+    return getCurrentUser();
   }
 
   fetchApps = (page = 1, folder?: string, searchKey?: string) => {
@@ -253,7 +259,7 @@ class HomePageComponent extends React.Component<HomePageProps, HomePageState> {
   };
 
   canUserPerform(user: User, action?: string, app?: Application) {
-    const currentSession = authenticationService.currentSessionValue;
+    const currentSession = getCurrentSession();
     let permissionGrant;
 
     switch (action) {
@@ -316,8 +322,8 @@ class HomePageComponent extends React.Component<HomePageProps, HomePageState> {
     return permissions.some((p) => p[action]);
   }
 
-  isUserOwnerOfApp(user, app) {
-    return user.id == app.user_id;
+  isUserOwnerOfApp(user: User, app) {
+    return user?.id && user?.id == app?.user_id;
   }
 
   canCreateApp = () => {
@@ -335,21 +341,21 @@ class HomePageComponent extends React.Component<HomePageProps, HomePageState> {
   canCreateFolder = () => {
     return this.canAnyGroupPerformAction(
       "folder_create",
-      authenticationService.currentSessionValue?.group_permissions
+      this.session?.group_permissions
     );
   };
 
   canDeleteFolder = () => {
     return this.canAnyGroupPerformAction(
       "folder_delete",
-      authenticationService.currentSessionValue?.group_permissions
+      this.session?.group_permissions
     );
   };
 
   canUpdateFolder = () => {
     return this.canAnyGroupPerformAction(
       "folder_update",
-      authenticationService.currentSessionValue?.group_permissions
+      this.session?.group_permissions
     );
   };
 
@@ -397,7 +403,7 @@ class HomePageComponent extends React.Component<HomePageProps, HomePageState> {
     if (this.state.appSearchKey === key) {
       return;
     }
-    this.fetchApps(1, this.state.currentFolder.id, key || "");
+    this.fetchApps(1, this.state.currentFolder?.id, key || "");
   };
 
   addAppToFolder = () => {

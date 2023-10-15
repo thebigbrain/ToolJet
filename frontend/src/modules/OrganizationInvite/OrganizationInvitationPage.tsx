@@ -9,7 +9,7 @@ import EnterIcon from "@assets/images/onboardingassets/Icons/Enter";
 import EyeHide from "@assets/images/onboardingassets/Icons/EyeHide";
 import EyeShow from "@assets/images/onboardingassets/Icons/EyeShow";
 import Spinner from "@/_ui/Spinner";
-import { LinkExpiredInfoScreen } from "../../SuccessInfoScreen/LinkExpiredInfoScreen";
+import { LinkExpiredInfoScreen } from "../SuccessInfoScreen/LinkExpiredInfoScreen";
 import { withRouter } from "@/_hoc/withRouter";
 
 import { WithRouterProps } from "@/interfaces/router";

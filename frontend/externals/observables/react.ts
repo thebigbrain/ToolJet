@@ -1,37 +1,45 @@
 import React, {
-  ComponentType,
+  ComponentClass,
+  FunctionComponent,
+  PropsWithChildren,
   createElement,
   useEffect,
   useState,
 } from "react";
-import { Observable, Observer } from "./_internal/observable";
+import {
+  AbstractObservable,
+  Observable,
+  Observer,
+} from "./_internal/observable";
 
-type ObservablesReturnType<P extends Object> = (
-  Comp: ComponentType<P>
-) => ComponentType<P>;
+export function observables<P>(
+  ...subjects: Array<Observable<AbstractObservable>>
+) {
+  return function <T extends FunctionComponent | ComponentClass>(Comp: T) {
+    const Wrapped = (props: P) => {
+      let [refreshCounter, setRefreshCounter] = useState(0);
 
-export function observables<P = {}>(
-  ...subjects: Array<Observable<any>>
-): ObservablesReturnType<P> {
-  return (WrappedComponent: ComponentType<P>) => (props: P) => {
-    let [refreshCounter, setRefreshCounter] = useState(0);
+      useEffect(() => {
+        const observer: Observer<any> = () => {
+          refreshCounter++;
+          setRefreshCounter(refreshCounter);
+        };
 
-    useEffect(() => {
-      const observer: Observer<number> = () => {
-        refreshCounter++;
-        setRefreshCounter(refreshCounter);
-      };
+        subjects.forEach((s) => {
+          s.attach(observer);
+          return s;
+        });
 
-      subjects.forEach((s) => {
-        s.attach(observer);
-        return s;
-      });
+        return () => {
+          subjects.forEach((s) => s.detach(observer));
+        };
+      }, []);
 
-      return () => {
-        subjects.forEach((s) => s.detach(observer));
-      };
-    }, []);
+      return createElement(Comp, props, (props as PropsWithChildren).children);
+    };
 
-    return createElement(WrappedComponent, props);
+    return Wrapped as unknown as T;
   };
 }
+
+export const auto = observables;

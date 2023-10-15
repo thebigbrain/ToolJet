@@ -16,11 +16,11 @@ function createPortalRoot() {
 }
 
 const Drawer = ({
-  isOpen,
+  isOpen = false,
   disableFocus = false,
-  children,
-  className,
-  onClose,
+  children = null,
+  className = '',
+  onClose = null,
   position = 'left',
   removeWhenClosed = true,
 }) => {
@@ -48,7 +48,7 @@ const Drawer = ({
 
   const onKeyPress = (e) => {
     if (e.key === 'Escape') {
-      onClose();
+      onClose && onClose();
     }
   };
 

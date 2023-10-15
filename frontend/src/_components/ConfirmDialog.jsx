@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
 
 export function ConfirmDialog({
-  show,
+  show = false,
   title = '',
-  message = '',
+  message = null,
   onConfirm = null,
   onCancel = null,
   confirmButtonLoading = false,

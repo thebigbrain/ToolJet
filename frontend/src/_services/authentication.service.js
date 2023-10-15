@@ -40,7 +40,7 @@ export const authenticationService = {
     return currentSessionSubject.value;
   },
   updateCurrentSession(data) {
-    currentSessionSubject.next(data);
+    currentSessionSubject.next({ ...this.currentSessionValue, ...data });
   },
   signInViaOAuth,
   resetPassword,

@@ -5,12 +5,12 @@ import { toast } from 'react-hot-toast';
 import { useTranslation } from 'react-i18next';
 
 export const EditVersion = ({
-  appId,
-  value: editingVersionId,
-  setAppVersions,
-  setShowEditAppVersion,
-  showEditAppVersion,
-  editingVersion,
+  appId = null,
+  value: editingVersionId = null,
+  setAppVersions = null,
+  setShowEditAppVersion = null,
+  showEditAppVersion = null,
+  editingVersion = null,
 }) => {
   const [isEditingVersion, setIsEditingVersion] = useState(false);
   const [versionName, setVersionName] = useState(editingVersion?.name || '');

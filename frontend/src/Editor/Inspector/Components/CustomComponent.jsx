@@ -4,13 +4,13 @@ import { CodeHinter } from '../../CodeBuilder/CodeHinter';
 import Accordion from '@/_ui/Accordion';
 
 export const CustomComponent = function CustomComponent({
-  dataQueries,
-  component,
-  paramUpdated,
-  componentMeta,
-  components,
-  darkMode,
-  layoutPropertyChanged,
+  dataQueries = null,
+  component = null,
+  paramUpdated = null,
+  componentMeta = {},
+  components = [],
+  darkMode = false,
+  layoutPropertyChanged = null,
 }) {
   const code = component.component.definition.properties.code;
   const args = component.component.definition.properties.data;

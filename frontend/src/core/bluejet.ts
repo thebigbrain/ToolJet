@@ -14,6 +14,7 @@ export abstract class Bluejet {
   }
 
   abstract restart(): void;
+  abstract prepare(): Promise<void>;
 
   getConfig(): Config {
     return Config.getInstance();

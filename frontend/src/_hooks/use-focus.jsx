@@ -6,7 +6,7 @@ const useFocus = () => {
     htmlElRef.current && htmlElRef.current.focus();
   };
 
-  return [htmlElRef, setFocus];
+  return { htmlElRef, setFocus };
 };
 
 export default useFocus;

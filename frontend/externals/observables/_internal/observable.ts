@@ -1,6 +1,8 @@
-export type Observer<T> = (value: T) => void;
+export type Observer<T = void> = (value?: T) => void;
 
-export class Observable<T> {
+export abstract class AbstractObservable {}
+
+export class Observable<T> extends AbstractObservable {
   _value: T;
   _listeners: Map<Observer<T>, boolean> = new Map();
 
@@ -14,7 +16,12 @@ export class Observable<T> {
     this.notify();
   }
 
+  update(value?: Partial<T>) {
+    if (value != null) this.value = { ...this.value, ...value };
+  }
+
   constructor(value: T) {
+    super();
     this._value = value;
   }
 
@@ -33,7 +40,7 @@ export class Observable<T> {
   }
 }
 
-export function createObservable<T>(value: T): Observable<T> {
+export function createObservable<T>(value?: T): Observable<T> {
   return new Observable(value);
 }
 

@@ -21,6 +21,7 @@ import { ApplicationService } from "./interfaces/application";
 import { Bluejet } from "./core/bluejet";
 import { BluejetWebImpl } from "./modules/Main/bluejetImpl";
 import { Theme } from "./core/theme";
+import { registerAuthService } from "./modules/auth";
 import { installRouter } from "./modules/routes";
 import { RrJetRouter } from "./modules/Main/allRoutes";
 
@@ -29,12 +30,15 @@ bootstrap().then(render);
 async function bootstrap() {
   Bluejet.setInstance(new BluejetWebImpl());
   Theme.setInstance(new Theme());
+
   installRouter(new RrJetRouter());
 
   const config = await getAppConfig();
   installPlugin(configPlugin);
 
   loadPlugins(config);
+
+  await Bluejet.getInstance().prepare();
 }
 
 function loadPlugins(config: Config) {
@@ -94,6 +98,7 @@ function installTracing(config: Config) {
 
 function installServices(config: Config) {
   registerService(ApplicationService, ApplicationServiceImpl);
+  registerAuthService();
 }
 
 function render() {

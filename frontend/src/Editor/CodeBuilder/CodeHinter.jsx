@@ -46,11 +46,11 @@ const AllElements = {
 };
 
 export function CodeHinter({
-  initialValue,
-  onChange,
-  mode,
-  theme,
-  lineNumbers,
+  initialValue = null,
+  onChange = null,
+  mode = '',
+  theme = '',
+  lineNumbers = null,
   placeholder = '',
   ignoreBraces = false,
   enablePreview = false,
@@ -72,7 +72,7 @@ export function CodeHinter({
   cyLabel = '',
   callgpt = () => null,
   isCopilotEnabled = false,
-  currentState: _currentState,
+  currentState: _currentState = null,
 }) {
   const darkMode = localStorage.getItem('darkMode') === 'true';
   const options = {

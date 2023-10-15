@@ -94,15 +94,27 @@ const ParameterDetails = ({ darkMode, onSubmit, isEdit, name, defaultValue, onRe
   );
 };
 
-export const PillButton = ({ name, onClick, onRemove, marginBottom, className, size }) => (
+export const PillButton = ({
+  name = '',
+  onClick = null,
+  onRemove = null,
+  marginBottom = false,
+  className = '',
+  size = '',
+}) => (
   <ButtonGroup
     aria-label="Parameter"
-    className={cx('ms-2 bg-slate3', { 'mb-2': marginBottom, ...(className && { [className]: true }) })}
+    className={cx('ms-2 bg-slate3', {
+      'mb-2': marginBottom,
+      ...(className && { [className]: true }),
+    })}
     style={{ borderRadius: '15px' }}
   >
     <Button
       size="sm"
-      className={cx('bg-transparent color-slate12 runjs-parameter-badge', { 'py-0 px-2': size === 'sm' })}
+      className={cx('bg-transparent color-slate12 runjs-parameter-badge', {
+        'py-0 px-2': size === 'sm',
+      })}
       onClick={onClick}
       style={{
         borderTopLeftRadius: '15px',
@@ -122,7 +134,9 @@ export const PillButton = ({ name, onClick, onRemove, marginBottom, className, s
         data-cy={`query-param-${String(name).toLowerCase()}-remove-button`}
         onClick={onRemove}
         size="sm"
-        className={cx('bg-transparent color-slate12', { 'p-0 pe-1': size === 'sm' })}
+        className={cx('bg-transparent color-slate12', {
+          'p-0 pe-1': size === 'sm',
+        })}
         style={{
           borderTopRightRadius: '15px',
           borderBottomRightRadius: '15px',

@@ -41,8 +41,9 @@ export const NotificationCenter = ({ darkMode }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isRead]);
 
-  const overlay = (
+  const overlay = ({ hasDoneInitialMeasure, arrowProps, show, ...props }) => (
     <div
+      {...props}
       className={`notification-center dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card ${
         darkMode && 'dark-theme'
       }`}

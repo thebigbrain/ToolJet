@@ -1,7 +1,7 @@
 import React from 'react';
 import { ButtonSolid } from '../../AppButton/AppButton';
 
-function DrawerFooter({ fetching, onClose, isEditMode, onCreate, onEdit }) {
+function DrawerFooter({ fetching = null, onClose = null, isEditMode = false, onCreate = null, onEdit = null }) {
   return (
     <div className="position-sticky bottom-0 right-0 w-100  mt-auto">
       <div className="d-flex justify-content-end drawer-footer-btn-wrap">
