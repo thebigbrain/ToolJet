@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import cx from "classnames";
 import Layout from "@/_ui/Layout";
-import { ManageOrgUsers } from "@/ManageOrgUsers";
-import { ManageGroupPermissions } from "@/ManageGroupPermissions";
+import { ManageOrgUsers } from "@/modules/ManageOrgUsers";
+import { ManageGroupPermissions } from "@/modules/ManageGroupPermissions";
 import { ManageSSO } from "@/modules/ManageSSO";
-import { ManageOrgVars } from "@/ManageOrgVars";
+import { ManageOrgVars } from "@/modules/ManageOrgVars";
 import { authenticationService } from "@/_services";
-import { CopilotSetting } from "@/CopilotSettings";
+import { CopilotSetting } from "@/modules/CopilotSettings";
 import FolderList from "@/_ui/FolderList/FolderList";
 import { OrganizationList } from "../OrganizationManager/List";
-import { ManageOrgConstants } from "@/ManageOrgConstants";
+import { ManageOrgConstants } from "@/modules/ManageOrgConstants";
 import { useBreadCrumbContext } from "@/core/context";
 
 export function OrganizationSettings(props) {

@@ -4,7 +4,7 @@ import _, { isEmpty } from "lodash";
 import axios from "axios";
 import JSON5 from "json5";
 import { toast } from "react-hot-toast";
-import { staticDataSources } from "@/Editor/QueryManager/constants";
+import { staticDataSources } from "@/modules/Editor/QueryManager/constants";
 
 import { getCookie, eraseCookie } from "@externals/helpers/cookie";
 import { navigateTo } from "./routes";

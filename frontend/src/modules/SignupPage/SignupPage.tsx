@@ -14,7 +14,7 @@ import EyeShow from "@assets/images/onboardingassets/Icons/EyeShow";
 import { withTranslation } from "react-i18next";
 import { ShowLoading } from "@/_components";
 import Spinner from "@/_ui/Spinner";
-import SignupStatusCard from "../../OnBoardingForm/SignupStatusCard";
+import SignupStatusCard from "@/modules/OnBoardingForm/SignupStatusCard";
 import { withRouter } from "@/_hoc/withRouter";
 import { LoginProps, LoginState } from "@/interfaces/login";
 

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { WithTranslation, withTranslation } from "react-i18next";
 import { organizationService, authenticationService } from "@/_services";
-import { Editor } from "../../Editor/Editor";
-import { RealtimeEditor } from "@/Editor/RealtimeEditor";
+import { Editor } from "@/modules/Editor/Editor";
+import { RealtimeEditor } from "@/modules/Editor/RealtimeEditor";
 import config from "config";
 import { safelyParseJSON, stripTrailingSlash } from "@externals/helpers/utils";
 import { redirectToDashboard, getSubpath, getWorkspaceId } from "@/core/utils";

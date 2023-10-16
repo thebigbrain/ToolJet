@@ -5,12 +5,12 @@ import { useTranslation } from "react-i18next";
 import { isEmpty } from "lodash";
 import { Sidebar } from "../Sidebar";
 import { GlobalDataSourcesContext } from "../context";
-import { DataSourceManager } from "@/Editor/DataSourceManager";
+import { DataSourceManager } from "@/modules/Editor/DataSourceManager";
 import {
   DataBaseSources,
   ApiSources,
   CloudStorageSources,
-} from "@/Editor/DataSourceManager/SourceComponents";
+} from "@/modules/Editor/DataSourceManager/SourceComponents";
 import { pluginsService, globalDatasourceService } from "@/_services";
 import { Card } from "@/_ui/Card";
 import { SegregatedList } from "../SegregatedList";

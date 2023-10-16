@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { JSONNode } from './JSONNode';
-import ErrorBoundary from '@/Editor/ErrorBoundary';
+import ErrorBoundary from '@/modules/Editor/ErrorBoundary';
 
 export class JSONTreeViewer extends React.Component {
   constructor(props) {
@@ -96,13 +96,19 @@ export class JSONTreeViewer extends React.Component {
   updateSelectedNode = (node, path) => {
     if (node) {
       this.setState({
-        selectedNode: { node: node, parent: path?.length ? path[path.length - 2] : null },
+        selectedNode: {
+          node: node,
+          parent: path?.length ? path[path.length - 2] : null,
+        },
       });
     }
   };
   updateHoveredNode = (node, path) => {
     this.setState({
-      hoveredNode: { node: node, parent: path?.length ? path[path.length - 2] : null },
+      hoveredNode: {
+        node: node,
+        parent: path?.length ? path[path.length - 2] : null,
+      },
     });
   };
 

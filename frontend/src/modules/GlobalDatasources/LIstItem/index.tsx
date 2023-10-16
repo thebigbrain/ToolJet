@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import cx from "classnames";
 import { GlobalDataSourcesContext } from "../context";
-import { DataSourceTypes } from "@/Editor/DataSourceManager/SourceComponents";
+import { DataSourceTypes } from "@/modules/Editor//DataSourceManager/SourceComponents";
 import { getSvgIcon } from "@/core/appUtils";
 import DeleteIcon from "../Icons/DeleteIcon.svg";
 import useGlobalDatasourceUnsavedChanges from "@/_hooks/useGlobalDatasourceUnsavedChanges";

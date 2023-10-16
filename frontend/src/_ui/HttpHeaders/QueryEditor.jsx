@@ -1,5 +1,5 @@
 import React from 'react';
-import { CodeHinter } from '@/Editor/CodeBuilder/CodeHinter';
+import { CodeHinter } from '@/modules/Editor/CodeBuilder/CodeHinter';
 import { ButtonSolid } from '@/_ui/AppButton/AppButton';
 import AddRectangle from '@/_ui/Icon/bulkIcons/AddRectangle';
 

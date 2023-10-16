@@ -12,7 +12,7 @@ import { dataqueryService } from "@/_services";
 import _ from "lodash";
 import moment from "moment";
 import Tooltip from "react-bootstrap/Tooltip";
-import { componentTypes } from "@/Editor/WidgetManager/components";
+import { componentTypes } from "@/modules/Editor/WidgetManager/components";
 import generateCSV from "@externals/helpers/generate-csv";
 import generateFile from "@externals/helpers/generate-file";
 import RunjsIcon from "@assets/Icons/runjs.svg";
@@ -22,10 +22,10 @@ import { v4 as uuidv4 } from "uuid";
 // eslint-disable-next-line import/no-unresolved
 import { allSvgs } from "@tooljet/plugins/client";
 import urlJoin from "url-join";
-import { tooljetDbOperations } from "@/Editor/QueryManager/QueryEditors/TooljetDatabase/operations";
+import { tooljetDbOperations } from "@/modules/Editor/QueryManager/QueryEditors/TooljetDatabase/operations";
 import { authenticationService } from "@/_services/authentication.service";
 import { setCookie } from "@externals/helpers/cookie";
-import { DataSourceTypes } from "@/Editor/DataSourceManager/SourceComponents";
+import { DataSourceTypes } from "@/modules/Editor/DataSourceManager/SourceComponents";
 import { useDataQueriesStore } from "@/_stores/dataQueriesStore";
 import { useQueryPanelStore } from "@/_stores/queryPanelStore";
 import {

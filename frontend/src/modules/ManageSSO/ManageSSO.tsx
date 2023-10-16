@@ -5,7 +5,7 @@ import { Google } from "./Google";
 import { Loader } from "./Loader";
 import { Git } from "./Git";
 // eslint-disable-next-line import/no-unresolved
-import ErrorBoundary from "@/Editor/ErrorBoundary";
+import ErrorBoundary from "@/modules/Editor//ErrorBoundary";
 import { toast } from "react-hot-toast";
 import FolderList from "@/_ui/FolderList/FolderList";
 

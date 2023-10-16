@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast';
 import { authenticationService } from '@/_services/authentication.service';
 
 import { getCookie, eraseCookie } from '@externals/helpers/cookie';
-import { staticDataSources } from '@/Editor/QueryManager/constants';
+import { staticDataSources } from '@/modules/Editor/QueryManager/constants';
 
 import { findProp, stripTrailingSlash } from '@externals/helpers/utils';
 

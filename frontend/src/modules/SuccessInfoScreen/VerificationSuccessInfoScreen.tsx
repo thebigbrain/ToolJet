@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import EnterIcon from "@assets/images/onboardingassets/Icons/Enter";
 import GoogleSSOLoginButton from "@/_components/LoginPage/GoogleSSOLoginButton";
 import GitSSOLoginButton from "@/_components/LoginPage/GitSSOLoginButton";
-import OnBoardingForm from "../../OnBoardingForm/OnBoardingForm";
+import OnBoardingForm from "@/modules/OnBoardingForm/OnBoardingForm";
 import { authenticationService } from "@/_services";
 import { useLocation, useParams } from "react-router-dom";
 import { LinkExpiredInfoScreen } from "@/modules/SuccessInfoScreen";
