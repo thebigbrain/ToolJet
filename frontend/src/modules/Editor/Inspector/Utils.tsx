@@ -1,9 +1,15 @@
-import React from 'react';
-import { Code } from './Elements/Code';
-import { QuerySelector } from './QuerySelector';
-import { resolveReferences } from '@externals/helpers/utils';
+import React from "react";
+import { Code } from "./Elements/Code";
+import { QuerySelector } from "./QuerySelector";
+import { resolveReferences } from "@externals/helpers/utils";
 
-export function renderQuerySelector(component, dataQueries, eventOptionUpdated, eventName, eventMeta) {
+export function renderQuerySelector(
+  component,
+  dataQueries,
+  eventOptionUpdated,
+  eventName,
+  eventMeta
+) {
   let definition = component.component.definition.events[eventName];
   definition = definition || {};
 
@@ -36,9 +42,9 @@ export function renderElement(
   const meta = componentMeta[paramType][param];
 
   if (
-    componentConfig.component == 'DropDown' ||
-    componentConfig.component == 'Form' ||
-    componentConfig.component == 'Listview'
+    componentConfig.component == "DropDown" ||
+    componentConfig.component == "Form" ||
+    componentConfig.component == "Listview"
   ) {
     const paramTypeConfig = componentMeta[paramType] || {};
     const paramConfig = paramTypeConfig[param] || {};
@@ -47,7 +53,9 @@ export function renderElement(
     if (conditionallyRender) {
       const { key, value } = conditionallyRender;
       if (paramTypeDefinition?.[key] ?? value) {
-        const resolvedValue = paramTypeDefinition?.[key] && resolveReferences(paramTypeDefinition?.[key], currentState);
+        const resolvedValue =
+          paramTypeDefinition?.[key] &&
+          resolveReferences(paramTypeDefinition?.[key], currentState);
         if (resolvedValue?.value !== value) return;
       }
     }
@@ -57,17 +65,19 @@ export function renderElement(
     <Code
       param={{ name: param, ...component.component.properties[param] }}
       definition={definition}
-      dataQueries={dataQueries}
       onChange={paramUpdated}
       paramType={paramType}
-      components={components}
       componentMeta={componentMeta}
       darkMode={darkMode}
       componentName={component.component.name || null}
-      type={meta.type}
       fxActive={definition.fxActive ?? false}
       onFxPress={(active) => {
-        paramUpdated({ name: param, ...component.component.properties[param] }, 'fxActive', active, paramType);
+        paramUpdated(
+          { name: param, ...component.component.properties[param] },
+          "fxActive",
+          active,
+          paramType
+        );
       }}
       component={component}
     />

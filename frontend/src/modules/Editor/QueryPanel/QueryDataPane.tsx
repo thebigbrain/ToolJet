@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { isEmpty } from "lodash";
-import { SearchBox as _SearchBox } from "@/_components/SearchBox";
+import { SearchBox } from "@/_components/SearchBox";
 import Minimize from "@/_ui/Icon/solidIcons/Minimize";
 import Search from "@/_ui/Icon/solidIcons/Search";
 import Skeleton from "react-loading-skeleton";
@@ -20,8 +20,6 @@ import useShowPopover from "@/_hooks/useShowPopover";
 import DataSourceSelect from "../QueryManager/Components/DataSourceSelect";
 import { OverlayTrigger, Popover } from "react-bootstrap";
 import FolderEmpty from "@/_ui/Icon/solidIcons/FolderEmpty";
-
-const SearchBox = (props: any) => <_SearchBox {...props} />;
 
 export const QueryDataPane = ({
   darkMode,

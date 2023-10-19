@@ -6,7 +6,7 @@ import cx from 'classnames';
 
 function Logs({ logProps, idx, darkMode }) {
   const [open, setOpen] = React.useState(false);
-  console.log('Debug debugger: open:', open);
+  // console.log('Debug debugger: open:', open);
 
   const title = ` [${capitalize(logProps?.type)} ${logProps?.key}]`;
   const message = logProps?.isQuerySuccessLog
@@ -31,7 +31,9 @@ function Logs({ logProps, idx, darkMode }) {
           console.log('Debug debugger: setOpen:', e);
           setOpen((prev) => !prev);
         }}
-        style={{ pointerEvents: logProps?.isQuerySuccessLog ? 'none' : 'default' }}
+        style={{
+          pointerEvents: logProps?.isQuerySuccessLog ? 'none' : 'default',
+        }}
       >
         <span className={cx('mx-1 position-absolute')} style={defaultStyles}>
           <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">

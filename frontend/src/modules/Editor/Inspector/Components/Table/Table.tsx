@@ -964,7 +964,6 @@ class TableComponent extends React.Component<
           {column.columnType === "link" && (
             <div className="field mb-2">
               <ProgramaticallyHandleToggleSwitch
-                label="Link target"
                 index={index}
                 darkMode={this.props.darkMode}
                 callbackFunction={this.onColumnItemChange}
@@ -972,14 +971,12 @@ class TableComponent extends React.Component<
                 props={column}
                 component={this.props.component}
                 paramMeta={{ type: "select", displayName: "Link Target" }}
-                paramType="properties"
               />
             </div>
           )}
 
           {!["image", "link"].includes(column.columnType) && (
             <ProgramaticallyHandleToggleSwitch
-              label="make editable"
               index={index}
               darkMode={this.props.darkMode}
               callbackFunction={this.onColumnItemChange}
@@ -987,12 +984,10 @@ class TableComponent extends React.Component<
               props={column}
               component={this.props.component}
               paramMeta={{ type: "toggle", displayName: "make editable" }}
-              paramType="properties"
             />
           )}
 
           <ProgramaticallyHandleToggleSwitch
-            label="Column visibility"
             index={index}
             darkMode={this.props.darkMode}
             callbackFunction={this.onColumnItemChange}
@@ -1000,7 +995,6 @@ class TableComponent extends React.Component<
             props={column}
             component={this.props.component}
             paramMeta={{ type: "toggle", displayName: "Column visibility" }}
-            paramType="properties"
           />
         </Popover.Body>
       </Popover>
@@ -1097,7 +1091,6 @@ class TableComponent extends React.Component<
             cyLabel={`action-button-text`}
           />
           <ProgramaticallyHandleToggleSwitch
-            label="Disable button"
             index={index}
             darkMode={this.props.darkMode}
             callbackFunction={this.onActionButtonPropertyChanged}
@@ -1105,7 +1098,6 @@ class TableComponent extends React.Component<
             props={action}
             component={this.props.component}
             paramMeta={{ type: "toggle", displayName: "Disable action button" }}
-            paramType="properties"
           />
           <EventManager
             component={dummyComponentForActionButton}

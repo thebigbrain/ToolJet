@@ -107,7 +107,7 @@ class EditorComponent extends React.Component<EditorProps, EditorState> {
   canUndo: boolean;
   canRedo: boolean;
   socket: WebSocket;
-  subscription: Subscription;
+  subscription?: Subscription;
   defaultDefinition: ApplicationDefinition;
 
   @ServiceGetter(ApplicationService)
@@ -390,9 +390,11 @@ class EditorComponent extends React.Component<EditorProps, EditorState> {
 
   override componentWillUnmount() {
     document.title = "Tooljet - Dashboard";
+
     this.socket && this.socket?.close();
-    this.subscription && this.subscription.unsubscribe();
-    if (config.ENABLE_MULTIPLAYER_EDITING) this.props?.provider?.disconnect();
+
+    this.subscription?.unsubscribe();
+
     this.appDataStoreListner && this.appDataStoreListner();
     this.dataQueriesStoreListner && this.dataQueriesStoreListner();
     useEditorStore.getState().actions.setIsEditorActive(false);
@@ -1215,7 +1217,8 @@ class EditorComponent extends React.Component<EditorProps, EditorState> {
     e.selected.forEach((el, index) => {
       const id = el.getAttribute("widgetid");
       const component =
-        this.state.appDefinition.pages[currentPageId].components[id].component;
+        this.state.appDefinition.pages[currentPageId]?.components[id]
+          ?.component;
       const isMultiSelect = e.inputEvent.shiftKey || (!e.isClick && index != 0);
       this.setSelectedComponent(id, component, isMultiSelect);
     });

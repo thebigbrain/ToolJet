@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import OrgConstantVariablesPreviewBox from '../../_components/OrgConstantsVariablesResolver';
 
-const Input = ({ helpText, ...props }) => {
+const Input = ({ helpText = '', ...props }) => {
   const { workspaceVariables, workspaceConstants, value } = props;
   const [isFocused, setIsFocused] = useState(false);
 

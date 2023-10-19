@@ -50,6 +50,7 @@ const Content = ({ title = null, iconSrc = null, direction = 'left', dataCy = nu
     <img
       className="mx-1"
       src={iconSrc}
+      alt=""
       width="12"
       height="12"
       data-cy={`${String(dataCy ?? title)
@@ -88,7 +89,14 @@ const Content = ({ title = null, iconSrc = null, direction = 'left', dataCy = nu
   return content;
 };
 
-const UnstyledButton = ({ children, onClick, classNames = '', styles = {}, disabled = false, darkMode = false }) => {
+const UnstyledButton = ({
+  children = null,
+  onClick = null,
+  classNames = '',
+  styles = {},
+  disabled = false,
+  darkMode = false,
+}) => {
   const cursorNotPointer = onClick === undefined && { cursor: 'default' };
 
   return (

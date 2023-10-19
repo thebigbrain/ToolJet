@@ -1,10 +1,34 @@
-import React from 'react';
-import { renderElement } from '../Utils';
-import { CodeHinter } from '../../CodeBuilder/CodeHinter';
-import Accordion from '@/_ui/Accordion';
-import { resolveReferences } from '@externals/helpers/utils';
+import React from "react";
+import { renderElement } from "../Utils";
+import { CodeHinter } from "../../CodeBuilder/CodeHinter";
+import Accordion from "@/_ui/Accordion";
+import { resolveReferences } from "@externals/helpers/utils";
 
-class Chart extends React.Component {
+type ChartProps = {
+  layoutPropertyChanged?;
+  darkMode?;
+  dataQueries?;
+  component?;
+  paramUpdated?;
+  componentMeta?;
+  eventUpdated?;
+  eventOptionUpdated?;
+  components?;
+  currentState?;
+};
+
+interface ChartState {
+  dataQueries;
+  component;
+  paramUpdated;
+  componentMeta;
+  components;
+  currentState;
+  eventUpdated?;
+  eventOptionUpdated?;
+}
+
+class Chart extends React.Component<ChartProps, ChartState> {
   constructor(props) {
     super(props);
 
@@ -56,29 +80,38 @@ class Chart extends React.Component {
   }
 
   render() {
-    const { dataQueries, component, paramUpdated, componentMeta, components, currentState } = this.state;
+    const {
+      dataQueries,
+      component,
+      paramUpdated,
+      componentMeta,
+      components,
+      currentState,
+    } = this.state;
     const data = this.state.component.component.definition.properties.data;
 
-    const jsonDescription = this.state.component.component.definition.properties.jsonDescription;
+    const jsonDescription =
+      this.state.component.component.definition.properties.jsonDescription;
 
     const plotFromJson = resolveReferences(
       this.state.component.component.definition.properties.plotFromJson?.value,
       currentState
     );
 
-    const chartType = this.state.component.component.definition.properties.type.value;
+    const chartType =
+      this.state.component.component.definition.properties.type.value;
 
     let items = [];
 
     items.push({
-      title: 'Title',
+      title: "Title",
       children: renderElement(
         component,
         componentMeta,
         paramUpdated,
         dataQueries,
-        'title',
-        'properties',
+        "title",
+        "properties",
         currentState,
         components,
         this.props.darkMode
@@ -86,28 +119,28 @@ class Chart extends React.Component {
     });
 
     items.push({
-      title: 'Plotly JSON chart schema',
+      title: "Plotly JSON chart schema",
       children: renderElement(
         component,
         componentMeta,
         paramUpdated,
         dataQueries,
-        'plotFromJson',
-        'properties',
+        "plotFromJson",
+        "properties",
         currentState
       ),
     });
 
     if (plotFromJson) {
       items.push({
-        title: 'Bar mode',
+        title: "Bar mode",
         children: renderElement(
           component,
           componentMeta,
           paramUpdated,
           dataQueries,
-          'barmode',
-          'properties',
+          "barmode",
+          "properties",
           currentState
         ),
       });
@@ -115,70 +148,84 @@ class Chart extends React.Component {
 
     if (plotFromJson) {
       items.push({
-        title: 'JSON description',
+        title: "JSON description",
         children: (
           <CodeHinter
             currentState={this.props.currentState}
             initialValue={jsonDescription?.value ?? {}}
-            theme={this.props.darkMode ? 'monokai' : 'duotone-light'}
+            theme={this.props.darkMode ? "monokai" : "duotone-light"}
             mode="javascript"
             lineNumbers={false}
             className="chart-input pr-2"
-            onChange={(value) => this.props.paramUpdated({ name: 'jsonDescription' }, 'value', value, 'properties')}
+            onChange={(value) =>
+              this.props.paramUpdated(
+                { name: "jsonDescription" },
+                "value",
+                value,
+                "properties"
+              )
+            }
             componentName={`component/${this.props.component.component.name}::${chartType}`}
           />
         ),
       });
     } else {
       items.push({
-        title: 'Properties',
+        title: "Properties",
         children: renderElement(
           component,
           componentMeta,
           paramUpdated,
           dataQueries,
-          'type',
-          'properties',
+          "type",
+          "properties",
           currentState,
           components
         ),
       });
 
       items.push({
-        title: 'Chart data',
+        title: "Chart data",
         children: (
           <CodeHinter
             currentState={this.props.currentState}
             initialValue={data.value}
-            theme={this.props.darkMode ? 'monokai' : 'duotone-light'}
+            theme={this.props.darkMode ? "monokai" : "duotone-light"}
             mode="javascript"
             lineNumbers={false}
             className="chart-input pr-2"
-            onChange={(value) => this.props.paramUpdated({ name: 'data' }, 'value', value, 'properties')}
+            onChange={(value) =>
+              this.props.paramUpdated(
+                { name: "data" },
+                "value",
+                value,
+                "properties"
+              )
+            }
             componentName={`component/${this.props.component.component.name}::${chartType}`}
           />
         ),
       });
     }
 
-    if (chartType !== 'pie') {
+    if (chartType !== "pie") {
       if (!plotFromJson) {
         items.push({
-          title: 'Marker color',
+          title: "Marker color",
           children: renderElement(
             component,
             componentMeta,
             paramUpdated,
             dataQueries,
-            'markerColor',
-            'properties',
+            "markerColor",
+            "properties",
             currentState
           ),
         });
       }
 
       items.push({
-        title: 'Options',
+        title: "Options",
         children: (
           <>
             {renderElement(
@@ -186,18 +233,26 @@ class Chart extends React.Component {
               componentMeta,
               paramUpdated,
               dataQueries,
-              'loadingState',
-              'properties',
+              "loadingState",
+              "properties",
               currentState
             )}
-            {renderElement(component, componentMeta, paramUpdated, dataQueries, 'showAxes', 'properties', currentState)}
             {renderElement(
               component,
               componentMeta,
               paramUpdated,
               dataQueries,
-              'showGridLines',
-              'properties',
+              "showAxes",
+              "properties",
+              currentState
+            )}
+            {renderElement(
+              component,
+              componentMeta,
+              paramUpdated,
+              dataQueries,
+              "showGridLines",
+              "properties",
               currentState
             )}
           </>
@@ -206,7 +261,7 @@ class Chart extends React.Component {
     }
 
     items.push({
-      title: 'Layout',
+      title: "Layout",
       children: (
         <>
           {renderElement(
@@ -214,8 +269,8 @@ class Chart extends React.Component {
             componentMeta,
             this.props.layoutPropertyChanged,
             dataQueries,
-            'showOnDesktop',
-            'others',
+            "showOnDesktop",
+            "others",
             currentState,
             components
           )}
@@ -224,8 +279,8 @@ class Chart extends React.Component {
             componentMeta,
             this.props.layoutPropertyChanged,
             dataQueries,
-            'showOnMobile',
-            'others',
+            "showOnMobile",
+            "others",
             currentState,
             components
           )}

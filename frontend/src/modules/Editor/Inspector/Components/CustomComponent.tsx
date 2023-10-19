@@ -1,7 +1,7 @@
-import React from 'react';
-import { renderElement } from '../Utils';
-import { CodeHinter } from '../../CodeBuilder/CodeHinter';
-import Accordion from '@/_ui/Accordion';
+import React from "react";
+import { renderElement } from "../Utils";
+import { CodeHinter } from "../../CodeBuilder/CodeHinter";
+import Accordion from "@/_ui/Accordion";
 
 export const CustomComponent = function CustomComponent({
   dataQueries = null,
@@ -17,37 +17,40 @@ export const CustomComponent = function CustomComponent({
   let items = [];
 
   items.push({
-    title: 'Data',
+    title: "Data",
     children: (
       <CodeHinter
         initialValue={args.value ?? {}}
-        theme={darkMode ? 'monokai' : 'base16-light'}
-        onChange={(value) => paramUpdated({ name: 'data' }, 'value', value, 'properties')}
+        theme={darkMode ? "monokai" : "base16-light"}
+        onChange={(value) =>
+          paramUpdated({ name: "data" }, "value", value, "properties")
+        }
         componentName={`component/${component.component.name}/data`}
       />
     ),
   });
 
   items.push({
-    title: 'Code',
+    title: "Code",
     children: (
       <CodeHinter
         initialValue={code.value ?? {}}
-        theme={darkMode ? 'monokai' : 'base16-light'}
+        theme={darkMode ? "monokai" : "base16-light"}
         mode="jsx"
         lineNumbers
         className="custom-component"
-        onChange={(value) => paramUpdated({ name: 'code' }, 'value', value, 'properties')}
+        onChange={(value) =>
+          paramUpdated({ name: "code" }, "value", value, "properties")
+        }
         componentName={`component/${component.component.name}/code`}
         enablePreview={false}
         height={400}
-        hideSuggestion
       />
     ),
   });
 
   items.push({
-    title: 'Layout',
+    title: "Layout",
     isOpen: true,
     children: (
       <>
@@ -56,8 +59,8 @@ export const CustomComponent = function CustomComponent({
           componentMeta,
           layoutPropertyChanged,
           dataQueries,
-          'showOnDesktop',
-          'others',
+          "showOnDesktop",
+          "others",
           components
         )}
         {renderElement(
@@ -65,8 +68,8 @@ export const CustomComponent = function CustomComponent({
           componentMeta,
           layoutPropertyChanged,
           dataQueries,
-          'showOnMobile',
-          'others',
+          "showOnMobile",
+          "others",
           components
         )}
       </>

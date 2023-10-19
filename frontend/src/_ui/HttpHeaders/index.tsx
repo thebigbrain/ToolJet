@@ -1,17 +1,16 @@
-import React from 'react';
-import QueryEditor from './QueryEditor';
-import SourceEditor from './SourceEditor';
+import React from "react";
+import QueryEditor from "./QueryEditor";
+import SourceEditor from "./SourceEditor";
 
 export default ({
-  getter,
-  options = [['', '']],
-  optionchanged,
-  currentState,
-  isRenderedAsQueryEditor,
-  workspaceConstants,
+  getter = null,
+  options = [["", ""]],
+  optionchanged = null,
+  isRenderedAsQueryEditor = null,
+  workspaceConstants = null,
 }) => {
   function addNewKeyValuePair() {
-    const newPairs = [...options, ['', '']];
+    const newPairs = [...options, ["", ""]];
     optionchanged(getter, newPairs);
   }
 
@@ -38,7 +37,7 @@ export default ({
   };
 
   return isRenderedAsQueryEditor ? (
-    <QueryEditor {...commonProps} currentState={currentState} />
+    <QueryEditor {...commonProps} />
   ) : (
     <SourceEditor {...commonProps} workspaceConstants={workspaceConstants} />
   );

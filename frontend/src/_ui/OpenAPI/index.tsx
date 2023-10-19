@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import Select from '@/_ui/Select';
-import Textarea from '@/_ui/Textarea';
-import { openapiService } from '@/_services';
-import OpenapiAuth from './OpenapiAuth';
+import React, { useEffect, useState } from "react";
+import Select from "@/_ui/Select";
+import Textarea from "@/_ui/Textarea";
+import { openapiService } from "@/_services";
+import OpenapiAuth from "./OpenapiAuth";
 
 const OpenApi = ({
   optionchanged,
@@ -31,7 +31,7 @@ const OpenApi = ({
 }) => {
   const [securities, setSecurities] = useState([]);
   const [loadingSpec, setLoadingSpec] = useState(false);
-  const [selectedAuth, setSelectedAuth] = useState();
+  const [selectedAuth, setSelectedAuth] = useState<any>();
   const [validationError, setValidationError] = useState();
 
   useEffect(() => {
@@ -56,22 +56,22 @@ const OpenApi = ({
       openapiService
         .parseOpenapiSpec(definition, format)
         .then((result) => {
-          optionchanged('spec', result);
+          optionchanged("spec", result);
           setLoadingSpec(false);
         })
         .catch((err) => {
-          setValidationError(err?.message ?? 'Enter valid definition');
+          setValidationError(err?.message ?? "Enter valid definition");
           setLoadingSpec(false);
           console.log(err);
         });
     }
   };
 
-  const getCurrentKey = (key, parentKey) => {
+  const getCurrentKey = (key, parentKey?) => {
     let currentValue;
-    if (!api_keys) return '';
+    if (!api_keys) return "";
     api_keys.map((item) => {
-      const itemKey = item['parent_key'] ?? item.parentKey;
+      const itemKey = item["parent_key"] ?? item.parentKey;
       if (parentKey && itemKey === parentKey) {
         item.fields.map((field) => {
           if (field.key === key) {
@@ -92,7 +92,7 @@ const OpenApi = ({
   const resolveSecurities = (spec) => {
     const authArray = [];
     const ApiKeys = [];
-    const securities = spec['security'];
+    const securities = spec["security"];
     if (securities) {
       const scheme = spec?.components?.securitySchemes;
       securities.map((security) => {
@@ -103,10 +103,13 @@ const OpenApi = ({
           authNames.map((authName, index) => {
             const auth = scheme[authName];
             if (auth) {
-              auth['key'] = authName;
+              auth["key"] = authName;
               authObject.push(auth);
-              if (auth.type === 'apiKey') {
-                multipleKeys.fields.push({ ...auth, value: getCurrentKey(auth.key, authNames[0]) });
+              if (auth.type === "apiKey") {
+                multipleKeys.fields.push({
+                  ...auth,
+                  value: getCurrentKey(auth.key, authNames[0]),
+                });
                 if (authNames.length == index + 1) ApiKeys.push(multipleKeys);
               }
             }
@@ -116,33 +119,35 @@ const OpenApi = ({
           const authName = authNames[0];
           const auth = scheme[authName];
           if (auth) {
-            auth['key'] = authName;
-            if (auth.type === 'apiKey') {
+            auth["key"] = authName;
+            if (auth.type === "apiKey") {
               const apiKeyObj = { ...auth, value: getCurrentKey(auth.key) };
               ApiKeys.push(apiKeyObj);
-            } else if (auth.type === 'oauth2') {
+            } else if (auth.type === "oauth2") {
               const scopes = security[authName];
-              auth['general_scopes'] = scopes;
+              auth["general_scopes"] = scopes;
             }
             authArray.push(auth);
           }
         }
       });
     }
-    optionchanged('api_keys', ApiKeys);
+    optionchanged("api_keys", ApiKeys);
     return authArray;
   };
 
   const resolveAuthTypes = (auth) => {
     switch (auth.type) {
-      case 'http':
+      case "http":
         return {
-          name: `${auth.key} (${auth?.scheme?.charAt(0).toUpperCase() + auth?.scheme?.slice(1)})`,
+          name: `${auth.key} (${
+            auth?.scheme?.charAt(0).toUpperCase() + auth?.scheme?.slice(1)
+          })`,
           value: auth.key,
         };
-      case 'apiKey':
+      case "apiKey":
         return { name: `${auth.key} (API Key)`, value: auth.key };
-      case 'oauth2':
+      case "oauth2":
         return { name: `${auth.key} (Oauth2)`, value: auth.key };
     }
   };
@@ -165,13 +170,13 @@ const OpenApi = ({
     securities.map((security) => {
       if (Array.isArray(security)) {
         if (security[0].key === auth_key) {
-          optionchanged('auth_type', security[0].scheme ?? security[0].type);
+          optionchanged("auth_type", security[0].scheme ?? security[0].type);
           setSelectedAuth(security);
         }
       } else {
         if (security.key === auth_key) {
           setSelectedAuth(security);
-          optionchanged('auth_type', security.scheme ?? security.type);
+          optionchanged("auth_type", security.scheme ?? security.type);
         }
       }
     });
@@ -181,12 +186,12 @@ const OpenApi = ({
     <>
       <Select
         options={[
-          { name: 'JSON', value: 'json' },
-          { name: 'YAML', value: 'yaml' },
+          { name: "JSON", value: "json" },
+          { name: "YAML", value: "yaml" },
         ]}
         value={format}
-        onChange={(value) => optionchanged('format', value)}
-        width={'100%'}
+        onChange={(value) => optionchanged("format", value)}
+        width={"100%"}
         useMenuPortal={false}
       />
       <div className="col-md-12">
@@ -196,8 +201,9 @@ const OpenApi = ({
           className="form-control"
           rows="14"
           value={definition}
-          onChange={(e) => optionchanged('definition', e.target.value)}
+          onChange={(e) => optionchanged("definition", e.target.value)}
           workspaceConstants={workspaceConstants}
+          helpText={""}
         />
       </div>
 
@@ -205,11 +211,14 @@ const OpenApi = ({
         <div className="p-3">
           {!validationError ? (
             <>
-              <div className="spinner-border spinner-border-sm text-azure mx-2" role="status"></div>
+              <div
+                className="spinner-border spinner-border-sm text-azure mx-2"
+                role="status"
+              ></div>
               Please wait while we are validating the OpenAPI specification.
             </>
           ) : (
-            <span style={{ color: 'red' }}>{validationError}</span>
+            <span style={{ color: "red" }}>{validationError}</span>
           )}
         </div>
       )}
@@ -221,8 +230,8 @@ const OpenApi = ({
             <Select
               options={computeAuthOptions()}
               value={auth_key}
-              onChange={(value) => optionchanged('auth_key', value)}
-              width={'100%'}
+              onChange={(value) => optionchanged("auth_key", value)}
+              width={"100%"}
               useMenuPortal={false}
             />
           </div>

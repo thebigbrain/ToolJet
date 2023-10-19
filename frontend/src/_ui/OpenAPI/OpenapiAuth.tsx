@@ -1,6 +1,6 @@
-import React from 'react';
-import Input from '@/_ui/Input';
-import Oauth from './Oauth';
+import React from "react";
+import Input from "@/_ui/Input";
+import Oauth from "./Oauth";
 
 const OpenapiAuth = ({
   username,
@@ -42,12 +42,12 @@ const OpenapiAuth = ({
       }
       return item;
     });
-    optionchanged('api_keys', updatedKeys);
+    optionchanged("api_keys", updatedKeys);
   };
 
   const getCurrentKey = (key) => {
     let currentValue;
-    if (!api_keys) return '';
+    if (!api_keys) return "";
     api_keys.map((item) => {
       if (Array.isArray(authObject) && item.parentKey === authObject[0].key) {
         item.fields.map((field) => {
@@ -66,7 +66,7 @@ const OpenapiAuth = ({
     return currentValue;
   };
 
-  const renderApiKeyField = (auth, index) => {
+  const renderApiKeyField = (auth, index?) => {
     if (auth) {
       const value = getCurrentKey(auth.key);
       return (
@@ -84,7 +84,7 @@ const OpenapiAuth = ({
   };
 
   switch (auth_type) {
-    case 'basic': {
+    case "basic": {
       return (
         <div>
           <div className="col-md-12">
@@ -92,7 +92,7 @@ const OpenapiAuth = ({
             <Input
               type="text"
               className="form-control"
-              onChange={(e) => optionchanged('username', e.target.value)}
+              onChange={(e) => optionchanged("username", e.target.value)}
               value={username}
             />
           </div>
@@ -101,14 +101,14 @@ const OpenapiAuth = ({
             <Input
               type="text"
               className="form-control"
-              onChange={(e) => optionchanged('password', e.target.value)}
+              onChange={(e) => optionchanged("password", e.target.value)}
               value={password}
             />
           </div>
         </div>
       );
     }
-    case 'bearer': {
+    case "bearer": {
       return (
         <div>
           <div className="col-md-12">
@@ -116,14 +116,14 @@ const OpenapiAuth = ({
             <Input
               type="text"
               className="form-control"
-              onChange={(e) => optionchanged('bearer_token', e.target.value)}
+              onChange={(e) => optionchanged("bearer_token", e.target.value)}
               value={bearer_token}
             />
           </div>
         </div>
       );
     }
-    case 'apiKey': {
+    case "apiKey": {
       if (Array.isArray(authObject)) {
         return (
           <div>
@@ -136,7 +136,7 @@ const OpenapiAuth = ({
         return renderApiKeyField(authObject);
       }
     }
-    case 'oauth2': {
+    case "oauth2": {
       return (
         <Oauth
           add_token_to={add_token_to}

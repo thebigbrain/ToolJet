@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import ParameterDetails, { PillButton } from './ParameterDetails';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
-import ParameterForm from './ParameterForm';
+import React, { useEffect, useRef, useState } from "react";
+import ParameterDetails, { PillButton } from "./ParameterDetails";
+import { OverlayTrigger, Popover } from "react-bootstrap";
+import ParameterForm from "./ParameterForm";
 
 const ParameterList = ({
   parameters = [],
@@ -12,7 +12,7 @@ const ParameterList = ({
   darkMode,
 }) => {
   const [showMore, setShowMore] = useState(false);
-  const [selectedParameter, setSelectedParameter] = useState();
+  const [selectedParameter, setSelectedParameter] = useState<any>(null);
   const [formattedParameters, setFormattedParameters] = useState([]);
   const containerRef = useRef(null);
   const containerWidth = containerRef.current?.offsetWidth;
@@ -21,7 +21,10 @@ const ParameterList = ({
     let totalWidth = 0;
     const formattedParams = containerWidth
       ? parameters.map((param, index) => {
-          const boxWidth = Math.min((param?.name || '').length * 6 + 63 + 8, 178);
+          const boxWidth = Math.min(
+            (param?.name || "").length * 6 + 63 + 8,
+            178
+          );
           totalWidth += boxWidth;
           return {
             ...param,
@@ -37,19 +40,19 @@ const ParameterList = ({
   }, [JSON.stringify(parameters), containerWidth]);
 
   const handleClickOutside = (event) => {
-    if (showMore && event.target.closest('#parameter-more-popover') === null) {
+    if (showMore && event.target.closest("#parameter-more-popover") === null) {
       setShowMore(false);
     }
   };
 
   useEffect(() => {
     if (showMore) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     } else {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     }
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showMore]);
 
@@ -63,49 +66,53 @@ const ParameterList = ({
             <ParameterDetails
               isEdit
               key={parameter.name}
-              onSubmit={(param) => handleParameterChange(parameter.index, param)}
+              onSubmit={(param) =>
+                handleParameterChange(parameter.index, param)
+              }
               onRemove={() => handleParameterRemove(parameter.index)}
               name={parameter.name}
-              otherParams={formattedParameters.filter((p) => p.name !== parameter.name)}
+              otherParams={formattedParameters.filter(
+                (p) => p.name !== parameter.name
+              )}
               defaultValue={parameter.defaultValue}
-              currentState={currentState}
               darkMode={darkMode}
             />
           );
         })}
       <OverlayTrigger
-        trigger={'click'}
-        placement={'bottom-end'}
+        trigger={"click"}
+        placement={"bottom-end"}
         rootClose={true}
         show={showMore}
         overlay={
           <Popover
             id="parameter-more-popover"
-            className={`query-manager-sort-filter-popup  ${darkMode && 'popover-dark-themed theme-dark dark-theme'}`}
-            style={{ minWidth: '270px', maxWidth: 'fit-content' }}
+            className={`query-manager-sort-filter-popup  ${
+              darkMode && "popover-dark-themed theme-dark dark-theme"
+            }`}
+            style={{ minWidth: "270px", maxWidth: "fit-content" }}
           >
             {selectedParameter ? (
               <ParameterForm
                 darkMode={darkMode}
                 isEdit={true}
-                name={selectedParameter.name}
+                name={selectedParameter?.name}
                 defaultValue={selectedParameter.defaultValue}
                 onSubmit={(param) => {
                   if (!param?.name) {
                     return;
                   }
                   handleParameterChange(selectedParameter.index, param);
-                  setSelectedParameter();
+                  setSelectedParameter(null);
                 }}
-                currentState={currentState}
                 showModal={showMore}
               />
             ) : (
               <Popover.Body
-                key={'1'}
+                key={"1"}
                 bsPrefix="popover-body"
                 className={`ps-1 pe-1 me-2 py-2 query-manager`}
-                style={{ maxWidth: '500px' }}
+                style={{ maxWidth: "500px" }}
               >
                 {formattedParameters
                   .filter((param) => !param.isVisible)
@@ -114,7 +121,9 @@ const ParameterList = ({
                       <span key={parameter.name}>
                         <PillButton
                           name={parameter.name}
-                          onRemove={() => handleParameterRemove(parameter.index)}
+                          onRemove={() =>
+                            handleParameterRemove(parameter.index)
+                          }
                           marginBottom
                           onClick={() => setSelectedParameter(parameter)}
                         />
@@ -129,7 +138,10 @@ const ParameterList = ({
         <span>
           {formattedParameters.some((param) => !param.isVisible) && (
             <PillButton
-              name={`${formattedParameters.reduce((count, param) => count + (!param.isVisible ? 1 : 0), 0)} More`}
+              name={`${formattedParameters.reduce(
+                (count, param) => count + (!param.isVisible ? 1 : 0),
+                0
+              )} More`}
               onClick={() => setShowMore(true)}
             />
           )}
@@ -137,7 +149,6 @@ const ParameterList = ({
       </OverlayTrigger>
       <ParameterDetails
         onSubmit={handleAddParameter}
-        currentState={currentState}
         darkMode={darkMode}
         otherParams={formattedParameters}
       />

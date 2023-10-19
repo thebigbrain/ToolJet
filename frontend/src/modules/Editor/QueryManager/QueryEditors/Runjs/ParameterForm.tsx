@@ -1,7 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Form, Popover, Row, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { CodeHinter } from '@/modules/Editor/CodeBuilder/CodeHinter';
-import Information from '@/_ui/Icon/solidIcons/Information';
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Form,
+  Popover,
+  Row,
+  Col,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
+import { CodeHinter } from "@/modules/Editor/CodeBuilder/CodeHinter";
+import Information from "@/_ui/Icon/solidIcons/Information";
 
 const isValidVariableName = (str) => /^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(str);
 
@@ -14,9 +21,9 @@ const ParameterForm = ({
   showModal,
   otherParams = [],
 }) => {
-  const [name, setName] = useState();
+  const [name, setName] = useState("");
   const [defaultValue, setDefaultValue] = useState();
-  const [error, setError] = useState();
+  const [error, setError] = useState("");
 
   /**
    * Storing {} in a ref to make sure its not a object instance whenever component reload.
@@ -44,19 +51,32 @@ const ParameterForm = ({
 
   useEffect(() => {
     if (!isValidVariableName(name)) {
-      setError('Variable name invalid');
-    } else if (name && otherParams.some((param) => param.name === name.trim())) {
-      setError('Variable name exists');
+      setError("Variable name invalid");
+    } else if (
+      name &&
+      otherParams.some((param) => param.name === name.trim())
+    ) {
+      setError("Variable name exists");
     } else {
-      setError();
+      setError("");
     }
   }, [name]);
 
   return (
     <>
-      <Popover.Header style={{ fontSize: '12px' }}>{isEdit ? 'UPDATE PARAMETER' : 'ADD PARAMETER'}</Popover.Header>
-      <Popover.Body key={'1'} bsPrefix="popover-body" className="px-0 pe-2 pt-2">
-        <Form className="container px-3" onSubmit={handleSubmit} style={{ paddingRight: '25px !important' }}>
+      <Popover.Header style={{ fontSize: "12px" }}>
+        {isEdit ? "UPDATE PARAMETER" : "ADD PARAMETER"}
+      </Popover.Header>
+      <Popover.Body
+        key={"1"}
+        bsPrefix="popover-body"
+        className="px-0 pe-2 pt-2"
+      >
+        <Form
+          className="container px-3"
+          onSubmit={handleSubmit}
+          style={{ paddingRight: "25px !important" }}
+        >
           <Form.Group as={Row} className="mb-2 pr-1">
             <Form.Label column htmlFor="paramName">
               Name
@@ -68,7 +88,9 @@ const ParameterForm = ({
                 onChange={(event) => setName(event.target.value)}
                 value={name}
               />
-              {name && error && <div className="invalid-feedback d-block">{error}</div>}
+              {name && error && (
+                <div className="invalid-feedback d-block">{error}</div>
+              )}
             </Col>
           </Form.Group>
           <Form.Group as={Row}>
@@ -79,8 +101,9 @@ const ParameterForm = ({
                   placement="bottom"
                   overlay={
                     <Tooltip id="tooltip">
-                      Exposed values such as components, queries, globals etc are not supported in this field.Please use
-                      constant strings, numbers or objects.
+                      Exposed values such as components, queries, globals etc
+                      are not supported in this field.Please use constant
+                      strings, numbers or objects.
                     </Tooltip>
                   }
                 >
@@ -95,7 +118,7 @@ const ParameterForm = ({
                 <div className="w-100">
                   <CodeHinter
                     onChange={(value) => setDefaultValue(value)}
-                    theme={darkMode ? 'monokai' : 'default'}
+                    theme={darkMode ? "monokai" : "default"}
                     currentState={emptyObj.current}
                     usePortalEditor={false}
                     height={36}

@@ -74,7 +74,7 @@ export const RealtimeEditor = () => {
       awareness={provider.awareness}
       initialPresence={initialPresence}
     >
-      <Editor provider={provider} ymap={ydoc.getMap("appDef")} />
+      <Editor ymap={ydoc.getMap("appDef")} />
     </RoomProvider>
   );
 };

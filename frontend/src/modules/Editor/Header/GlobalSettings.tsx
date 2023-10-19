@@ -148,19 +148,10 @@ export const GlobalSettings = ({
                         globalSettingsChanged("canvasMaxWidth", 1292);
                       }
                     }}
+                    value={canvasMaxWidthType || "px"}
                   >
-                    <option value="%" selected={canvasMaxWidthType === "%"}>
-                      %
-                    </option>
-                    <option
-                      value="px"
-                      selected={
-                        canvasMaxWidthType === "px" ||
-                        _.isUndefined(canvasMaxWidthType)
-                      }
-                    >
-                      px
-                    </option>
+                    <option value="%">%</option>
+                    <option value="px">px</option>
                   </select>
                 </div>
               </div>

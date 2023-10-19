@@ -1,22 +1,24 @@
-import React from 'react';
-import Select from '@/_ui/Select';
-import { queryManagerSelectComponentStyle } from '@/_ui/Select/styles';
-import { Tab, ListGroup, Row } from 'react-bootstrap';
-import { CodeHinter } from '../../CodeBuilder/CodeHinter';
+import React from "react";
+import Select from "@/_ui/Select";
+import { queryManagerSelectComponentStyle } from "@/_ui/Select/styles";
+import { Tab, ListGroup, Row } from "react-bootstrap";
+import { CodeHinter } from "../../CodeBuilder/CodeHinter";
 
 const GRPCComponent = ({ darkMode, selectedDataSource, ...restProps }) => {
-  const protobufDefintion = JSON.parse(selectedDataSource?.options?.protobuf?.value);
+  const protobufDefintion = JSON.parse(
+    selectedDataSource?.options?.protobuf?.value
+  );
 
   const { options, optionsChanged, queryName } = restProps;
 
   const serverUrl = selectedDataSource?.options?.url?.value;
 
   const [serviceNames, setServiceNames] = React.useState([]);
-  const [selectedServiceName, setSelectedServiceName] = React.useState({
-    label: options?.serviceName ?? '',
-    value: options?.serviceName ?? '',
+  const [selectedServiceName, setSelectedServiceName]: any = React.useState({
+    label: options?.serviceName ?? "",
+    value: options?.serviceName ?? "",
   });
-  const [rpc, setRpc] = React.useState(options.rpc ?? '');
+  const [rpc, setRpc] = React.useState(options.rpc ?? "");
   const [metaDataOptions, setMetaDataOptions] = React.useState(() => {
     if (options?.metaDataOptions) {
       return JSON.parse(options?.metaDataOptions);
@@ -26,11 +28,16 @@ const GRPCComponent = ({ darkMode, selectedDataSource, ...restProps }) => {
 
   React.useEffect(() => {
     if (protobufDefintion) {
-      const serviceNamesFromDef = Object.keys(protobufDefintion).map((serviceName) => ({
-        label: serviceName,
-        value: serviceName,
-        rpcs: protobufDefintion[serviceName]?.map((rpc) => ({ label: rpc, value: rpc })),
-      }));
+      const serviceNamesFromDef = Object.keys(protobufDefintion).map(
+        (serviceName) => ({
+          label: serviceName,
+          value: serviceName,
+          rpcs: protobufDefintion[serviceName]?.map((rpc) => ({
+            label: rpc,
+            value: rpc,
+          })),
+        })
+      );
       setServiceNames(serviceNamesFromDef);
 
       setSelectedServiceName(serviceNamesFromDef[0]);
@@ -45,7 +52,7 @@ const GRPCComponent = ({ darkMode, selectedDataSource, ...restProps }) => {
 
   const addNewMetaDataKeyValuePair = () => {
     const currentMetaDataOptions = JSON.parse(JSON.stringify(metaDataOptions));
-    currentMetaDataOptions.push({ key: '', value: '' });
+    currentMetaDataOptions.push({ key: "", value: "" });
     setMetaDataOptions(currentMetaDataOptions);
   };
 
@@ -57,7 +64,7 @@ const GRPCComponent = ({ darkMode, selectedDataSource, ...restProps }) => {
 
   const handleOnMetaDataKeyChange = (type, index, value) => {
     const currentMetaDataOptions = JSON.parse(JSON.stringify(metaDataOptions));
-    currentMetaDataOptions[index][type === 'key' ? 0 : 1] = value;
+    currentMetaDataOptions[index][type === "key" ? 0 : 1] = value;
 
     setMetaDataOptions(currentMetaDataOptions);
     optionsChanged({
@@ -78,23 +85,23 @@ const GRPCComponent = ({ darkMode, selectedDataSource, ...restProps }) => {
       ...queryManagerSelectComponentStyle(darkMode, width),
       control: (provided) => ({
         ...provided,
-        boxShadow: 'none',
-        backgroundColor: darkMode ? '#2b3547' : '#F1F3F5',
-        borderRadius: '0px',
-        borderLeft: 'none',
+        boxShadow: "none",
+        backgroundColor: darkMode ? "#2b3547" : "#F1F3F5",
+        borderRadius: "0px",
+        borderLeft: "none",
         height: 32,
         minHeight: 32,
-        borderColor: darkMode ? 'inherit' : ' #D7DBDF',
-        borderWidth: '1px',
-        '&:hover': {
-          backgroundColor: darkMode ? '' : '#F8F9FA',
+        borderColor: darkMode ? "inherit" : " #D7DBDF",
+        borderWidth: "1px",
+        "&:hover": {
+          backgroundColor: darkMode ? "" : "#F8F9FA",
         },
-        '&:active': {
-          backgroundColor: darkMode ? '' : '#F8FAFF',
-          borderColor: '#3E63DD',
-          boxShadow: '0px 0px 0px 2px #C6D4F9 ',
+        "&:active": {
+          backgroundColor: darkMode ? "" : "#F8FAFF",
+          borderColor: "#3E63DD",
+          boxShadow: "0px 0px 0px 2px #C6D4F9 ",
         },
-        cursor: 'pointer',
+        cursor: "pointer",
       }),
     };
   };
@@ -102,14 +109,26 @@ const GRPCComponent = ({ darkMode, selectedDataSource, ...restProps }) => {
   return (
     <div>
       <div className="rest-api-methods-select-element-container">
-        <div className={`col field w-100 d-flex rest-methods-url ${darkMode && 'dark'}`}>
-          <GRPCComponent.ServerUrl theme={darkMode ? 'monokai' : 'default'} dataSourceURL={serverUrl} />
+        <div
+          className={`col field w-100 d-flex rest-methods-url ${
+            darkMode && "dark"
+          }`}
+        >
+          <GRPCComponent.ServerUrl
+            theme={darkMode ? "monokai" : "default"}
+            dataSourceURL={serverUrl}
+          />
           <div className="col-6 d-flex">
-            <div className={`${darkMode && 'dark'}`} style={{ width: '200px', height: '32px' }}>
+            <div
+              className={`${darkMode && "dark"}`}
+              style={{ width: "200px", height: "32px" }}
+            >
               <Select
                 options={serviceNames}
                 onChange={(value) => {
-                  const selectedService = serviceNames.find((service) => service.value === value);
+                  const selectedService = serviceNames.find(
+                    (service) => service.value === value
+                  );
                   setSelectedServiceName(selectedService);
                   optionsChanged({
                     ...options,
@@ -123,7 +142,10 @@ const GRPCComponent = ({ darkMode, selectedDataSource, ...restProps }) => {
                 useCustomStyles={true}
               />
             </div>
-            <div className={`${darkMode && 'dark'}`} style={{ width: '180px', height: '32px' }}>
+            <div
+              className={`${darkMode && "dark"}`}
+              style={{ width: "180px", height: "32px" }}
+            >
               <Select
                 options={selectedServiceName?.rpcs || []}
                 onChange={(value) => {
@@ -144,9 +166,9 @@ const GRPCComponent = ({ darkMode, selectedDataSource, ...restProps }) => {
         </div>
       </div>
 
-      <div className={`query-pane-restapi-tabs  ${darkMode ? 'dark' : ''}`}>
+      <div className={`query-pane-restapi-tabs  ${darkMode ? "dark" : ""}`}>
         <GRPCComponent.Tabs
-          theme={darkMode ? 'monokai' : 'default'}
+          theme={darkMode ? "monokai" : "default"}
           metaDataoptions={metaDataOptions}
           onChange={handleOnMetaDataKeyChange}
           onJsonBodyChange={handleJsonBodyChanged}
@@ -172,14 +194,21 @@ function ControlledTabs({
   componentName,
   messageJSON,
 }) {
-  const [key, setKey] = React.useState('message');
-  const tabs = ['Message', 'Metadata'];
+  const [key, setKey] = React.useState("message");
+  const tabs = ["Message", "Metadata"];
 
   return (
-    <Tab.Container activeKey={key} onSelect={(k) => setKey(k)} defaultActiveKey="message">
+    <Tab.Container
+      activeKey={key}
+      onSelect={(k) => setKey(k)}
+      defaultActiveKey="message"
+    >
       <Row>
         <div className="keys">
-          <ListGroup className="query-pane-rest-api-keys-list-group mx-1" variant="flush">
+          <ListGroup
+            className="query-pane-rest-api-keys-list-group mx-1"
+            variant="flush"
+          >
             {tabs.map((tab) => (
               <ListGroup.Item key={tab} eventKey={tab.toLowerCase()}>
                 <span>{tab}</span>
@@ -188,33 +217,41 @@ function ControlledTabs({
           </ListGroup>
         </div>
 
-        <div className={`col ${darkMode && 'theme-dark'}`}>
+        <div className={`col ${darkMode && "theme-dark"}`}>
           <Tab.Content
             bsPrefix="rest-api-tab-content"
             className="border overflow-hidden query-manager-border-color rounded"
           >
-            <Tab.Pane eventKey="metadata" t bsPrefix="rest-api-tabpanes" transition={false}>
+            <Tab.Pane
+              eventKey="metadata"
+              bsPrefix="rest-api-tabpanes"
+              transition={false}
+            >
               <GRPCComponent.TabContent
                 options={metaDataoptions}
                 theme={theme}
                 removeKeyValuePair={removeKeyValuePair}
                 onChange={onChange}
                 componentName={componentName}
-                tabType={'metadata'}
-                paramType={'metadata'}
+                tabType={"metadata"}
+                paramType={"metadata"}
                 addNewKeyValuePair={addNewKeyValuePair}
                 darkMode={darkMode}
               />
             </Tab.Pane>
 
-            <Tab.Pane eventKey="message" bsPrefix="rest-api-tabpanes" transition={false}>
+            <Tab.Pane
+              eventKey="message"
+              bsPrefix="rest-api-tabpanes"
+              transition={false}
+            >
               <div className="tab-content-wrapper">
                 <div>
                   <CodeHinter
-                    initialValue={messageJSON || '{\n\n}'}
+                    initialValue={messageJSON || "{\n\n}"}
                     mode="javascript"
-                    theme={darkMode ? 'monokai' : 'base16-light'}
-                    height={'300px'}
+                    theme={darkMode ? "monokai" : "base16-light"}
+                    height={"300px"}
                     className="query-hinter"
                     ignoreBraces={false}
                     onChange={(value) => onJsonBodyChange(value)}
@@ -246,16 +283,21 @@ const TabContent = ({
     <div className="tab-content-wrapper">
       {options?.map((option, index) => {
         return (
-          <div className="row-container border-bottom query-manager-border-color" key={index}>
+          <div
+            className="row-container border-bottom query-manager-border-color"
+            key={index}
+          >
             <div className="fields-container ">
-              <div className="d-flex justify-content-center align-items-center query-number">{index + 1}</div>
+              <div className="d-flex justify-content-center align-items-center query-number">
+                {index + 1}
+              </div>
               <div className="field col-4 overflow-hidden">
                 <CodeHinter
                   initialValue={option[0]}
                   theme={theme}
-                  height={'32px'}
+                  height={"32px"}
                   placeholder="Key"
-                  onChange={(value) => onChange('key', index, value)}
+                  onChange={(value) => onChange("key", index, value)}
                   componentName={`${componentName}/${tabType}::key::${index}`}
                 />
               </div>
@@ -263,9 +305,9 @@ const TabContent = ({
                 <CodeHinter
                   initialValue={option[1]}
                   theme={theme}
-                  height={'32px'}
+                  height={"32px"}
                   placeholder="Value"
-                  onChange={(value) => onChange('value', index, value)}
+                  onChange={(value) => onChange("value", index, value)}
                   componentName={`${componentName}/${tabType}::value::${index}`}
                 />
               </div>
@@ -277,7 +319,13 @@ const TabContent = ({
                 }}
               >
                 <span className="rest-api-delete-field-option query-icon-wrapper d-flex">
-                  <svg width="auto" height="auto" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg
+                    width="auto"
+                    height="auto"
+                    viewBox="0 0 18 20"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       fillRule="evenodd"
                       clipRule="evenodd"
@@ -292,15 +340,25 @@ const TabContent = ({
         );
       })}
 
-      <div className="d-flex" style={{ maxHeight: '32px' }}>
+      <div className="d-flex" style={{ maxHeight: "32px" }}>
         <div
           className="d-flex align-items-center justify-content-center add-tabs "
-          style={{ flex: '0 0 32px', background: darkMode ? 'inherit' : '#F8F9FA', height: '32px' }}
+          style={{
+            flex: "0 0 32px",
+            background: darkMode ? "inherit" : "#F8F9FA",
+            height: "32px",
+          }}
           onClick={() => addNewKeyValuePair(paramType)}
           role="button"
         >
           <span className="rest-api-add-field-svg">
-            <svg width="auto" height="auto" viewBox="0 0 24 25" fill="#5677E1" xmlns="http://www.w3.org/2000/svg">
+            <svg
+              width="auto"
+              height="auto"
+              viewBox="0 0 24 25"
+              fill="#5677E1"
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -310,7 +368,10 @@ const TabContent = ({
             </svg>
           </span>
         </div>
-        <div className="col" style={{ flex: '1', background: darkMode ? '' : '#ffffff' }}></div>
+        <div
+          className="col"
+          style={{ flex: "1", background: darkMode ? "" : "#ffffff" }}
+        ></div>
       </div>
     </div>
   );
@@ -320,13 +381,15 @@ export const BaseUrl = ({ dataSourceURL, theme }) => {
   return (
     <span
       className="col-6"
-      htmlFor=""
       style={{
-        padding: '5px',
-        border: theme === 'default' ? '1px solid rgb(217 220 222)' : '1px solid white',
-        background: theme === 'default' ? 'rgb(246 247 251)' : '#20211e',
-        color: theme === 'default' ? '#9ca1a6' : '#9e9e9e',
-        height: '32px',
+        padding: "5px",
+        border:
+          theme === "default"
+            ? "1px solid rgb(217 220 222)"
+            : "1px solid white",
+        background: theme === "default" ? "rgb(246 247 251)" : "#20211e",
+        color: theme === "default" ? "#9ca1a6" : "#9e9e9e",
+        height: "32px",
       }}
     >
       {dataSourceURL}

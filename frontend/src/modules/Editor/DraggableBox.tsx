@@ -274,7 +274,6 @@ export const DraggableBox = function DraggableBox({
               onResizeStop(id, e, direction, ref, d, position);
             }}
             bounds={parent !== undefined ? `#canvas-${parent}` : ".real-canvas"}
-            widgetId={id}
           >
             <div
               ref={preview}

@@ -1,30 +1,26 @@
-import React from 'react';
-import { CodeHinter } from '../../../CodeBuilder/CodeHinter';
+import React from "react";
+import { CodeHinter } from "../../../CodeBuilder/CodeHinter";
 
 export const ProgramaticallyHandleToggleSwitch = ({
   darkMode,
-  // eslint-disable-next-line no-unused-vars
-  label,
   index,
   callbackFunction,
   property,
-  props = {},
+  props = { fxActive: false },
   component,
   paramMeta,
-  // eslint-disable-next-line no-unused-vars
-  paramType,
 }) => {
   const getValueBasedOnProperty = (property, props) => {
     switch (property) {
-      case 'isEditable':
+      case "isEditable":
         return props.isEditable;
 
-      case 'disableActionButton':
+      case "disableActionButton":
         return props.disableActionButton;
 
-      case 'columnVisibility':
+      case "columnVisibility":
         return props.columnVisibility;
-      case 'linkTarget':
+      case "linkTarget":
         return props.linkTarget;
       default:
         return;
@@ -32,12 +28,12 @@ export const ProgramaticallyHandleToggleSwitch = ({
   };
   const getOptionsForSelectElement = (property, paramMeta) => {
     switch (property) {
-      case 'linkTarget':
+      case "linkTarget":
         return {
           ...paramMeta,
           options: [
-            { name: 'Same window', value: '_self' },
-            { name: 'New window', value: '_blank' },
+            { name: "Same window", value: "_self" },
+            { name: "New window", value: "_blank" },
           ],
         };
 
@@ -45,16 +41,16 @@ export const ProgramaticallyHandleToggleSwitch = ({
         break;
     }
   };
-  if (paramMeta.type === 'select') {
+  if (paramMeta.type === "select") {
     paramMeta = getOptionsForSelectElement(property, paramMeta);
   }
 
   const getInitialValue = (property, definition) => {
-    if (property === 'columnVisibility') {
+    if (property === "columnVisibility") {
       return definition?.value ?? `{{true}}`;
     }
-    if (property === 'linkTarget') {
-      return definition?.value ?? '_blank';
+    if (property === "linkTarget") {
+      return definition?.value ?? "_blank";
     }
     return definition?.value ?? `{{false}}`;
   };
@@ -64,14 +60,17 @@ export const ProgramaticallyHandleToggleSwitch = ({
   const definition = { value, fxActive: props.fxActive };
   const initialValue = getInitialValue(property, definition);
 
-  const options = {};
+  const options: any = {};
   return (
-    <div className={`mb-2 field ${options.className}`} onClick={(e) => e.stopPropagation()}>
+    <div
+      className={`mb-2 field ${options.className}`}
+      onClick={(e) => e.stopPropagation()}
+    >
       <CodeHinter
         enablePreview={true}
         initialValue={initialValue}
         mode={options.mode}
-        theme={darkMode ? 'monokai' : options.theme}
+        theme={darkMode ? "monokai" : options.theme}
         lineWrapping={true}
         onChange={(value) => callbackFunction(index, property, value)}
         componentName={`component/${component?.component?.name}::${param.name}`}
@@ -80,7 +79,7 @@ export const ProgramaticallyHandleToggleSwitch = ({
         paramLabel={paramMeta.displayName}
         fieldMeta={paramMeta}
         onFxPress={(active) => {
-          callbackFunction(index, 'fxActive', active);
+          callbackFunction(index, "fxActive", active);
         }}
         fxActive={props?.fxActive ?? false}
         component={component.component}

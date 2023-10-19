@@ -2,7 +2,7 @@ import React from 'react';
 import { Tooltip as ReactTooltip } from 'react-tooltip';
 
 export const CustomToggleSwitch = ({
-  isChecked,
+  isChecked = false,
   toggleSwitchFunction,
   action,
   darkMode = false,
@@ -21,6 +21,7 @@ export const CustomToggleSwitch = ({
           type="checkbox"
           id={action}
           checked={isChecked}
+          readOnly
           onClick={() => {
             if (action === 'bodyToggle') {
               toggleSwitchFunction(!isChecked);

@@ -1,20 +1,20 @@
-import React from 'react';
-import Select from '@/_ui/Select';
-import DOMPurify from 'dompurify';
-import { CodeHinter } from '../../CodeBuilder/CodeHinter';
-import { withTranslation } from 'react-i18next';
-import { queryManagerSelectComponentStyle } from '@/_ui/Select/styles';
+import React from "react";
+import Select from "@/_ui/Select";
+import DOMPurify from "dompurify";
+import { CodeHinter } from "../../CodeBuilder/CodeHinter";
+import { withTranslation } from "react-i18next";
+import { queryManagerSelectComponentStyle } from "@/_ui/Select/styles";
 
 const operationColorMapping = {
-  get: 'azure',
-  post: 'green',
-  delete: 'red',
-  put: 'yellow',
-  patch: 'orange',
-  head: 'blue',
+  get: "azure",
+  post: "green",
+  delete: "red",
+  put: "yellow",
+  patch: "orange",
+  head: "blue",
 };
 
-class OpenapiComponent extends React.Component {
+class OpenapiComponent extends React.Component<any, any> {
   constructor(props) {
     super(props);
     const { selectedDataSource, options } = props;
@@ -31,13 +31,16 @@ class OpenapiComponent extends React.Component {
         path: options?.path,
       },
       spec: selectedDataSource.options?.spec?.value,
-      selectedOperation: selectedDataSource.options?.spec?.value?.paths[options?.path]?.[options?.operation] || null,
+      selectedOperation:
+        selectedDataSource.options?.spec?.value?.paths[options?.path]?.[
+          options?.operation
+        ] || null,
     };
   }
 
   changeOperation = (value) => {
-    const operation = value.split(',')[0];
-    const path = value.split(',')[1];
+    const operation = value.split(",")[0];
+    const path = value.split(",")[1];
 
     this.setState(
       {
@@ -69,12 +72,14 @@ class OpenapiComponent extends React.Component {
   };
 
   renderOperationOption = (props) => {
-    const optionName = props.value.split(',')[1];
+    const optionName = props.value.split(",")[1];
     const operation = props.label;
     return (
       <div className="row">
-        <div className="col-auto" style={{ width: '60px' }}>
-          <span className={`badge bg-${operationColorMapping[operation]}`}>{operation}</span>
+        <div className="col-auto" style={{ width: "60px" }}>
+          <span className={`badge bg-${operationColorMapping[operation]}`}>
+            {operation}
+          </span>
         </div>
 
         <div className="col">
@@ -99,7 +104,12 @@ class OpenapiComponent extends React.Component {
 
     for (const path of Object.keys(paths)) {
       for (const operation of Object.keys(paths[path])) {
-        if (['get', 'post', 'delete', 'put', 'patch', 'head'].includes(operation, 0)) {
+        if (
+          ["get", "post", "delete", "put", "patch", "head"].includes(
+            operation,
+            0
+          )
+        ) {
           options.push({
             value: `${operation},${path}`,
             name: path,
@@ -151,10 +161,10 @@ class OpenapiComponent extends React.Component {
       });
     } else if (
       path &&
-      this.state.spec.paths[path]?.['servers'] &&
-      this.state.spec.paths[path]?.['servers'].length > 0
+      this.state.spec.paths[path]?.["servers"] &&
+      this.state.spec.paths[path]?.["servers"].length > 0
     ) {
-      const servers = this.state.spec.paths[path]['servers'];
+      const servers = this.state.spec.paths[path]["servers"];
       return servers.map((url) => {
         return url.url;
       });
@@ -171,23 +181,30 @@ class OpenapiComponent extends React.Component {
     const path = this.state.options.path;
 
     if (operation.parameters) {
-      if (this.state.spec.paths[path]?.['parameters']) {
-        const generalParams = this.state.spec.paths[path]['parameters'].filter((param) => param.in === paramType);
-        const operationParams = operation.parameters.filter((param) => param.in === paramType);
-        const result = generalParams.concat(operationParams).filter(function (o) {
-          return this[o.name] ? false : (this[o.name] = true);
+      if (this.state.spec.paths[path]?.["parameters"]) {
+        const generalParams = this.state.spec.paths[path]["parameters"].filter(
+          (param) => param.in === paramType
+        );
+        const operationParams = operation.parameters.filter(
+          (param) => param.in === paramType
+        );
+        const result = generalParams.concat(operationParams).filter((o) => {
+          const method: any = o.name;
+          return this[method] ? false : (this[method] = true);
         }, {});
         return result;
       }
       return operation.parameters.filter((param) => param.in === paramType);
-    } else if (this.state.spec.paths[path]?.['parameters'])
-      return this.state.spec.paths[path]['parameters'].filter((param) => param.in === paramType);
+    } else if (this.state.spec.paths[path]?.["parameters"])
+      return this.state.spec.paths[path]["parameters"].filter(
+        (param) => param.in === paramType
+      );
     else return [];
   }
 
   removeParam = (paramType, paramName) => {
     const newOptions = JSON.parse(JSON.stringify(this.state.options));
-    newOptions['params'][paramType][paramName] = undefined;
+    newOptions["params"][paramType][paramName] = undefined;
 
     this.setState(
       {
@@ -205,15 +222,17 @@ class OpenapiComponent extends React.Component {
     let pathParams = [];
     let headerParams = [];
     let queryParams = [];
-    let requestBody = [];
+    let requestBody: any = [];
 
     if (selectedOperation) {
-      pathParams = this.resolveParameters('path');
-      queryParams = this.resolveParameters('query');
-      headerParams = this.resolveParameters('header');
+      pathParams = this.resolveParameters("path");
+      queryParams = this.resolveParameters("query");
+      headerParams = this.resolveParameters("header");
 
       if (selectedOperation.requestBody) {
-        const requestType = Object.keys(selectedOperation.requestBody.content)[0];
+        const requestType = Object.keys(
+          selectedOperation.requestBody.content
+        )[0];
         requestBody = selectedOperation.requestBody.content[requestType];
       }
     }
@@ -221,7 +240,12 @@ class OpenapiComponent extends React.Component {
     return (
       <div>
         {!spec && (
-          <div className="p-3">{this.props.t('openApi.noValidOpenApi', 'Valid OpenAPI Spec is not available!.')}</div>
+          <div className="p-3">
+            {this.props.t(
+              "openApi.noValidOpenApi",
+              "Valid OpenAPI Spec is not available!."
+            )}
+          </div>
         )}
 
         {options && spec && (
@@ -229,7 +253,9 @@ class OpenapiComponent extends React.Component {
             {baseUrls.length > 0 && (
               <div className="row">
                 <div className="col-12">
-                  <label className="form-label">{this.props.t('globals.host', 'Host')}</label>
+                  <label className="form-label">
+                    {this.props.t("globals.host", "Host")}
+                  </label>
                 </div>
                 <div className="col openapi-operation-options">
                   <Select
@@ -238,35 +264,55 @@ class OpenapiComponent extends React.Component {
                     onChange={this.changeHost}
                     width="100%"
                     customOption={this.renderHostOptions}
-                    placeholder={this.props.t('openApi.selectHost', 'Select a host')}
-                    styles={queryManagerSelectComponentStyle(this.props.darkMode, '100%')}
+                    placeholder={this.props.t(
+                      "openApi.selectHost",
+                      "Select a host"
+                    )}
+                    styles={queryManagerSelectComponentStyle(
+                      this.props.darkMode,
+                      "100%" as any
+                    )}
                     useCustomStyles={true}
                   />
                 </div>
               </div>
             )}
-            <div className="row" style={{ marginTop: '20px' }}>
+            <div className="row" style={{ marginTop: "20px" }}>
               <div className="col-12">
-                <label className="form-label">{this.props.t('globals.operation', 'Operation')}</label>
+                <label className="form-label">
+                  {this.props.t("globals.operation", "Operation")}
+                </label>
               </div>
               <div className="col openapi-operation-options">
                 <Select
                   options={this.computeOperationSelectionOptions(spec.paths)}
-                  value={[this.state.options.operation, this.state.options.path].join(',')}
+                  value={[
+                    this.state.options.operation,
+                    this.state.options.path,
+                  ].join(",")}
                   onChange={this.changeOperation}
                   width="100%"
                   customOption={this.renderOperationOption}
-                  placeholder={this.props.t('openApi.selectOperation', 'Select an operation')}
-                  styles={queryManagerSelectComponentStyle(this.props.darkMode, '100%')}
+                  placeholder={this.props.t(
+                    "openApi.selectOperation",
+                    "Select an operation"
+                  )}
+                  styles={queryManagerSelectComponentStyle(
+                    this.props.darkMode,
+                    "100%" as any
+                  )}
                   useCustomStyles={true}
                 />
 
                 {selectedOperation && (
                   <small
                     className="openapi-operations-desc"
-                    style={{ margintTop: '12px' }}
+                    style={{ marginTop: "12px" }}
                     dangerouslySetInnerHTML={{
-                      __html: DOMPurify.sanitize(selectedOperation.description ?? selectedOperation.summary),
+                      __html: DOMPurify.sanitize(
+                        selectedOperation.description ??
+                          selectedOperation.summary
+                      ),
                     }}
                   />
                 )}
@@ -276,32 +322,49 @@ class OpenapiComponent extends React.Component {
         )}
 
         {selectedOperation && (
-          <div className={`row openApi-fields-row ${this.props.darkMode && 'theme-dark'}`}>
+          <div
+            className={`row openApi-fields-row ${
+              this.props.darkMode && "theme-dark"
+            }`}
+          >
             {headerParams.length > 0 && (
               <div className={`path-fields `}>
-                <h5 className="text-heading">{this.props.t('globals.header', 'HEADER')}</h5>
+                <h5 className="text-heading">
+                  {this.props.t("globals.header", "HEADER")}
+                </h5>
                 <div className="input-group-parent-container">
                   {headerParams.map((param) => (
                     <div className="input-group-wrapper" key={param.name}>
                       <div className="input-group">
                         <div className="col-auto field field-width-179">
-                          <input type="text" value={param.name} className="form-control border-0" placeholder="key" />
+                          <input
+                            type="text"
+                            value={param.name}
+                            className="form-control border-0"
+                            placeholder="key"
+                          />
                         </div>
                         <div className="col field overflow-hidden">
                           <CodeHinter
-                            initialValue={this.state.options.params.path[param.name]}
+                            initialValue={
+                              this.state.options.params.path[param.name]
+                            }
                             mode="text"
-                            placeholder={'Value'}
-                            theme={this.props.darkMode ? 'monokai' : 'duotone-light'}
+                            placeholder={"Value"}
+                            theme={
+                              this.props.darkMode ? "monokai" : "duotone-light"
+                            }
                             lineNumbers={false}
-                            onChange={(value) => this.changeParam('path', param.name, value)}
-                            height={'32px'}
+                            onChange={(value) =>
+                              this.changeParam("path", param.name, value)
+                            }
+                            height={"32px"}
                           />
                         </div>
                         <span
                           className="col-auto field-width-28 d-flex"
                           role="button"
-                          onClick={() => this.removeParam('path', param.name)}
+                          onClick={() => this.removeParam("path", param.name)}
                         >
                           <svg
                             width="auto"
@@ -327,29 +390,42 @@ class OpenapiComponent extends React.Component {
 
             {pathParams.length > 0 && (
               <div className={`path-fields `}>
-                <h5 className="text-heading">{this.props.t('globals.path', 'PATH')}</h5>
+                <h5 className="text-heading">
+                  {this.props.t("globals.path", "PATH")}
+                </h5>
                 <div className="input-group-parent-container">
                   {pathParams.map((param) => (
                     <div className="input-group-wrapper" key={param.name}>
                       <div className="input-group">
                         <div className="col-auto field field-width-179">
-                          <input type="text" value={param.name} className="form-control border-0" placeholder="key" />
+                          <input
+                            type="text"
+                            value={param.name}
+                            className="form-control border-0"
+                            placeholder="key"
+                          />
                         </div>
                         <div className="col field overflow-hidden">
                           <CodeHinter
-                            initialValue={this.state.options.params.path[param.name]}
+                            initialValue={
+                              this.state.options.params.path[param.name]
+                            }
                             mode="text"
-                            placeholder={'Value'}
-                            theme={this.props.darkMode ? 'monokai' : 'duotone-light'}
+                            placeholder={"Value"}
+                            theme={
+                              this.props.darkMode ? "monokai" : "duotone-light"
+                            }
                             lineNumbers={false}
-                            onChange={(value) => this.changeParam('path', param.name, value)}
-                            height={'32px'}
+                            onChange={(value) =>
+                              this.changeParam("path", param.name, value)
+                            }
+                            height={"32px"}
                           />
                         </div>
                         <span
                           className="col-auto field-width-28 d-flex"
                           role="button"
-                          onClick={() => this.removeParam('path', param.name)}
+                          onClick={() => this.removeParam("path", param.name)}
                         >
                           <svg
                             width="auto"
@@ -375,29 +451,43 @@ class OpenapiComponent extends React.Component {
 
             {queryParams.length > 0 && (
               <div className={`query-fields `}>
-                <h5 className="text-heading">{this.props.t('globals.query'.toUpperCase(), 'QUERY')}</h5>
+                <h5 className="text-heading">
+                  {this.props.t("globals.query".toUpperCase(), "QUERY")}
+                </h5>
                 <div className="input-group-parent-container">
                   {queryParams.map((param) => (
                     <div className="input-group-wrapper" key={param.name}>
                       <div className="input-group">
                         <div className="col-auto field field-width-179">
-                          <input type="text" value={param.name} className="form-control" placeholder="key" disabled />
+                          <input
+                            type="text"
+                            value={param.name}
+                            className="form-control"
+                            placeholder="key"
+                            disabled
+                          />
                         </div>
                         <div className="col field overflow-hidden">
                           <CodeHinter
-                            initialValue={this.state.options.params?.query[param.name] ?? ''}
+                            initialValue={
+                              this.state.options.params?.query[param.name] ?? ""
+                            }
                             mode="text"
-                            placeholder={'Value'}
-                            theme={this.props.darkMode ? 'monokai' : 'duotone-light'}
+                            placeholder={"Value"}
+                            theme={
+                              this.props.darkMode ? "monokai" : "duotone-light"
+                            }
                             lineNumbers={false}
-                            onChange={(value) => this.changeParam('query', param.name, value)}
-                            height={'32px'}
+                            onChange={(value) =>
+                              this.changeParam("query", param.name, value)
+                            }
+                            height={"32px"}
                           />
                         </div>
                         <span
                           className="col-auto field-width-28 d-flex"
                           role="button"
-                          onClick={() => this.removeParam('query', param.name)}
+                          onClick={() => this.removeParam("query", param.name)}
                         >
                           <svg
                             width="auto"
@@ -423,33 +513,48 @@ class OpenapiComponent extends React.Component {
 
             {requestBody?.schema?.properties && (
               <div className={`request-body-fields  `}>
-                <h5 className="text-heading">{this.props.t('globals.requestBody', 'REQUEST BODY')}</h5>
+                <h5 className="text-heading">
+                  {this.props.t("globals.requestBody", "REQUEST BODY")}
+                </h5>
                 <div
                   className={`${
-                    Object.keys(requestBody.schema.properties).length >= 1 && 'input-group-parent-container'
+                    Object.keys(requestBody.schema.properties).length >= 1 &&
+                    "input-group-parent-container"
                   }`}
                 >
                   {Object.keys(requestBody.schema.properties).map((param) => (
-                    <div className="input-group-wrapper" key={param.name}>
+                    <div className="input-group-wrapper" key={param}>
                       <div className="input-group">
                         <div className="col-auto field field-width-179">
-                          <input type="text" value={param} className="form-control" placeholder="key" disabled />
+                          <input
+                            type="text"
+                            value={param}
+                            className="form-control"
+                            placeholder="key"
+                            disabled
+                          />
                         </div>
                         <div className="col field overflow-hiddel">
                           <CodeHinter
-                            initialValue={this.state.options.params?.request[param] ?? ''}
+                            initialValue={
+                              this.state.options.params?.request[param] ?? ""
+                            }
                             mode="text"
-                            placeholder={'Value'}
-                            theme={this.props.darkMode ? 'monokai' : 'duotone-light'}
+                            placeholder={"Value"}
+                            theme={
+                              this.props.darkMode ? "monokai" : "duotone-light"
+                            }
                             lineNumbers={false}
-                            onChange={(value) => this.changeParam('request', param, value)}
-                            height={'32px'}
+                            onChange={(value) =>
+                              this.changeParam("request", param, value)
+                            }
+                            height={"32px"}
                           />
                         </div>
                         <span
                           className="col-auto field-width-28 d-flex"
                           role="button"
-                          onClick={() => this.removeParam('request', param)}
+                          onClick={() => this.removeParam("request", param)}
                         >
                           <svg
                             width="auto"

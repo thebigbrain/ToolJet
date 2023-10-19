@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
-import Input from '@/_ui/Input';
-import Select from '@/_ui/Select';
-import Headers from '@/_ui/HttpHeaders';
+import React, { useEffect } from "react";
+import Input from "@/_ui/Input";
+import Select from "@/_ui/Select";
+import Headers from "@/_ui/HttpHeaders";
 
 const Oauth = ({
   access_token_url,
@@ -17,59 +17,63 @@ const Oauth = ({
   scopes,
   authObject,
   optionchanged,
-  access_token_custom_headers,
-  workspaceConstants,
+  access_token_custom_headers = null,
+  workspaceConstants = null,
 }) => {
   useEffect(() => {
-    if (authObject && authObject?.flows['authorizationCode']) {
+    if (authObject && authObject?.flows["authorizationCode"]) {
       const { flows, general_scopes } = authObject;
-      const { authorizationUrl, tokenUrl } = flows['authorizationCode'];
-      optionchanged('access_token_url', tokenUrl);
+      const { authorizationUrl, tokenUrl } = flows["authorizationCode"];
+      optionchanged("access_token_url", tokenUrl);
       setTimeout(() => {
-        optionchanged('auth_url', authorizationUrl);
-        optionchanged('scopes', convertScopesToString(general_scopes));
+        optionchanged("auth_url", authorizationUrl);
+        optionchanged("scopes", convertScopesToString(general_scopes));
       }, 500);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authObject, grant_type]);
 
   const convertScopesToString = (scopes) => {
-    let scopes_str = '';
+    let scopes_str = "";
     scopes.map((scope) => {
-      scopes_str += scope + ' ';
+      scopes_str += scope + " ";
     });
     return scopes_str;
   };
 
-  if (authObject && !authObject?.flows['authorizationCode']) return null;
+  if (authObject && !authObject?.flows["authorizationCode"]) return null;
 
   return (
     <div>
       <div className="row mt-3">
         <label className="form-label text-muted">Grant Type</label>
         <Select
-          options={[{ name: 'Authorization Code', value: 'authorization_code' }]}
+          options={[
+            { name: "Authorization Code", value: "authorization_code" },
+          ]}
           value={grant_type}
-          onChange={(value) => optionchanged('grant_type', value)}
-          width={'100%'}
+          onChange={(value) => optionchanged("grant_type", value)}
+          width={"100%"}
           useMenuPortal={false}
         />
-        <label className="form-label text-muted mt-3">Add Access Token To</label>
+        <label className="form-label text-muted mt-3">
+          Add Access Token To
+        </label>
         <Select
-          options={[{ name: 'Request Header', value: 'header' }]}
+          options={[{ name: "Request Header", value: "header" }]}
           value={add_token_to}
-          onChange={(value) => optionchanged('add_token_to', value)}
-          width={'100%'}
+          onChange={(value) => optionchanged("add_token_to", value)}
+          width={"100%"}
           useMenuPortal={false}
         />
 
-        {add_token_to === 'header' && (
+        {add_token_to === "header" && (
           <div className="col-md-12">
             <label className="form-label text-muted mt-3">Header Prefix</label>
             <Input
               type="text"
               className="form-control"
-              onChange={(e) => optionchanged('header_prefix', e.target.value)}
+              onChange={(e) => optionchanged("header_prefix", e.target.value)}
               value={header_prefix}
             />
           </div>
@@ -82,18 +86,20 @@ const Oauth = ({
           type="text"
           placeholder="https://api.example.com/oauth/token"
           className="form-control"
-          onChange={(e) => optionchanged('access_token_url', e.target.value)}
+          onChange={(e) => optionchanged("access_token_url", e.target.value)}
           value={access_token_url}
         />
       </div>
 
       <div className="row mt-3">
         <div className="col">
-          <label className="form-label pt-2">Access Token URL custom headers</label>
+          <label className="form-label pt-2">
+            Access Token URL custom headers
+          </label>
         </div>
       </div>
       <Headers
-        getter={'access_token_custom_headers'}
+        getter={"access_token_custom_headers"}
         options={access_token_custom_headers}
         optionchanged={optionchanged}
       />
@@ -103,7 +109,7 @@ const Oauth = ({
         <Input
           type="text"
           className="form-control"
-          onChange={(e) => optionchanged('client_id', e.target.value)}
+          onChange={(e) => optionchanged("client_id", e.target.value)}
           value={client_id}
           workspaceConstants={workspaceConstants}
         />
@@ -114,7 +120,7 @@ const Oauth = ({
         <Input
           type="text"
           className="form-control"
-          onChange={(e) => optionchanged('client_secret', e.target.value)}
+          onChange={(e) => optionchanged("client_secret", e.target.value)}
           value={client_secret}
         />
       </div>
@@ -124,7 +130,7 @@ const Oauth = ({
         <Input
           type="text"
           className="form-control"
-          onChange={(e) => optionchanged('scopes', e.target.value)}
+          onChange={(e) => optionchanged("scopes", e.target.value)}
           value={scopes}
         />
       </div>
@@ -135,45 +141,52 @@ const Oauth = ({
         </div>
       </div>
       <Headers
-        getter={'custom_query_params'}
+        getter={"custom_query_params"}
         options={custom_query_params}
         optionchanged={optionchanged}
         workspaceConstants={workspaceConstants}
+        isRenderedAsQueryEditor={undefined}
       />
 
-      {grant_type === 'authorization_code' && (
+      {grant_type === "authorization_code" && (
         <div>
           <div className="col-md-12">
-            <label className="form-label text-muted mt-3">Authorization URL</label>
+            <label className="form-label text-muted mt-3">
+              Authorization URL
+            </label>
             <Input
               type="text"
               placeholder="https://api.example.com/oauth/authorize"
               className="form-control"
-              onChange={(e) => optionchanged('auth_url', e.target.value)}
+              onChange={(e) => optionchanged("auth_url", e.target.value)}
               value={auth_url}
             />
           </div>
 
           <div className="row mt-3">
             <div className="col">
-              <label className="form-label pt-2">Custom Authentication Parameters</label>
+              <label className="form-label pt-2">
+                Custom Authentication Parameters
+              </label>
             </div>
           </div>
           <Headers
-            getter={'custom_auth_params'}
+            getter={"custom_auth_params"}
             options={custom_auth_params}
             optionchanged={optionchanged}
             workspaceConstants={workspaceConstants}
           />
-          <label className="form-label text-muted mt-3">Client Authentication</label>
+          <label className="form-label text-muted mt-3">
+            Client Authentication
+          </label>
           <Select
             options={[
-              { name: 'Send as Basic Auth header', value: 'header' },
-              { name: 'Send client credentials in body ', value: 'body' },
+              { name: "Send as Basic Auth header", value: "header" },
+              { name: "Send client credentials in body ", value: "body" },
             ]}
             value={client_auth}
-            onChange={(value) => optionchanged('client_auth', value)}
-            width={'100%'}
+            onChange={(value) => optionchanged("client_auth", value)}
+            width={"100%"}
             useMenuPortal={false}
           />
         </div>
