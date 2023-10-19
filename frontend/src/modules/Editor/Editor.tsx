@@ -85,6 +85,7 @@ import {
   JetViewComponent,
 } from "@/interfaces/jetcomponent";
 import { Config } from "@/core/config";
+import { getThemeMode } from "../theme/mode";
 
 setAutoFreeze(false);
 enablePatches();
@@ -1169,15 +1170,15 @@ class EditorComponent extends React.Component<EditorProps, EditorState> {
     generateErrorLogs: (errors) => debuggerActions.generateErrorLogs(errors),
   };
 
-  changeDarkMode = (newMode: boolean) => {
-    useCurrentStateStore.getState().actions.setCurrentState({
-      globals: {
-        ...this.props.currentState.globals,
-        theme: { name: newMode ? "dark" : "light" },
-      },
-    });
-    this.props.switchDarkMode(newMode);
-  };
+  // changeDarkMode = (newMode: boolean) => {
+  //   useCurrentStateStore.getState().actions.setCurrentState({
+  //     globals: {
+  //       ...this.props.currentState.globals,
+  //       theme: { name: newMode ? "dark" : "light" },
+  //     },
+  //   });
+  //   this.props.switchDarkMode(newMode);
+  // };
 
   handleEvent = (eventName, options) =>
     onEvent(this, eventName, options, "edit");
@@ -1756,6 +1757,9 @@ class EditorComponent extends React.Component<EditorProps, EditorState> {
     const appVersionPreviewLink = editingVersion
       ? `/applications/${app.id}/versions/${editingVersion.id}/${currentState.page.handle}`
       : "";
+
+    const themeMode = getThemeMode();
+
     return (
       <div className="editor wrapper">
         <Confirm
@@ -1812,11 +1816,11 @@ class EditorComponent extends React.Component<EditorProps, EditorState> {
             <div className="sub-section">
               <LeftSidebar
                 appId={appId}
-                darkMode={this.props.darkMode}
+                darkMode={themeMode.isDark}
                 dataSourcesChanged={this.dataSourcesChanged}
                 dataQueriesChanged={this.dataQueriesChanged}
                 globalDataSourcesChanged={this.globalDataSourcesChanged}
-                switchDarkMode={this.changeDarkMode}
+                switchDarkMode={themeMode.switchMode}
                 appDefinition={{
                   components:
                     appDefinition.pages[this.state.currentPageId]?.components ??
