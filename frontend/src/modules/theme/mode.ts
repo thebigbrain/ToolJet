@@ -13,11 +13,11 @@ export class ThemeMode {
 
   isDark: boolean = getDefaultDarkMode();
 
-  switchMode() {
+  switchMode = () => {
     this.isDark = !this.isDark;
     persist(STORAGE_KEY, this.isDark);
     notify(isDarkObs, this.isDark);
-  }
+  };
 
   get name(): string {
     return this.isDark ? "lightmode" : "darkmode";

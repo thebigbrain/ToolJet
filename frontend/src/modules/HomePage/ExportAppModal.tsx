@@ -3,7 +3,7 @@ import { default as BootstrapModal } from "react-bootstrap/Modal";
 import moment from "moment";
 import { toast } from "react-hot-toast";
 import { getService } from "@/core/service";
-import { ApplicationService } from "@/interfaces/application";
+import { ApplicationService } from "@/modules/apps";
 
 export default function ExportAppModal({
   title,

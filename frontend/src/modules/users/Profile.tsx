@@ -1,24 +1,25 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { authenticationService } from "@/_services";
 import Avatar from "@/_ui/Avatar";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import { useTranslation } from "react-i18next";
 import { ToolTip } from "@/_components/ToolTip";
-import { getPrivateRoute } from "@/core/routes";
 import SolidIcon from "@/_ui/Icon/SolidIcons";
-import { User, getCurrentUser } from ".";
+import { User, getCurrentSession, getCurrentUser } from ".";
 import { PresentationModel } from "@externals/decorators";
 import { authStateObs } from "@/modules/auth/auth-obs";
 import { ClassFC, bindViewModel } from "@externals/decorators/react";
 import { auto } from "@externals/observables/react";
 import { OverlayInjectedProps } from "react-bootstrap/esm/Overlay";
+import { Link } from "../routes/Link";
+import { JetRouteName, WorkspaceSettingParam } from "../routes";
+import { getThemeMode, isDarkObs } from "../theme/mode";
 
 type ProfileProps = {
   darkMode?: boolean;
-  checkForUnsavedChanges?(s: string, event: React.MouseEvent): void;
   user?: User;
   onLogout?(): void;
+  workspaceId?;
 };
 
 class ProfileModel extends PresentationModel<ProfileProps> {
@@ -26,54 +27,55 @@ class ProfileModel extends PresentationModel<ProfileProps> {
     authenticationService.logout();
   };
 
-  override call(props: ProfileProps): ProfileProps {
+  override call(): ProfileProps {
+    const user = getCurrentUser();
+    const session = getCurrentSession();
+    const themeMode = getThemeMode();
+
     return {
-      ...props,
-      user: getCurrentUser(),
+      user,
       onLogout: this.logout,
+      workspaceId: session.workspaceId,
+      darkMode: themeMode.isDark,
     };
   }
 }
 
 function ProfileComponent(props: ProfileProps) {
-  const { darkMode, checkForUnsavedChanges, user } = props;
+  const { darkMode, user, onLogout, workspaceId } = props;
 
   const { t } = useTranslation();
+
+  const workspaceSettingsParam: WorkspaceSettingParam = {
+    workspaceId,
+  };
 
   const renderOverlay = ({
     show,
     arrowProps,
     hasDoneInitialMeasure,
-    ...props
+    ...overlayProps
   }: OverlayInjectedProps) => {
     return (
       <div
         className={`profile-card card ${darkMode && "dark-theme"}`}
-        {...props}
+        {...overlayProps}
       >
         <Link
-          data-testid="settingsBtn"
-          onClick={(event) =>
-            checkForUnsavedChanges(getPrivateRoute("settings"), event)
-          }
-          to={getPrivateRoute("settings")}
+          to={JetRouteName.settings}
+          state={workspaceSettingsParam}
           className="dropdown-item tj-text-xsm"
-          data-cy="profile-link"
         >
           <SolidIcon name="user" width="20" />
-
           <span>{t("header.profile", "Profile")}</span>
         </Link>
 
         <Link
-          data-testid="logoutBtn"
-          to="#"
-          onClick={props.onLogout}
+          prevent
+          onClick={onLogout}
           className="dropdown-item text-danger tj-text-xsm"
-          data-cy="logout-link"
         >
           <SolidIcon name="logout" width="20" />
-
           <span>{t("header.logout", "Logout")}</span>
         </Link>
       </div>
@@ -107,7 +109,7 @@ function ProfileComponent(props: ProfileProps) {
   );
 }
 
-@auto(authStateObs)
+@auto(authStateObs, isDarkObs)
 class ProfileView extends ClassFC(ProfileComponent) {}
 
 export const Profile = bindViewModel(ProfileView, ProfileModel);

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import useRouter from "@/_hooks/use-router";
 import { authenticationService } from "@/_services";
-import { Navigate } from "react-router-dom";
 import Configs from "./Configs/Config.json";
 import { RedirectLoader } from "@/_components";
 import { redirectToWorkspace } from "@/core/utils";
+import { JetRouteName, navigate } from "../routes";
 
 export function Authorize() {
   const [error, setError] = useState("");
@@ -88,6 +88,15 @@ export function Authorize() {
       );
   };
 
+  useEffect(() => {
+    if (error) {
+      navigate({
+        to: JetRouteName.login,
+        state: { errorMessage: error && error },
+      });
+    }
+  }, [error]);
+
   return (
     <div>
       <RedirectLoader
@@ -97,13 +106,13 @@ export function Authorize() {
             : "unknown"
         }
       />
-      {error && (
+      {/* {error && (
         <Navigate
           replace
           to={`/login${error && organizationId ? `/${organizationId}` : ""}`}
           state={{ errorMessage: error && error }}
         />
-      )}
+      )} */}
     </div>
   );
 }

@@ -17,7 +17,6 @@ export type LoginState = Partial<{
   isGettingConfigs?: boolean;
   configs?: LoginConfig;
   emailError?: string;
-  navigateToLogin?: boolean;
   current_organization_name?: string;
   email?: string;
   password?: string;

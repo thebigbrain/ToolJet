@@ -6,7 +6,8 @@ import { libraryAppService } from "@/_services";
 import EmptyIllustration from "@assets/images/no-apps.svg";
 import { ButtonSolid } from "@/_ui/AppButton/AppButton";
 import { getWorkspaceId } from "@externals/helpers/utils";
-import { useNavigate } from "react-router-dom";
+import { JetRouteName, navigate } from "../routes";
+import { getCurrentSession } from "../users";
 
 export const BlankPage = function BlankPage({
   createApp,
@@ -21,7 +22,6 @@ export const BlankPage = function BlankPage({
 }) {
   const { t } = useTranslation();
   const [deploying, setDeploying] = useState(false);
-  const navigate = useNavigate();
 
   const staticTemplates = [
     { id: "s3-file-explorer", name: "S3 file explore" },
@@ -39,7 +39,14 @@ export const BlankPage = function BlankPage({
           setDeploying(false);
           toast.dismiss(loadingToastId);
           toast.success("App created.");
-          navigate(`/${getWorkspaceId()}/apps/${data.id}`);
+          navigate({
+            to: JetRouteName.app_editor,
+            state: {
+              workspaceId: getCurrentSession()?.workspaceId,
+              id: data.id,
+              pageHandle: "page",
+            },
+          });
         })
         .catch((e) => {
           toast.dismiss(loadingToastId);

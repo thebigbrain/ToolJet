@@ -10,7 +10,7 @@ export class Config {
   LANGUAGE: string;
   TOOLJET_SERVER_URL: string;
   RELEASE_VERSION: string;
-  SENTRY_DNS: string;
+  SENTRY_DSN: string;
   SENTRY_DEBUG: boolean;
   APM_VENDOR:
     | "sentry"
@@ -33,4 +33,8 @@ export class Config {
   static setInstance(config: Config) {
     _config = config;
   }
+}
+
+export function getConfig() {
+  return Config.getInstance();
 }

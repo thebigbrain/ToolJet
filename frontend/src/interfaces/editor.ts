@@ -6,7 +6,7 @@ import {
   ApplicationDefinition,
   Version,
   VersionId,
-} from "./application";
+} from "../modules/apps/application";
 import * as Y from "yjs";
 import { WebsocketProvider } from "y-websocket";
 import { DragScrollOptions } from "@scena/dragscroll";

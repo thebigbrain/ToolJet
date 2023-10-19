@@ -3,7 +3,6 @@ import Plus from "@/_ui/Icon/solidIcons/Plus";
 import Information from "@/_ui/Icon/solidIcons/Information";
 import Search from "@/_ui/Icon/solidIcons/Search";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { getWorkspaceId } from "@externals/helpers/utils";
 import { ButtonSolid } from "@/_ui/AppButton/AppButton";
 import { SearchBox as _SearchBox } from "@/_components/SearchBox";
@@ -14,6 +13,7 @@ import { useDataQueriesActions } from "@/_stores/dataQueriesStore";
 import { useQueryPanelActions } from "@/_stores/queryPanelStore";
 import { Tooltip } from "react-tooltip";
 import { authenticationService } from "@/_services";
+import { JetRouteName, navigate } from "@/modules/routes";
 
 const SearchBox2 = (props: any) => <_SearchBox {...props} />;
 
@@ -27,7 +27,6 @@ function DataSourcePicker({
   const [searchTerm, setSearchTerm] = useState<string>();
   const [filteredUserDefinedDataSources, setFilteredUserDefinedDataSources] =
     useState(allUserDefinedSources);
-  const navigate = useNavigate();
   const { createDataQuery } = useDataQueriesActions();
   const { setPreviewData } = useQueryPanelActions();
   const { admin } = authenticationService.currentSessionValue;
@@ -53,7 +52,7 @@ function DataSourcePicker({
 
   const handleAddClick = () => {
     const workspaceId = getWorkspaceId();
-    navigate(`/${workspaceId}/data-sources`);
+    navigate({ to: JetRouteName.data_sources, state: { workspaceId } });
   };
 
   return (

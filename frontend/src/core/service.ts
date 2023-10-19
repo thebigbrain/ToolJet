@@ -8,14 +8,14 @@ export function registerService<T extends Service>(
   _services.set(type, createService<T>(impl));
 }
 
-export function ServiceGetter(type: Object) {
+export function ServiceGetter<T>(type: Object) {
   return function (
     target: any,
     propertyKey: string,
     descriptor?: PropertyDescriptor
   ) {
     target[propertyKey] = new Proxy(target, {
-      get(target, prop, receiver) {
+      get(target: T, prop, receiver) {
         const service = _services.get(type);
         return service[prop];
       },

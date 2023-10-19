@@ -75,7 +75,7 @@ function OrganizationsComponent() {
     <div className="org-select-container">
       <CustomSelect
         options={options}
-        value={session.current_organization_id}
+        value={session.workspaceId}
         onChange={(id) => switchOrganization(id)}
         className={`tj-org-select  ${darkMode && "dark-theme"}`}
       />

@@ -68,7 +68,7 @@ import {
 import { resetAllStores } from "@/_stores/utils";
 import { setCookie } from "@externals/helpers/cookie";
 
-import { ServiceGetter, getService } from "@/core/service";
+import { ServiceGetter } from "@/core/service";
 import { Subscription } from "rxjs";
 import { EditorProps, EditorState } from "@/interfaces/editor";
 import {
@@ -77,7 +77,7 @@ import {
   ApplicationService,
   Version,
   VersionId,
-} from "@/interfaces/application";
+} from "@/modules/apps";
 import { Page, PageHandle, PagesMap } from "@/interfaces/page";
 import {
   JetComponentEntity,

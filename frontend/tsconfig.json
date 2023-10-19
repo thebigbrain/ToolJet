@@ -6,7 +6,8 @@
     "paths": {
       "@/*": ["./*"],
       "@assets/*": ["../assets/*"],
-      "@externals/*": ["../externals/*"]
+      "@externals/*": ["../externals/*"],
+      "@reach/*": ["../reach/*"]
     },
     "sourceMap": true,
     "noImplicitAny": false,
@@ -16,6 +17,7 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
     "module": "ESNext",
     "target": "ES2015",
     "jsx": "react",

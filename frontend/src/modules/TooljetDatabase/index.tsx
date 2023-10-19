@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useContext,
 } from "react";
-import Layout from "@/_ui/Layout";
+import Layout from "@/modules/layouts/Layout";
 import TooljetDatabasePage from "./TooljetDatabasePage";
 import { usePostgrestQueryBuilder } from "./usePostgrestQueryBuilder";
 import { authenticationService } from "@/_services/authentication.service";
@@ -91,7 +91,7 @@ export const TooljetDatabase = (props) => {
   }, []);
 
   return (
-    <Layout switchDarkMode={props.switchDarkMode} darkMode={props.darkMode}>
+    <Layout>
       <div className="page-wrapper tooljet-database">
         <TooljetDatabaseContext.Provider value={value as any}>
           <TooljetDatabasePage totalTables={tables.length || 0} />

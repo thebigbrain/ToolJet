@@ -2,7 +2,6 @@ import React from "react";
 import cx from "classnames";
 import { groupPermissionService } from "@/_services";
 import { toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
 import { withTranslation } from "react-i18next";
 import ErrorBoundary from "@/modules/Editor//ErrorBoundary";
 import { Loader } from "@/modules/ManageSSO/Loader";
@@ -11,6 +10,7 @@ import BulkIcon from "@/_ui/Icon/bulkIcons/index";
 import Multiselect from "@/_ui/Multiselect/Multiselect";
 import { FilterPreview, MultiSelectUser } from "@/_components";
 import { ButtonSolid } from "@/_ui/AppButton/AppButton";
+import { Link } from "@/modules/routes/Link";
 
 type ManageGroupPermissionResourcesProps = {
   darkMode?;
@@ -419,6 +419,7 @@ class ManageGroupPermissionResourcesComponent extends React.Component<
                   groupPermission.group !== "all_users" && (
                     <div className="user-group-actions">
                       <Link
+                        prevent
                         onClick={() =>
                           this.props.updateGroupName(groupPermission)
                         }
@@ -426,7 +427,6 @@ class ManageGroupPermissionResourcesComponent extends React.Component<
                           .toLowerCase()
                           .replace(/\s+/g, "-")}-group-name-update-link`}
                         className="tj-text-xsm font-weight-500 edit-group"
-                        to={""}
                       >
                         <SolidIcon
                           fill="#28303F"
@@ -436,6 +436,7 @@ class ManageGroupPermissionResourcesComponent extends React.Component<
                         Edit name
                       </Link>
                       <Link
+                        prevent
                         className="delete-group tj-text-xsm font-weight-500"
                         onClick={() =>
                           this.props.deleteGroup(groupPermission.id)
@@ -443,7 +444,6 @@ class ManageGroupPermissionResourcesComponent extends React.Component<
                         data-cy={`${String(groupPermission.group)
                           .toLowerCase()
                           .replace(/\s+/g, "-")}-group-delete-link`}
-                        to={""}
                       >
                         <SolidIcon fill="#E54D2E" name="trash" width="14" />{" "}
                         Delete group
@@ -748,7 +748,7 @@ class ManageGroupPermissionResourcesComponent extends React.Component<
                                       <td>
                                         {groupPermission.group !== "admin" && (
                                           <Link
-                                            to="#"
+                                            prevent
                                             onClick={() => {
                                               this.removeAppFromGroup(
                                                 groupPermission.id,
@@ -951,7 +951,7 @@ class ManageGroupPermissionResourcesComponent extends React.Component<
                               </p>
                               <p>
                                 {groupPermission.group !== "all_users" && (
-                                  <Link to="#" className="remove-decoration">
+                                  <Link prevent className="remove-decoration">
                                     <ButtonSolid
                                       variant="dangerSecondary"
                                       className="apps-remove-btn remove-decoration tj-text-xsm font-weight-600"

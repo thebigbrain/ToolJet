@@ -7,17 +7,14 @@ export class SsoParam {
   configId?;
 }
 
-export class ResetPasswordParam {
-  token?;
-}
+export class TokenParam {}
+
+export type ResetPasswordParam = TokenParam;
+export type ConfirmInviteParam = TokenParam;
 
 export class InvitationParam {
   token?;
   organizationToken?;
-}
-
-export class ConfirmInviteParam {
-  token?;
 }
 
 export class WorkspaceAppParam {
@@ -32,27 +29,14 @@ export class ApplicationParam {
   pageHandle?;
   slug?;
 }
-
-export class WorkspaceSettingParam {
-  workspaceId?;
-}
-
-export class SettingsParam {
-  workspaceId?;
-}
-
-export class DatasourcesParam {
-  workspaceId?;
-}
-
-export class DatabaseParam {
-  workspaceId?;
-}
-
 export class WorkspaceParam {
   workspaceId?;
 }
 
+export type WorkspaceSettingParam = WorkspaceParam;
+export type SettingsParam = WorkspaceParam;
+export type DatasourcesParam = WorkspaceParam;
+export type DatabaseParam = WorkspaceParam;
 export class UnknowRouteParam {
   [name: string]: any;
 }

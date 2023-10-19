@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import { validateEmail } from "@externals/helpers/utils";
 import { authenticationService } from "@/_services";
@@ -9,6 +8,8 @@ import { ButtonSolid } from "@/_components/AppButton";
 import { withTranslation } from "react-i18next";
 import EnterIcon from "@assets/images/onboardingassets/Icons/Enter";
 import Spinner from "@/_ui/Spinner";
+import { Link } from "../routes/Link";
+import { JetRouteName } from "../routes";
 
 interface ForgotPasswordState {
   isLoading?: boolean;
@@ -94,7 +95,7 @@ class ForgotPasswordComponent extends React.Component<
                     >
                       New to ToolJet? &nbsp;
                       <Link
-                        to={"/signup"}
+                        to={JetRouteName.signup}
                         tabIndex={-1}
                         style={{ color: this.darkMode && "#3E63DD" }}
                         data-cy="create-an-account-link"

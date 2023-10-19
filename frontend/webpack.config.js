@@ -71,6 +71,7 @@ module.exports = {
       "@": path.resolve(__dirname, "src/"),
       "@assets": path.resolve(__dirname, "assets/"),
       "@externals": path.resolve(__dirname, "externals/"),
+      "@reach": path.resolve(__dirname, "reach/"),
     },
   },
   devtool: environment === "development" ? "eval-cheap-source-map" : false,

@@ -24,7 +24,7 @@ import { useEditorStore } from "@/_stores/editorStore";
 import { useDataSources } from "@/_stores/dataSourcesStore";
 import { shallow } from "zustand/shallow";
 import useDebugger from "./SidebarDebugger/useDebugger";
-import { AppId, ApplicationDefinition } from "@/interfaces/application";
+import { AppId, ApplicationDefinition } from "@/modules/apps";
 
 type LeftSidebarProps = {
   appId: AppId;

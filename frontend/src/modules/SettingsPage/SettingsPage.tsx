@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { authenticationService, userService } from "@/_services";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import Layout from "@/_ui/Layout";
+import Layout from "@/modules/layouts/Layout";
 import { ButtonSolid } from "@/_ui/AppButton/AppButton";
 import { useBreadCrumbContext } from "@/core/context";
 import { getCurrentUser } from "../users";
@@ -126,7 +126,7 @@ function SettingsPage(props) {
   const theme = getThemeMode();
 
   return (
-    <Layout switchDarkMode={() => theme.switchMode()} darkMode={theme.isDark}>
+    <Layout>
       <div className="wrapper">
         <div className="page-wrapper profile-page-content-wrap">
           <div style={{ height: `calc(100vh - 2.5rem - 64px)` }}>

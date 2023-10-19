@@ -14,7 +14,7 @@ import { withRouter } from "@/_hoc/withRouter";
 
 import { WithRouterProps } from "@/interfaces/router";
 import { getService } from "@/core/service";
-import { ApplicationService } from "@/interfaces/application";
+import { ApplicationService } from "@/modules/apps";
 
 type OrganizationInvitationPageProps = {
   params?: { token?: string };

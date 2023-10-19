@@ -35,7 +35,7 @@ export const LeftSidebarComment = forwardRef<any, LeftSidebarCommentProps>(
       if (appVersionsId) {
         commentsService
           .getNotifications(
-            router.query.id,
+            router.query?.id,
             false,
             appVersionsId,
             currentPageId

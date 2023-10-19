@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Layout from "@/_ui/Layout";
+import Layout from "@/modules/layouts/Layout";
 import { InstalledPlugins } from "./InstalledPlugins";
 import { MarketplacePlugins } from "./MarketplacePlugins";
 import {
@@ -8,10 +8,10 @@ import {
   authenticationService,
 } from "@/_services";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import config from "config";
 import FolderList from "@/_ui/FolderList/FolderList";
 import { useBreadCrumbContext } from "@/core/context";
+import { JetRouteName, navigate } from "../routes";
 
 const MarketplacePage = ({ darkMode, switchDarkMode }) => {
   const [active, setActive] = React.useState("installed");
@@ -24,13 +24,11 @@ const MarketplacePage = ({ darkMode, switchDarkMode }) => {
   const ENABLE_MARKETPLACE_DEV_MODE =
     config.ENABLE_MARKETPLACE_DEV_MODE == "true";
 
-  const navigate = useNavigate();
-
   React.useEffect(() => {
     updateSidebarNAV("");
 
     if (!admin) {
-      navigate("/");
+      navigate(JetRouteName.dashboard);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [admin]);
@@ -76,7 +74,7 @@ const MarketplacePage = ({ darkMode, switchDarkMode }) => {
   };
 
   return (
-    <Layout switchDarkMode={switchDarkMode} darkMode={darkMode}>
+    <Layout>
       <div className="wrapper">
         <div className="marketplace-body">
           <div className="p-3">

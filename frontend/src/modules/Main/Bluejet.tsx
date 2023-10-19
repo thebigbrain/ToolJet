@@ -1,6 +1,5 @@
 import React, { Suspense } from "react";
 
-import { withRouter } from "@/_hoc/withRouter";
 import "@/_styles/theme.scss";
 import "react-tooltip/dist/react-tooltip.css";
 
@@ -57,9 +56,7 @@ function BluejetMainComponent() {
 @auto(isDarkObs, authStateObs)
 class BluejetMainView extends ClassFC(BluejetMainComponent) {}
 
-const AppWithRouter = withRouter(
-  bindViewModel(BluejetMainView, BluejetMainModel)
-);
+const AppWithRouter = bindViewModel(BluejetMainView, BluejetMainModel);
 
 export const BluejetMain = (props: any) => {
   return (

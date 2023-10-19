@@ -1,6 +1,5 @@
 /* eslint-disable import/no-named-as-default */
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
 import { HeaderSection, Button } from "@/_ui/LeftSidebar";
 import { DataSourceManager } from "../DataSourceManager";
 import { DataSourceTypes } from "../DataSourceManager/SourceComponents";
@@ -21,6 +20,9 @@ import { getPrivateRoute } from "@/core/routes";
 import { useDataSources } from "@/_stores/dataSourcesStore";
 import { useAppVersionStore } from "@/_stores/appVersionStore";
 import { shallow } from "zustand/shallow";
+import { Link } from "@/modules/routes/Link";
+import { JetRouteName } from "@/modules/routes";
+import { getCurrentSession } from "@/modules/users";
 
 export const LeftSidebarDataSources = ({
   appId,
@@ -316,7 +318,7 @@ const LeftSidebarDataSourcesContainer = ({
       </div>
       {!isVersionReleased && (
         <div className="add-datasource-btn w-100 p-3">
-          <Link to={getPrivateRoute("data_sources")}>
+          <Link to={JetRouteName.data_sources} state={getCurrentSession()}>
             <div className="p-2 color-primary cursor-pointer">
               {t(`leftSidebar.Sources.addDataSource`, "+ add data source")}
             </div>

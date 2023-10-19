@@ -7,16 +7,14 @@ import Skeleton from "react-loading-skeleton";
 import { debounce } from "lodash";
 import Textarea from "@/_ui/Textarea";
 import { WithTranslation, withTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import { getPrivateRoute } from "@/core/routes";
 import { getSubpath } from "@externals/helpers/utils";
 import { getService } from "@/core/service";
-import {
-  AppId,
-  Application,
-  ApplicationService,
-} from "@/interfaces/application";
+import { AppId, Application, ApplicationService } from "@/modules/apps";
 import { User } from "@/interfaces/user";
+import { Link } from "../routes/Link";
+import { JetRouteName } from "../routes";
+import { getCurrentSession } from "../users";
 
 type ManageAppUsersProps = {
   app?: Application;
@@ -361,8 +359,8 @@ class ManageAppUsersComponent extends React.Component<
           <Modal.Footer>
             {this.isUserAdmin && (
               <Link
-                to={getPrivateRoute("workspace_settings")}
-                target="_blank"
+                to={JetRouteName.workspace_settings}
+                state={getCurrentSession()}
                 className="btn color-primary mt-3"
                 data-cy="manage-users-button"
               >

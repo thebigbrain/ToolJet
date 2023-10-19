@@ -1,7 +1,6 @@
-import { matchPath } from "react-router";
+import { matchPath } from "@reach/router";
 
 export enum JetRouteName {
-  home = "/",
   login = "/login",
   setup = "/setup",
   sso = "/sso/:origin/:configId",
@@ -10,16 +9,19 @@ export enum JetRouteName {
   reset_password = "/reset-password/:token",
   invitations = "/organization-invitations/:token",
   confirm_invite = "/confirm-invite",
-  workspace_apps = "/:workspaceId/apps/:id/:pageHandle?/*",
-  applications = "/applications/:id/versions/:versionId/:pageHandle?",
+  app_editor = "/apps/:workspaceId/:id",
+  app_viewer = "/applications/:id/versions/:versionId/:pageHandle?",
+  app_slug = "applications/:slug",
   oauth2 = "/oauth2/authorize",
-  workspace_settings = "/:workspaceId/workspace-settings",
-  settings = "/:workspaceId/settings",
-  data_sources = "/:workspaceId/data-sources",
-  database = "/:workspaceId/database",
+  workspace_settings = "/workspace-settings/:workspaceId",
+  settings = "/settings/:workspaceId",
+  data_sources = "/data-sources/:workspaceId",
+  database = "/database/:workspaceId",
   integrations = "/integrations",
   workspace = "/:workspaceId",
   switch_workspace = "/switch-workspace",
+
+  dashboard = "/",
 }
 
 export function routeName2Path(name: JetRouteName): string {
@@ -28,7 +30,7 @@ export function routeName2Path(name: JetRouteName): string {
 
 export function findRouteName(path: string): JetRouteName {
   return Object.values(JetRouteName).find((value) => {
-    return matchPath(routeName2Path(value), path);
+    return matchPath(routeName2Path(value), path || "");
   });
 }
 
@@ -44,5 +46,5 @@ export function isSwitchWorkspace(path: string): boolean {
 
 export function isApplications(path: string): boolean {
   const name = findRouteName(path);
-  return name == JetRouteName.applications;
+  return name == JetRouteName.app_viewer;
 }

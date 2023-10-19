@@ -1,7 +1,6 @@
 import React from "react";
 import { authenticationService } from "@/_services";
 import { toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
 import { validateEmail } from "@externals/helpers/utils";
 import GoogleSSOLoginButton from "@/_components/LoginPage/GoogleSSOLoginButton";
 import GitSSOLoginButton from "@/_components/LoginPage/GitSSOLoginButton";
@@ -17,6 +16,8 @@ import Spinner from "@/_ui/Spinner";
 import SignupStatusCard from "@/modules/OnBoardingForm/SignupStatusCard";
 import { withRouter } from "@/_hoc/withRouter";
 import { LoginProps, LoginState } from "@/interfaces/login";
+import { Link } from "../routes/Link";
+import { JetRouteName } from "../routes";
 
 type SignupState = Partial<{
   disableOnEdit: boolean;
@@ -147,7 +148,7 @@ class SignupPageComponent extends React.Component<LoginProps, SignupState> {
                       )}{" "}
                       &nbsp;
                       <Link
-                        to={"/login"}
+                        to={JetRouteName.login}
                         tabIndex={-1}
                         data-cy="signin-redirect-link"
                       >

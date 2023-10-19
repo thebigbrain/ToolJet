@@ -1,16 +1,22 @@
 import { JetRouteName, WorkspaceParam, navigate } from "../routes";
 import { authStateObs } from "../auth/auth-obs";
+import React from "react";
 
-export const UnknowPage = () => {
-  const auth = authStateObs.value;
-  if (auth.isTokenValid) {
-    navigate<WorkspaceParam>({
-      to: JetRouteName.workspace,
-      state: { workspaceId: auth.workspaceId },
-    });
-  } else {
-    navigate(JetRouteName.login);
+export class UnknowPage extends React.Component {
+  componentDidMount(): void {
+    const auth = authStateObs.value;
+    if (auth.isTokenValid) {
+      navigate<WorkspaceParam>({
+        to: JetRouteName.workspace,
+        state: { workspaceId: auth.workspaceId },
+        replace: true,
+      });
+    } else {
+      navigate(JetRouteName.login);
+    }
   }
 
-  return null;
-};
+  render() {
+    return null;
+  }
+}

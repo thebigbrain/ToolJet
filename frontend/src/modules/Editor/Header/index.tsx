@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
 import AppLogo from "@/_components/AppLogo";
 import { GlobalSettings } from "./GlobalSettings";
 import EditAppName from "./EditAppName";
@@ -9,11 +8,12 @@ import { AppVersionsManager } from "../AppVersionsManager/List";
 import { ManageAppUsers } from "../ManageAppUsers";
 import { ReleaseVersionButton } from "../ReleaseVersionButton";
 import cx from "classnames";
-import config from "config";
 // eslint-disable-next-line import/no-unresolved
 import { useUpdatePresence } from "@y-presence/react";
 import { useAppVersionStore } from "@/_stores/appVersionStore";
 import { shallow } from "zustand/shallow";
+import { Link } from "@/modules/routes/Link";
+import { getConfig } from "@/core/config";
 
 export default function EditorHeader({
   darkMode,
@@ -47,7 +47,12 @@ export default function EditorHeader({
     shallow
   );
 
-  const updatePresence = useUpdatePresence();
+  const config = getConfig();
+
+  const updatePresence = config?.ENABLE_MULTIPLAYER_EDITING
+    ? useUpdatePresence()
+    : (...args) => {};
+
   useEffect(() => {
     const initialPresence = {
       firstName: currentUser?.first_name ?? "",
@@ -69,7 +74,7 @@ export default function EditorHeader({
         <div className="container-xl header-container">
           <div className="d-flex w-100">
             <h1 className="navbar-brand d-none-navbar-horizontal pe-0 mt-1">
-              <Link to={"/"} data-cy="editor-page-logo">
+              <Link prevent data-cy="editor-page-logo">
                 <AppLogo isLoadingFromHeader={true} />
               </Link>
             </h1>

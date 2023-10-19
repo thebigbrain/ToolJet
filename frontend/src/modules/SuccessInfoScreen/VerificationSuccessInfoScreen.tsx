@@ -4,7 +4,6 @@ import GoogleSSOLoginButton from "@/_components/LoginPage/GoogleSSOLoginButton";
 import GitSSOLoginButton from "@/_components/LoginPage/GitSSOLoginButton";
 import OnBoardingForm from "@/modules/OnBoardingForm/OnBoardingForm";
 import { authenticationService } from "@/_services";
-import { useLocation, useParams } from "react-router-dom";
 import { LinkExpiredInfoScreen } from "@/modules/SuccessInfoScreen";
 import { ShowLoading } from "@/_components";
 import { toast } from "react-hot-toast";
@@ -19,6 +18,7 @@ import { getSubpath } from "@/core/utils";
 import { navigateTo } from "@externals/helpers/routes";
 import { UserDetail } from "@/interfaces/user";
 import { LoginConfig } from "@/interfaces/login";
+import useRouter from "@/_hooks/use-router";
 
 export const VerificationSuccessInfoScreen =
   function VerificationSuccessInfoScreen() {
@@ -34,8 +34,7 @@ export const VerificationSuccessInfoScreen =
     const [fallBack, setFallBack] = useState(false);
     const { t } = useTranslation();
 
-    const location = useLocation();
-    const params = useParams();
+    const { location, params } = useRouter();
 
     const organizationId = new URLSearchParams(location?.search).get("oid");
     const source = new URLSearchParams(location?.search).get("source");

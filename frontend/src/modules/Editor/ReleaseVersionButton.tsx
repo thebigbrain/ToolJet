@@ -6,7 +6,7 @@ import { useAppVersionStore } from "@/_stores/appVersionStore";
 import { ConfirmDialog } from "@/_components/ConfirmDialog";
 import { shallow } from "zustand/shallow";
 import { getService } from "@/core/service";
-import { ApplicationService } from "@/interfaces/application";
+import { ApplicationService } from "@/modules/apps";
 
 export const ReleaseVersionButton = function DeployVersionButton({
   appId,

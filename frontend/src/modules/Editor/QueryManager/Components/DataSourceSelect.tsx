@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Select, { components } from "react-select";
 import { groupBy, isEmpty } from "lodash";
-import { useNavigate } from "react-router-dom";
 import DataSourceIcon from "./DataSourceIcon";
 import { authenticationService } from "@/_services";
 import { getWorkspaceId } from "@externals/helpers/utils";
@@ -20,6 +19,7 @@ import {
   ApiSources,
   CloudStorageSources,
 } from "@/modules/Editor/DataSourceManager/SourceComponents";
+import { JetRouteName, navigate } from "@/modules/routes";
 
 function DataSourceSelect({
   darkMode = false,
@@ -270,7 +270,6 @@ function DataSourceSelect({
 }
 
 const MenuList = ({ children, getStyles, innerRef, ...props }) => {
-  const navigate = useNavigate();
   const menuListStyles = getStyles("menuList", props);
 
   const { admin } = authenticationService.currentSessionValue;
@@ -283,7 +282,8 @@ const MenuList = ({ children, getStyles, innerRef, ...props }) => {
 
   menuListStyles.padding = "4px";
 
-  const handleAddClick = () => navigate(`/${workspaceId}/data-sources`);
+  const handleAddClick = () =>
+    navigate({ to: JetRouteName.data_sources, state: { workspaceId } });
 
   return (
     <>

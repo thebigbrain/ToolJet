@@ -11,15 +11,16 @@ import { shallow } from "zustand/shallow";
 import { getCurrentUser } from "@/modules/users";
 
 const RealtimeCursors = ({ editingPageId }) => {
-  const others = useOthers();
-  const unavailableColors = others.map((other) => other?.presence?.color);
-  const availableColors = xorWith(USER_COLORS, unavailableColors, isEqual);
   const { editingVersionId } = useAppVersionStore(
     (state) => ({
       editingVersionId: state?.editingVersion?.id,
     }),
     shallow
   );
+
+  const others = useOthers();
+  const unavailableColors = others.map((other) => other?.presence?.color);
+  const availableColors = xorWith(USER_COLORS, unavailableColors, isEqual);
   const self = useSelf();
   const updatePresence = useUpdatePresence();
 

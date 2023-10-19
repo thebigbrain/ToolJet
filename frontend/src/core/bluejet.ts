@@ -24,3 +24,7 @@ export abstract class Bluejet {
     return Theme.getInstance();
   }
 }
+
+export function getBluejet() {
+  return Bluejet.getInstance();
+}

@@ -2,6 +2,14 @@ export type Observer<T = void> = (value?: T) => void;
 
 export abstract class AbstractObservable {}
 
+export class Subscription {
+  constructor(private dispose: () => void) {}
+
+  unsubscribe() {
+    this.dispose();
+  }
+}
+
 export class Observable<T> extends AbstractObservable {
   _value: T;
   _listeners: Map<Observer<T>, boolean> = new Map();
@@ -23,6 +31,14 @@ export class Observable<T> extends AbstractObservable {
   constructor(value: T) {
     super();
     this._value = value;
+  }
+
+  subscribe(o: Observer<T>): Subscription {
+    this._listeners.set(o, true);
+
+    return new Subscription(() => {
+      this.detach(o);
+    });
   }
 
   attach(o: Observer<T>): void {

@@ -5,7 +5,7 @@ import {
   validateName,
 } from "@externals/helpers/utils";
 import { getService } from "@/core/service";
-import { ApplicationService } from "@/interfaces/application";
+import { ApplicationService } from "@/modules/apps";
 
 function EditAppName({ appId, appName = "", onNameChanged }) {
   const darkMode = localStorage.getItem("darkMode") === "true";

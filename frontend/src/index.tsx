@@ -1,29 +1,23 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import * as Sentry from "@sentry/react";
-import {
-  useLocation,
-  useNavigationType,
-  createRoutesFromChildren,
-  matchRoutes,
-} from "react-router-dom";
+
 import { BrowserTracing } from "@sentry/browser";
-import { BluejetMain, ApplicationServiceImpl } from "./modules/Main";
+import { BluejetMain } from "./modules/main/Bluejet";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
 import HttpBackend, { HttpBackendOptions } from "i18next-http-backend";
 import { registerService } from "./core/service";
 import { installPlugin } from "./core/plugin";
 import configPlugin, { getAppConfig } from "./plugins/config/config";
 import { Config } from "./core/config";
-import { ApplicationService } from "./interfaces/application";
+import { ApplicationService, ApplicationServiceImpl } from "./modules/apps";
 import { Bluejet } from "./core/bluejet";
-import { BluejetWebImpl } from "./modules/Main/bluejetImpl";
+import { BluejetWebImpl } from "./modules/main/bluejetImpl";
 import { Theme } from "./core/theme";
 import { registerAuthService } from "./modules/auth";
 import { installRouter } from "./modules/routes";
-import { RrJetRouter } from "./modules/Main/allRoutes";
+import { RrJetRouter } from "./modules/main/JetRoutes";
 
 bootstrap().then(render);
 
@@ -49,15 +43,15 @@ function loadPlugins(config: Config) {
 }
 
 function installI18n(config: Config) {
-  const language = config.LANGUAGE || "en";
+  const language = config.LANGUAGE || "zh";
   const path = config?.SUB_PATH || "/";
+
   i18n
     .use(HttpBackend)
-    .use(LanguageDetector)
     .use(initReactI18next)
     .init<HttpBackendOptions>({
       load: "languageOnly",
-      fallbackLng: "en",
+      fallbackLng: "zh",
       lng: language,
       backend: {
         loadPath: `${path}assets/translations/{{lng}}.json`,
@@ -76,18 +70,18 @@ function installTracing(config: Config) {
     if (tooljetServerUrl) tracingOrigins.push(tooljetServerUrl);
 
     Sentry.init({
-      dsn: config.SENTRY_DNS,
+      dsn: config.SENTRY_DSN,
       debug: !!config.SENTRY_DEBUG,
       release: releaseVersion,
       integrations: [
         new BrowserTracing({
-          routingInstrumentation: Sentry.reactRouterV6Instrumentation(
-            React.useEffect,
-            useLocation,
-            useNavigationType,
-            createRoutesFromChildren,
-            matchRoutes
-          ),
+          // routingInstrumentation: Sentry.reactRouterV6Instrumentation(
+          //   React.useEffect,
+          //   useLocation,
+          //   useNavigationType,
+          //   createRoutesFromChildren,
+          //   matchRoutes
+          // ),
           tracingOrigins: tracingOrigins,
         }),
       ],
